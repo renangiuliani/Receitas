@@ -1,45 +1,52 @@
 package com.example.renan.testepls;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by Renan on 21/09/2015.
  */
-public class ListRecipeTypeActivity extends AppCompatActivity {
+public class ListRecipeActivity extends AppCompatActivity {
 
     private String recipeType;
     private FloatingActionButton fbAddRecipe;
+    private ImageView ivTbPicture;
+    private TextView tvTbName;
+    private String picture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_recipe_type);
+        setContentView(R.layout.list_recipe);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_list_recipe);
+        setSupportActionBar(toolbar);
         recipeType = getIntent().getStringExtra("recipeType");
 
-        if(recipeType != null){
-            Toast.makeText(ListRecipeTypeActivity.this, "Foiii: " + recipeType, Toast.LENGTH_LONG).show();
-        }
+        //Bitmap bitmap = savedInstanceState.getParcelable("picture");
 
         bindElements();
 
-        ListRecipeTypeActivity.this.setTitle("Lista de algo");
-
+        if(recipeType != null){
+            tvTbName.setText(recipeType);
+            //ivTbPicture.setImageDrawable(bitmap);
+        }
 
     }
 
     private void bindElements() {
         fbAddRecipe = (FloatingActionButton) findViewById(R.id.fb_add_recipe);
-
+        ivTbPicture = (ImageView) findViewById(R.id.iv_tb_picture);
+        tvTbName = (TextView) findViewById(R.id.tv_tb_name);
         bindEvents();
     }
 
@@ -48,7 +55,8 @@ public class ListRecipeTypeActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent((Activity) ListRecipeTypeActivity.this, RecipeActivity.class);
+                Intent intent = new Intent(ListRecipeActivity.this, RecipeActivity.class);
+                intent.putExtra("recipeType", recipeType);
                 startActivity(intent);
             }
         });

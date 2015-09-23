@@ -6,13 +6,13 @@
     android:layout_margin="5dp">
 
     <ImageView
-        android:id="@+id/ivRecipeTypePicture"
+        android:id="@+id/iv_recipe_type_picture"
         android:layout_width="0dp"
         android:layout_weight="3"
         android:layout_height="match_parent"/>
 
     <TextView
-        android:id="@+id/tvRecipeTypeName"
+        android:id="@+id/tv_recipe_type_name"
         android:layout_weight="7"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

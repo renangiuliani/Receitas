@@ -18,11 +18,12 @@
         </activity>
 
         <activity
-            android:label="Lista de Molhos e Acompanhamentos"
-            android:name=".ListRecipeTypeActivity"/>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBarTheme"
+            android:name=".ListRecipeActivity"/>
         <activity
-            android:label="Registrar Receita"
-            android:name=".RecipeActivity"/>
+            android:name=".RecipeActivity"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
