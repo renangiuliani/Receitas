@@ -2,14 +2,18 @@ package com.example.renan.testepls;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.renan.testepls.adapter.IngredientAdapter;
+import com.example.renan.testepls.entities.Ingredient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Renan on 22/09/2015.
@@ -17,44 +21,56 @@ import android.widget.Toast;
 public class RecipeActivity extends AppCompatActivity{
 
     private String recipeType;
-    private EditText titleRecipe, nameIngrediente;
-    private TextView listIngredients;
+    private EditText titleRecipe, nameIngrediente, prepareTime, serves;
+    private IngredientAdapter ingredientAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        recipeType = getIntent().getStringExtra("recipeType");
 
+        recipeType = getIntent().getStringExtra("recipeType");
         if(recipeType != null){
             RecipeActivity.this.setTitle("Registrar " + recipeType);
         }
 
         bindElements();
-
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_recipe, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.save:
-//                Toast.makeText(RecipeActivity.this, "LILONES", Toast.LENGTH_SHORT).show();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    private List<Ingredient> createAndPopulateIngredientArray() {
+        List<Ingredient> ingredient = new ArrayList<Ingredient>();
+        ingredient.add(new Ingredient("1 ovo"));
+        ingredient.add(new Ingredient("2 galinhas picadinhas"));
+        ingredient.add(new Ingredient("1/2 litro água que tubarão não nada"));
+        ingredient.add(new Ingredient("1 litro de leite de macho"));
+        ingredient.add(new Ingredient("45 pentelhos"));
+
+        return ingredient;
+    }
 
     private void bindElements() {
-        titleRecipe = (EditText) findViewById(R.id.title_recipe);
-        nameIngrediente = (EditText) findViewById(R.id.name_ingredient);
+        titleRecipe = (EditText) findViewById(R.id.et_title_recipe);
+        nameIngrediente = (EditText) findViewById(R.id.et_name_ingredient);
         nameIngrediente.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_add_ingredient), null);
-        listIngredients = (TextView) findViewById(R.id.list_ingredients);
+
+        prepareTime = (EditText) findViewById(R.id.et_prepare_time);
+        prepareTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_prepare_time), null);
+
+        serves = (EditText) findViewById(R.id.et_serves);
+        serves.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_serves), null);
+
+        ingredientAdapter = new IngredientAdapter(this, createAndPopulateIngredientArray());
+        recyclerView = (RecyclerView) findViewById(R.id.rv_list_ingredient);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(ingredientAdapter);
+
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(ingredientAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
+
 
         bindEvents();
     }
@@ -68,11 +84,8 @@ public class RecipeActivity extends AppCompatActivity{
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (nameIngrediente.getRight() - nameIngrediente.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if(!nameIngrediente.getText().toString().trim().equals("")) {
-                            if (listIngredients.getText().toString().equals("")) {
-                                listIngredients.setText(nameIngrediente.getText().toString().trim());
-                            }else {
-                                listIngredients.setText(listIngredients.getText() + "\n" + nameIngrediente.getText().toString().trim());
-                            }
+                            Ingredient ingredient = new Ingredient(nameIngrediente.getText().toString().trim());
+                            ingredientAdapter.addItem(ingredient);
                             nameIngrediente.setText("");
                         }else{
                             nameIngrediente.setText("");

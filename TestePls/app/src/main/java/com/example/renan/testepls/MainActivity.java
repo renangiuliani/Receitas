@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         recipeTypeAdapter = new RecipeTypeAdapter(this, recipeTypes);
         recyclerView = (RecyclerView) findViewById(R.id.rv_recipe_type);
         recyclerView.setAdapter(recipeTypeAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }

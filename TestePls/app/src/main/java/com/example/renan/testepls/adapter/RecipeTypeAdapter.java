@@ -1,35 +1,24 @@
 package com.example.renan.testepls.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.renan.testepls.ListRecipeActivity;
 import com.example.renan.testepls.R;
-import com.example.renan.testepls.RecipeTypeViewHolder;
 import com.example.renan.testepls.entities.RecipeType;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by Renan on 17/09/2015.
  */
-public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeViewHolder>{
+public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.RecipeTypeViewHolder>{
 
     private Context context;
     private ArrayList<RecipeType> itens;
@@ -74,6 +63,18 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeViewHolder
     @Override
     public int getItemCount() {
         return itens.size();
+    }
+
+    static class RecipeTypeViewHolder extends RecyclerView.ViewHolder{
+
+        public TextView tvName;
+        public ImageView ivPicture;
+
+        public RecipeTypeViewHolder(final View itemView) {
+            super(itemView);
+            tvName = (TextView) itemView.findViewById(R.id.tv_recipe_type_name);
+            ivPicture = (ImageView) itemView.findViewById(R.id.iv_recipe_type_picture);
+        }
     }
 
 }
