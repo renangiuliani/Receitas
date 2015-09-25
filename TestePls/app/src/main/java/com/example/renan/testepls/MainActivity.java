@@ -25,11 +25,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createAndPopulateRecipeTypeArray();
+
+        bindElements();
+    }
+
+    private void bindElements() {
         recipeTypeAdapter = new RecipeTypeAdapter(this, recipeTypes);
         recyclerView = (RecyclerView) findViewById(R.id.rv_recipe_type);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(recipeTypeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     private void createAndPopulateRecipeTypeArray(){

@@ -5,17 +5,17 @@ package com.example.renan.testepls.entities;
  */
 public class RecipeType {
 
-    private int idRecipeType;
+    private int imageRecipeType;
     private String nameRecipeType;
 
 
-    public RecipeType(int idRecipeType, String nameRecipeType) {
-        this.idRecipeType = idRecipeType;
+    public RecipeType(int imageRecipeType, String nameRecipeType) {
+        this.imageRecipeType = imageRecipeType;
         this.nameRecipeType = nameRecipeType;
     }
 
-    public int getIdRecipeType(){
-        return idRecipeType;
+    public int getImageRecipeType(){
+        return imageRecipeType;
     }
 
     public String getNameRecipeType(){

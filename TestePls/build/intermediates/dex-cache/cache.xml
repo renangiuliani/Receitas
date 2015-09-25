@@ -2,46 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
+        jar="C:\Users\c1284141\Documents\git\Receitas\TestePls\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.0.0\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
-        <dex dex="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\pre-dexed\debug\classes-be137e403336b6727c6bc809fb2c09b43c839113.jar" />
-    </item>
-    <item
-        jar="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
-        <dex dex="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1-1cae01b991ea16cc32e40a4aea0d275dc8fdf710.jar" />
-    </item>
-    <item
-        jar="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.1\jars\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
-        <dex dex="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\pre-dexed\debug\classes-a573d640fdcdedff699e4eaa1e3558c80110f229.jar" />
-    </item>
-    <item
-        jar="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\exploded-aar\com.android.support\design\22.2.1\jars\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="1821601ddbec5ff125653097812823388700af74">
-        <dex dex="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\pre-dexed\debug\classes-fccefd173bfe8e65ac7f2a4f1414b7aa677cc5d1.jar" />
-    </item>
-    <item
-        jar="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="f8efd0096475e0daf054267b61544e10dc776503">
-        <dex dex="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\pre-dexed\debug\classes-7455837c16d5861e3e27ce49868ed5c0efcbd533.jar" />
-    </item>
-    <item
-        jar="C:\Users\Renan\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
-        <dex dex="C:\Users\Renan\git\Receitas\TestePls\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-8c132b2a8d981c7d97e97739d93c2943417cc1c9.jar" />
+        sha1="11842de6a309c447b3a3d60d73ad637a87c58994">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\TestePls\app\build\intermediates\pre-dexed\debug\classes-f627d2e4d198ecb7b0c08e32bb149d7442fbff90.jar" />
     </item>
 
 </items>

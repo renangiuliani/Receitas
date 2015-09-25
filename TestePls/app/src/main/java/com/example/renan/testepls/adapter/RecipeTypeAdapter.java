@@ -37,7 +37,7 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Re
     @Override
     public void onBindViewHolder(final RecipeTypeViewHolder viewHolder, int position) {
         viewHolder.tvName.setText(itens.get(position).getNameRecipeType());
-        viewHolder.ivPicture.setImageResource(itens.get(position).getIdRecipeType());
+        viewHolder.ivPicture.setImageResource(itens.get(position).getImageRecipeType());
 
         viewHolder.itemView
                 .setOnClickListener(new View.OnClickListener() {

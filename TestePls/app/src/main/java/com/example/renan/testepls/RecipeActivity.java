@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.example.renan.testepls.adapter.IngredientAdapter;
 import com.example.renan.testepls.entities.Ingredient;
+import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class RecipeActivity extends AppCompatActivity{
 
     private String recipeType;
-    private EditText titleRecipe, nameIngrediente, prepareTime, serves;
+    private EditText ingredientName, prepareTime, serves;
     private IngredientAdapter ingredientAdapter;
     private RecyclerView recyclerView;
 
@@ -50,9 +51,8 @@ public class RecipeActivity extends AppCompatActivity{
     }
 
     private void bindElements() {
-        titleRecipe = (EditText) findViewById(R.id.et_title_recipe);
-        nameIngrediente = (EditText) findViewById(R.id.et_name_ingredient);
-        nameIngrediente.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_add_ingredient), null);
+        ingredientName = (EditText) findViewById(R.id.et_name_ingredient);
+        ingredientName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_add_ingredient), null);
 
         prepareTime = (EditText) findViewById(R.id.et_prepare_time);
         prepareTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_prepare_time), null);
@@ -76,19 +76,19 @@ public class RecipeActivity extends AppCompatActivity{
     }
 
     private void bindEvents() {
-        nameIngrediente.setOnTouchListener(new View.OnTouchListener() {
+        ingredientName.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (nameIngrediente.getRight() - nameIngrediente.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        if(!nameIngrediente.getText().toString().trim().equals("")) {
-                            Ingredient ingredient = new Ingredient(nameIngrediente.getText().toString().trim());
+                    if (event.getRawX() >= (ingredientName.getRight() - ingredientName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if (!ingredientName.getText().toString().trim().equals("")) {
+                            Ingredient ingredient = new Ingredient(ingredientName.getText().toString().trim());
                             ingredientAdapter.addItem(ingredient);
-                            nameIngrediente.setText("");
-                        }else{
-                            nameIngrediente.setText("");
+                            ingredientName.setText("");
+                        } else {
+                            ingredientName.setText("");
                         }
                     }
                 }
