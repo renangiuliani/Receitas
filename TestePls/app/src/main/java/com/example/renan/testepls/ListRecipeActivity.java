@@ -34,6 +34,7 @@ public class ListRecipeActivity extends AppCompatActivity {
     private ListRecipeAdapter listRecipeAdapter;
     private RecyclerView recyclerView;
     private ArrayList<Recipe> recipes;
+    private  ImageView menuItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,5 +88,6 @@ public class ListRecipeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 }
