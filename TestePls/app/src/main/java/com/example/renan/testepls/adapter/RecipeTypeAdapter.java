@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.renan.testepls.ListRecipeActivity;
 import com.example.renan.testepls.R;
@@ -18,12 +19,12 @@ import java.util.ArrayList;
 /**
  * Created by Renan on 17/09/2015.
  */
-public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.RecipeTypeViewHolder>{
+public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.RecipeTypeViewHolder> {
 
     private Context context;
     private ArrayList<RecipeType> itens;
 
-    public RecipeTypeAdapter(Context context, ArrayList<RecipeType> itens){
+    public RecipeTypeAdapter(Context context, ArrayList<RecipeType> itens) {
         this.context = context;
         this.itens = itens;
     }
@@ -57,7 +58,6 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Re
                         v.getContext().startActivity(intent);
                     }
                 });
-
     }
 
     @Override
@@ -65,7 +65,7 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Re
         return itens.size();
     }
 
-    static class RecipeTypeViewHolder extends RecyclerView.ViewHolder{
+    static class RecipeTypeViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvName;
         public ImageView ivPicture;

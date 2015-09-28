@@ -1,23 +1,56 @@
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar_list_recipe"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?attr/actionBarSize"
+    android:layout_height="56dp"
     android:background="?attr/colorPrimary"
-    android:backgroundTint="@color/primary_color">
+    android:backgroundTint="@color/primary_color"
+    android:minHeight="?attr/actionBarSize">
 
-    <ImageView
-        android:id="@+id/iv_tb_picture"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/tv_tb_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/abc_primary_text_material_dark"/>
+        android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_back" />
 
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_back"
+            android:src="@drawable/candy" />
+
+        <TextView
+            android:id="@+id/tv_tb_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/iv_image"
+            android:gravity="center"
+            android:text="Tipo Receita"
+            android:textColor="@color/abc_primary_text_material_dark"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/tv_tb_name"
+            android:gravity="center"
+            android:text="Buscar"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_search" />
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>
