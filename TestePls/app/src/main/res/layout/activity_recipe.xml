@@ -85,8 +85,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/prepration_time"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:maxLength="5"
+                android:singleLine="true"
+                android:inputType="time"/>
         </android.support.design.widget.TextInputLayout>
 
         <View

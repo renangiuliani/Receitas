@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -35,6 +36,8 @@ public class RecipeActivity extends AppCompatActivity{
         if(recipeType != null){
             RecipeActivity.this.setTitle("Registrar " + recipeType);
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bindElements();
     }
@@ -74,6 +77,18 @@ public class RecipeActivity extends AppCompatActivity{
 
         bindEvents();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Id correspondente ao botão Up/Home da actionbar
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void bindEvents() {
         ingredientName.setOnTouchListener(new View.OnTouchListener() {

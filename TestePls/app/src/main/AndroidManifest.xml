@@ -18,8 +18,6 @@
         </activity>
 
         <activity
-            android:label=""
-            android:theme="@style/AppTheme.NoActionBarTheme"
             android:name=".ListRecipeActivity"/>
         <activity
             android:name=".RecipeActivity"
