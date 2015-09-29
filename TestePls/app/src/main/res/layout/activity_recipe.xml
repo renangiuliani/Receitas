@@ -57,7 +57,8 @@
             android:id="@+id/f_prepare_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rv_list_ingredient">
+            android:layout_below="@+id/rv_list_ingredient"
+            android:layout_marginTop="8dp">
 
             <EditText
                 android:id="@+id/et_prepare_mode"
@@ -140,7 +141,7 @@
     </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fb_add_recipe"
+        android:id="@+id/fb_save_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

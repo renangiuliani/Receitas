@@ -67,7 +67,7 @@ public class ListRecipeActivity extends AppCompatActivity {
         return true;
     }
 
-    private class SearhFilter implements SearchView.OnQueryTextListener{
+    private class SearhFilter implements SearchView.OnQueryTextListener {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
@@ -77,7 +77,18 @@ public class ListRecipeActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            Toast.makeText(ListRecipeActivity.this, "Buscar: " + newText, Toast.LENGTH_SHORT).show();
+            ArrayList<Recipe> listAux = new ArrayList<Recipe>();
+            int cont = 0;
+            for (Recipe r : recipes) {
+                if (r.getTitle().contains(newText)) {
+                    listAux.add(r);
+                    cont++;
+                }
+            }
+            listRecipeAdapter = new ListRecipeAdapter(ListRecipeActivity.this, listAux);
+            recyclerView.setAdapter(listRecipeAdapter);
+            listRecipeAdapter.notifyDataSetChanged();
+            //Toast.makeText(ListRecipeActivity.this, "Buscar: " + newText + ". Total: " + String.valueOf(cont), Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -107,7 +118,7 @@ public class ListRecipeActivity extends AppCompatActivity {
     }
 
     private void bindElements() {
-        fbAddRecipe = (FloatingActionButton) findViewById(R.id.fb_add_recipe);
+        fbAddRecipe = (FloatingActionButton) findViewById(R.id.fb_save_recipe);
 
         ivBack = (ImageView) findViewById(R.id.iv_back);
         ivImage = (ImageView) findViewById(R.id.iv_image);

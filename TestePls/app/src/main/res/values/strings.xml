@@ -15,4 +15,7 @@
     <string name="changePhoto">Alterar Foto</string>
     <string name="observation">Observação</string>
     <string name="search">Buscar...</string>
+    <string name="msg_mandatory">Campo obrigatório.</string>
+    <string name="ingredient_empty">Nenhum ingrediente adicionado.</string>
+    <string name="msg_invalid_time">Hora inválida.</string>
 </resources>
