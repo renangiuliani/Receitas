@@ -12,9 +12,14 @@ import java.util.Locale;
 public class Util {
 
     public static final Locale LOCALE_PT_BR = new Locale("pt", "BR");
+    private static final String PATTERN_TIME = "HH:mm";
 
     public static void hideShowKeyboard(Context context, View editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
+
+//    public static String formatTime(Date date) {
+//        return format(date, Util.PATTERN_TIME);
+//    }
 }

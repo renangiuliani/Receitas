@@ -63,7 +63,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 viewHolder.tvTitle.setText(itens.get(position).getTitle());
             }
 
-            viewHolder.tvPrepareTime.setText(itens.get(position).getPrepareTime());
+            viewHolder.tvPrepareTime.setText(String.valueOf(itens.get(position).getPrepareTime()));
             viewHolder.tvServes.setText(String.valueOf(itens.get(position).getServes()));
 
             viewHolder.ivMenu.setOnClickListener(new PopUpContextMenu());
@@ -78,6 +78,11 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemCount() {
         return itens.size()+1;
+    }
+
+    public void setList(List<Recipe> itens){
+        this.itens = itens;
+        notifyDataSetChanged();
     }
 
     private class PopUpContextMenu implements View.OnClickListener{

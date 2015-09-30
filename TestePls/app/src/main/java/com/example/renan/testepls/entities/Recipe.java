@@ -1,8 +1,5 @@
 package com.example.renan.testepls.entities;
 
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
-
 import java.util.List;
 
 /**
@@ -10,19 +7,32 @@ import java.util.List;
  */
 public class Recipe {
 
+    private long id;
     private String title;
     private int imageRecipe;
     private List<String> ingredients;
     private String prepareMode;
     private String prepareTime;
     private int serves;
-    private String recipeType;
+    private int recipeType;
+    private String observation;
 
-    public Recipe(String title, int imageRecipe, String prepareTime, int serves){
+    public Recipe(String title, int imageRecipe, String prepareMode, String prepareTime, int serves, int recipeType, String observation){
         this.title = title;
         this.imageRecipe = imageRecipe;
+        this.prepareMode = prepareMode;
         this.prepareTime = prepareTime;
         this.serves = serves;
+        this.recipeType = recipeType;
+        this.observation = observation;
+    }
+
+    public long getId(){
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -65,11 +75,11 @@ public class Recipe {
         this.serves = serves;
     }
 
-    public String getRecipeType() {
+    public int getRecipeType() {
         return recipeType;
     }
 
-    public void setRecipeType(String recipeType) {
+    public void setRecipeType(int recipeType) {
         this.recipeType = recipeType;
     }
 
@@ -80,4 +90,14 @@ public class Recipe {
     public void setImageRecipe(int imageRecipe) {
         this.imageRecipe = imageRecipe;
     }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
+
+
 }

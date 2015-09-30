@@ -8,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.renan.testepls.ListRecipeActivity;
+import com.example.renan.testepls.activities.ListRecipeActivity;
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.entities.RecipeType;
 
