@@ -19,7 +19,7 @@ import com.example.renan.testepls.R;
 import com.example.renan.testepls.adapter.ListRecipeAdapter;
 import com.example.renan.testepls.entities.Recipe;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Renan on 21/09/2015.
@@ -30,9 +30,9 @@ public class ListRecipeActivity extends AppCompatActivity {
     private FloatingActionButton fbAddRecipe;
     private TextView tvName;
     private EditText etSearch;
-    private ListRecipeAdapter listRecipeAdapter;
+    private static ListRecipeAdapter listRecipeAdapter;
     private RecyclerView recyclerView;
-    private ArrayList<Recipe> recipes;
+    private static List<Recipe> recipes;
     private ImageView ivSearch, ivBack, ivImage;
 
     @Override
@@ -44,14 +44,26 @@ public class ListRecipeActivity extends AppCompatActivity {
 
         recipeType = getIntent().getStringExtra("recipeType");
 
-        createAndPopulateRecipeTypeArray();
-
         bindElements();
 
         if (recipeType != null) {
             setTitle(recipeType);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateItens();
+        listRecipeAdapter.notifyDataSetChanged();
+    }
+
+    public static void updateItens(){
+        Recipe recipe = new Recipe();
+        recipes  =  recipe.getAll();
+        listRecipeAdapter.setList(recipes);
+        listRecipeAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -75,13 +87,13 @@ public class ListRecipeActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            ArrayList<Recipe> listAux = new ArrayList<Recipe>();
+            /*ArrayList<Recipe> listAux = new ArrayList<Recipe>();
             for (Recipe r : recipes) {
                 if (r.getTitle().toUpperCase().contains(newText.toUpperCase())) {
                     listAux.add(r);
                 }
             }
-            listRecipeAdapter.setList(listAux);
+            listRecipeAdapter.setList(listAux);*/
             return false;
         }
     }
@@ -95,18 +107,6 @@ public class ListRecipeActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void createAndPopulateRecipeTypeArray() {
-        recipes = new ArrayList<Recipe>();
-        recipes.add(new Recipe("Receita da vovó", R.drawable.meat, "Modo Preparo 1", "01:30", 7, 1, "Observação 1"));
-        recipes.add(new Recipe("Mingal de milho assado e frito", R.drawable.soup, "Modo Preparo 2", "02:00", 3, 2, "Observação 2"));
-        recipes.add(new Recipe("Bolacha Recheada com leite em pó sólido", R.drawable.candy, "Modo Preparo 3", "0:30", 1, 3, "Observação 3"));
-        recipes.add(new Recipe("Peito de Frango ossado", R.drawable.bird, "Modo Preparo 4", "1:00", 7, 4, "Observação 4"));
-        recipes.add(new Recipe("Molho de alho com dente de leão", R.drawable.sauce, "Modo Preparo 5", "10:00", 35, 5, "Observação 5"));
-        recipes.add(new Recipe("Água com açúcar calmante", R.drawable.drink, "Modo Preparo 6", "00:05", 1, 6, "Observação 6"));
-        recipes.add(new Recipe("Água com açúcar calmante", R.drawable.meat, "Modo Preparo 7", "00:05", 1, 7, "Observação 7"));
-        recipes.add(new Recipe("Água com açúcar calmante", R.drawable.sandwich, "Modo Preparo 8", "00:05", 1, 8, "Observação 8"));
     }
 
     private void bindElements() {

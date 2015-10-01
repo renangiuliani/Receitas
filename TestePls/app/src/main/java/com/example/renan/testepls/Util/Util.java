@@ -14,6 +14,8 @@ public class Util {
     public static final Locale LOCALE_PT_BR = new Locale("pt", "BR");
     private static final String PATTERN_TIME = "HH:mm";
 
+    public static Context CONTEXT;
+
     public static void hideShowKeyboard(Context context, View editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);

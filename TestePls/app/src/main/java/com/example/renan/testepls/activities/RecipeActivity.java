@@ -22,7 +22,6 @@ import com.example.renan.testepls.adapter.IngredientAdapter;
 import com.example.renan.testepls.entities.Ingredient;
 import com.example.renan.testepls.entities.Recipe;
 import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
-import com.example.renan.testepls.persistence.RecipeDB;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,11 +36,11 @@ import java.util.List;
 public class RecipeActivity extends AppCompatActivity{
 
     private String recipeType;
-    private EditText ingredientName, prepareTime, serves, titleRecipe, prepareMode;
+    private EditText ingredientName, prepareTime, serves, titleRecipe, prepareMode, observation;
     private IngredientAdapter ingredientAdapter;
     private RecyclerView recyclerView;
     private FloatingActionButton fbSave;
-    private Recipe recipe;
+    private Recipe recipe = new Recipe();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +92,8 @@ public class RecipeActivity extends AppCompatActivity{
 
         serves = (EditText) findViewById(R.id.et_serves);
         serves.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_serves), null);
+
+        observation = (EditText) findViewById(R.id.et_observation);
 
         fbSave = (FloatingActionButton) findViewById(R.id.fb_save_recipe);
 
@@ -167,10 +168,18 @@ public class RecipeActivity extends AppCompatActivity{
         isValid = isValid & this.verifyPrepareTime(serviceOrderCalendar);
 
         if (isValid) {
-            recipe = new Recipe("Receita da vovó", R.drawable.meat, "Modo Preparo 1", "01:30", 7, 1, "Observação 1");
-            RecipeDB recipeDB = new RecipeDB(this);
-            recipeDB.save(recipe);
+            recipe.setTitle(titleRecipe.getText().toString());
+            recipe.setImageRecipe(R.drawable.soup);
+            recipe.setPrepareMode(prepareMode.getText().toString());
+            recipe.setPrepareTime(prepareTime.getText().toString());
+            recipe.setServes(Integer.valueOf(serves.getText().toString()));
+            recipe.setRecipeType(2);
+            recipe.setObservation(observation.getText().toString());
+            recipe.save();
             Toast.makeText(RecipeActivity.this, "Receita salva com sucesso!", Toast.LENGTH_SHORT).show();
+            this.finish();
+        }else{
+            Toast.makeText(this, "Algo errado", Toast.LENGTH_SHORT).show();
         }
     }
 

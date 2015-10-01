@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.renan.testepls.R;
+import com.example.renan.testepls.activities.ListRecipeActivity;
 import com.example.renan.testepls.entities.Recipe;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private Context context;
     private List<Recipe> itens;
+    private int mPosition;
 
     private final static int VIEW_TYPE_ITEM = 1, VIEW_TYPE_LAST = 2;
 
@@ -52,7 +54,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position) == VIEW_TYPE_ITEM){
-
+            mPosition = holder.getLayoutPosition();
             final ListRecipeViewHolder viewHolder = (ListRecipeViewHolder) holder;
 
             viewHolder.ivRecipe.setImageResource(itens.get(position).getImageRecipe());
@@ -89,17 +91,22 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         @Override
         public void onClick(View v) {
+
             final PopupMenu popup = new PopupMenu(context, v);
 
             popup.inflate(R.menu.menu_list_recipe_item);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
+                    final Recipe selectedItem = ListRecipeAdapter.this.getSelectedItem();
+
                     switch (item.getItemId()) {
                         case R.id.action_edit:
                             Toast.makeText(context, "Editar Receita", Toast.LENGTH_SHORT).show();
                             return  false;
                         case R.id.action_remove:
-                            Toast.makeText(context, "Remover Receita", Toast.LENGTH_SHORT).show();
+                            selectedItem.delete(selectedItem.getId());
+                            ListRecipeActivity.updateItens();
+                            Toast.makeText(context, "Receita removida com sucesso!", Toast.LENGTH_SHORT).show();
                             return  false;
                         case R.id.action_change_photo:
                             Toast.makeText(context, "Trocar Foto", Toast.LENGTH_SHORT).show();
@@ -133,5 +140,9 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public LastViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public Recipe getSelectedItem() {
+        return itens.get(mPosition);
     }
 }
