@@ -1,6 +1,7 @@
 package com.example.renan.testepls.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.activities.ListRecipeActivity;
+import com.example.renan.testepls.activities.RecipeActivity;
 import com.example.renan.testepls.entities.Recipe;
 
 import java.util.List;
@@ -102,6 +104,9 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     switch (item.getItemId()) {
                         case R.id.action_edit:
                             Toast.makeText(context, "Editar Receita", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, RecipeActivity.class);
+                            intent.putExtra("edit", selectedItem);
+                            context.startActivity(intent);
                             return  false;
                         case R.id.action_remove:
                             selectedItem.delete(selectedItem.getId());

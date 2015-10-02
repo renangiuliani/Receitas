@@ -101,7 +101,6 @@ public class ListRecipeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Id correspondente ao botão Up/Home da actionbar
             case android.R.id.home:
                 onBackPressed();
                 return true;

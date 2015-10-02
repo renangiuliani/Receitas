@@ -48,8 +48,16 @@ public class RecipeActivity extends AppCompatActivity{
         setContentView(R.layout.activity_recipe);
 
         recipeType = getIntent().getStringExtra("recipeType");
+        recipe = getIntent().getParcelableExtra("edit");
+
         if(recipeType != null){
             RecipeActivity.this.setTitle("Registrar " + recipeType);
+        }else if(recipe != null){
+            titleRecipe.setText(recipe.getTitle());
+            prepareTime.setText(recipe.getPrepareTime());
+            serves.setText(recipe.getServes());
+            prepareMode.setText(recipe.getPrepareMode());
+            observation.setText(recipe.getObservation());
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -189,7 +197,7 @@ public class RecipeActivity extends AppCompatActivity{
         boolean isValid = true;
         for (EditText field : fields) {
             field.setError(null);
-            if (TextUtils.isEmpty(field.getText())) {
+            if (TextUtils.isEmpty(field.getText().toString().trim())) {
                 field.setError(getString(R.string.msg_mandatory));
                 if (isValid) {
                     isValid = false;
@@ -223,6 +231,11 @@ public class RecipeActivity extends AppCompatActivity{
                     serviceOrderCalendar.set(Calendar.MINUTE, Integer.valueOf(timeTextArray[1]));
                 }
             } catch (ParseException parseException) {
+                prepareTime.setError(this.getString(R.string.msg_invalid_time));
+                return false;
+            }
+
+            if(!timeText.substring(2,3).equals(":") || timeText.length() != 5){
                 prepareTime.setError(this.getString(R.string.msg_invalid_time));
                 return false;
             }
