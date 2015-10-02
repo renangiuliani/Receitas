@@ -21,6 +21,7 @@ import com.example.renan.testepls.Util.Util;
 import com.example.renan.testepls.adapter.IngredientAdapter;
 import com.example.renan.testepls.entities.Ingredient;
 import com.example.renan.testepls.entities.Recipe;
+import com.example.renan.testepls.entities.RecipeType;
 import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
 
 import java.text.DateFormat;
@@ -35,7 +36,7 @@ import java.util.List;
  */
 public class RecipeActivity extends AppCompatActivity{
 
-    private String recipeType;
+    private RecipeType recipeType;
     private EditText ingredientName, prepareTime, serves, titleRecipe, prepareMode, observation;
     private IngredientAdapter ingredientAdapter;
     private RecyclerView recyclerView;
@@ -53,18 +54,20 @@ public class RecipeActivity extends AppCompatActivity{
 
         if(extras != null) {
 
-            if (extras.getString("recipeType") == null) {
-                final Recipe recipe = getIntent().getParcelableExtra("edit");
+            recipeType = extras.getParcelable("recipeType");
+            setTitle("Registrar " + recipeType.getEnumRecipeType().getName());
 
-                this.setTitle("Registrar " + recipe.getRecipeType());
+            if (extras.getParcelable("edit") != null) {
+                recipe = extras.getParcelable("edit");
+
                 titleRecipe.setText(recipe.getTitle());
                 prepareTime.setText(recipe.getPrepareTime());
                 serves.setText(String.valueOf(recipe.getServes()));
                 prepareMode.setText(recipe.getPrepareMode());
                 observation.setText(recipe.getObservation());
             } else {
-                this.setTitle("Registrar " + extras.getString("recipeType"));
                 recipe = new Recipe();
+                recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
             }
         }
 
@@ -188,7 +191,7 @@ public class RecipeActivity extends AppCompatActivity{
             recipe.setPrepareMode(prepareMode.getText().toString());
             recipe.setPrepareTime(prepareTime.getText().toString());
             recipe.setServes(Integer.valueOf(serves.getText().toString()));
-            recipe.setRecipeType(2);
+            //recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
             recipe.setObservation(observation.getText().toString());
             recipe.save();
             Toast.makeText(RecipeActivity.this, "Receita salva com sucesso!", Toast.LENGTH_SHORT).show();

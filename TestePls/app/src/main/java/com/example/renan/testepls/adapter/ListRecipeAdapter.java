@@ -71,7 +71,18 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder.tvPrepareTime.setText(String.valueOf(itens.get(position).getPrepareTime()));
             viewHolder.tvServes.setText(String.valueOf(itens.get(position).getServes()));
 
-            viewHolder.ivMenu.setOnClickListener(new PopUpContextMenu());
+            viewHolder.ivMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPosition = viewHolder.getLayoutPosition();
+                    final PopupMenu popup = new PopupMenu(context, v);
+
+                    popup.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) context);
+                    popup.inflate(R.menu.menu_list_recipe_item);
+
+                    popup.show();
+                }
+            });
         }
     }
 

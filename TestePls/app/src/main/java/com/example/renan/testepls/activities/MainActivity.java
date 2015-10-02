@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.adapter.RecipeTypeAdapter;
+import com.example.renan.testepls.entities.EnumRecipeType;
 import com.example.renan.testepls.entities.RecipeType;
 
 import java.util.ArrayList;
@@ -36,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void createAndPopulateRecipeTypeArray(){
         recipeTypes = new ArrayList<RecipeType>();
-        recipeTypes.add(new RecipeType(R.drawable.meat, "Carnes"));
-        recipeTypes.add(new RecipeType(R.drawable.bird, "Aves"));
-        recipeTypes.add(new RecipeType(R.drawable.fish, "Peixes e Frutos do Mar"));
-        recipeTypes.add(new RecipeType(R.drawable.salad, "Saladas"));
-        recipeTypes.add(new RecipeType(R.drawable.sauce, "Molhos e Acompanhamentos"));
-        recipeTypes.add(new RecipeType(R.drawable.soup, "Sopas"));
-        recipeTypes.add(new RecipeType(R.drawable.pasta, "Massas"));
-        recipeTypes.add(new RecipeType(R.drawable.drink, "Bebidas"));
-        recipeTypes.add(new RecipeType(R.drawable.candy, "Doces e Sobremesas"));
-        recipeTypes.add(new RecipeType(R.drawable.sandwich, "Lanches"));
+        recipeTypes.add(new RecipeType(R.drawable.meat, EnumRecipeType.MEAT));
+        recipeTypes.add(new RecipeType(R.drawable.bird, EnumRecipeType.BIRD));
+        recipeTypes.add(new RecipeType(R.drawable.fish, EnumRecipeType.FISH));
+        recipeTypes.add(new RecipeType(R.drawable.salad, EnumRecipeType.SALAD));
+        recipeTypes.add(new RecipeType(R.drawable.sauce, EnumRecipeType.SAUCE));
+        recipeTypes.add(new RecipeType(R.drawable.soup, EnumRecipeType.SOUP));
+        recipeTypes.add(new RecipeType(R.drawable.pasta, EnumRecipeType.PASTA));
+        recipeTypes.add(new RecipeType(R.drawable.drink, EnumRecipeType.DRINK));
+        recipeTypes.add(new RecipeType(R.drawable.candy, EnumRecipeType.CANDY));
+        recipeTypes.add(new RecipeType(R.drawable.sandwich, EnumRecipeType.SANDWICH));
     }
 }

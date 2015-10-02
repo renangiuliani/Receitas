@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -18,15 +19,15 @@ import android.widget.Toast;
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.adapter.ListRecipeAdapter;
 import com.example.renan.testepls.entities.Recipe;
+import com.example.renan.testepls.entities.RecipeType;
 
 import java.util.List;
 
 /**
  * Created by Renan on 21/09/2015.
  */
-public class ListRecipeActivity extends AppCompatActivity {
+public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
 
-    private String recipeType;
     private FloatingActionButton fbAddRecipe;
     private TextView tvName;
     private EditText etSearch;
@@ -34,6 +35,7 @@ public class ListRecipeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private static List<Recipe> recipes;
     private ImageView ivSearch, ivBack, ivImage;
+    private RecipeType recipeType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,12 +44,15 @@ public class ListRecipeActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        recipeType = getIntent().getStringExtra("recipeType");
+        final Bundle extras = getIntent().getExtras();
+
+        //recipeType = getIntent().getStringExtra("recipeType");
 
         bindElements();
 
-        if (recipeType != null) {
-            setTitle(recipeType);
+        if(extras != null){
+            recipeType = extras.getParcelable("recipeType");
+            setTitle(recipeType.getEnumRecipeType().getName());
         }
 
     }
@@ -75,6 +80,29 @@ public class ListRecipeActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearhFilter());
 
         return true;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        final Recipe selectedItem = listRecipeAdapter.getSelectedItem();
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                Toast.makeText(ListRecipeActivity.this, "Editar Receita", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ListRecipeActivity.this, RecipeActivity.class);
+                intent.putExtra("edit", selectedItem);
+                intent.putExtra("recipeType", recipeType);
+                ListRecipeActivity.this.startActivity(intent);
+                return false;
+            case R.id.action_remove:
+                selectedItem.delete(selectedItem.getId());
+                ListRecipeActivity.updateItens();
+                Toast.makeText(ListRecipeActivity.this, "Receita removida com sucesso!", Toast.LENGTH_SHORT).show();
+                return false;
+            case R.id.action_change_photo:
+                Toast.makeText(ListRecipeActivity.this, "Trocar Foto", Toast.LENGTH_SHORT).show();
+                return false;
+        }
+        return false;
     }
 
     private class SearhFilter implements SearchView.OnQueryTextListener {

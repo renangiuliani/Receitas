@@ -35,8 +35,8 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Re
     }
 
     @Override
-    public void onBindViewHolder(final RecipeTypeViewHolder viewHolder, int position) {
-        viewHolder.tvName.setText(itens.get(position).getNameRecipeType());
+    public void onBindViewHolder(final RecipeTypeViewHolder viewHolder, final int position) {
+        viewHolder.tvName.setText(itens.get(position).getEnumRecipeType().getName());
         viewHolder.ivPicture.setImageResource(itens.get(position).getImageRecipeType());
 
         viewHolder.itemView
@@ -45,14 +45,7 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Re
                     public void onClick(View v) {
                         Intent intent = new Intent(context, ListRecipeActivity.class);
 
-                        intent.putExtra("recipeType", viewHolder.tvName.getText().toString());
-
-//                        Bitmap bmp = BitmapFactory.decodeResource(v.getContext().getResources(), viewHolder.ivPicture);
-//                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                        bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//                        byte[] b = baos.toByteArray();
-//
-//                        intent.putExtra("picture",b);
+                        intent.putExtra("recipeType", itens.get(position));
 
                         v.getContext().startActivity(intent);
                     }
