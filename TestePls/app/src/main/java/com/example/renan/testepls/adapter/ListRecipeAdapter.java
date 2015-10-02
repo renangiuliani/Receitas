@@ -29,6 +29,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private int mPosition;
 
     private final static int VIEW_TYPE_ITEM = 1, VIEW_TYPE_LAST = 2;
+    private Recipe mRecipe;
 
     public ListRecipeAdapter(Context context, List<Recipe> itens){
         this.context = context;
@@ -72,6 +73,10 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             viewHolder.ivMenu.setOnClickListener(new PopUpContextMenu());
         }
+    }
+
+    private Recipe getRecipe(int position) {
+        return itens.get(position);
     }
 
     @Override

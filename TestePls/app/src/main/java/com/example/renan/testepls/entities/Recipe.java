@@ -120,6 +120,7 @@ public class Recipe implements Parcelable {
         RecipeRepository.getInstance().delete(id);
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -129,22 +130,34 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.title);
-        dest.writeValue(this.imageRecipe);
+        dest.writeInt(this.imageRecipe);
+        dest.writeStringList(this.ingredients);
         dest.writeString(this.prepareMode);
         dest.writeString(this.prepareTime);
-        dest.writeValue(this.serves);
-        dest.writeValue(this.recipeType);
+        dest.writeInt(this.serves);
+        dest.writeInt(this.recipeType);
         dest.writeString(this.observation);
     }
 
-    private Recipe(Parcel in) {
+    protected Recipe(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.title = in.readString();
         this.imageRecipe = in.readInt();
+        this.ingredients = in.createStringArrayList();
         this.prepareMode = in.readString();
         this.prepareTime = in.readString();
         this.serves = in.readInt();
         this.recipeType = in.readInt();
         this.observation = in.readString();
     }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe(source);
+        }
+
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

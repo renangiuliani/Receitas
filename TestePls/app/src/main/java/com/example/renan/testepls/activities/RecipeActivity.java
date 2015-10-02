@@ -40,29 +40,36 @@ public class RecipeActivity extends AppCompatActivity{
     private IngredientAdapter ingredientAdapter;
     private RecyclerView recyclerView;
     private FloatingActionButton fbSave;
-    private Recipe recipe = new Recipe();
+    private Recipe recipe;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        recipeType = getIntent().getStringExtra("recipeType");
-        recipe = getIntent().getParcelableExtra("edit");
+        bindElements();
 
-        if(recipeType != null){
-            RecipeActivity.this.setTitle("Registrar " + recipeType);
-        }else if(recipe != null){
-            titleRecipe.setText(recipe.getTitle());
-            prepareTime.setText(recipe.getPrepareTime());
-            serves.setText(recipe.getServes());
-            prepareMode.setText(recipe.getPrepareMode());
-            observation.setText(recipe.getObservation());
+        final Bundle extras = getIntent().getExtras();
+
+        if(extras != null) {
+
+            if (extras.getString("recipeType") == null) {
+                final Recipe recipe = getIntent().getParcelableExtra("edit");
+
+                this.setTitle("Registrar " + recipe.getRecipeType());
+                titleRecipe.setText(recipe.getTitle());
+                prepareTime.setText(recipe.getPrepareTime());
+                serves.setText(String.valueOf(recipe.getServes()));
+                prepareMode.setText(recipe.getPrepareMode());
+                observation.setText(recipe.getObservation());
+            } else {
+                this.setTitle("Registrar " + extras.getString("recipeType"));
+                recipe = new Recipe();
+            }
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        bindElements();
     }
 
     private List<Ingredient> createAndPopulateIngredientArray() {
