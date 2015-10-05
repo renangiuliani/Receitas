@@ -20,7 +20,7 @@ public class RecipeDB {
     public static final String PREPARE_MODE = "prepare_mode";
     public static final String PREPARE_TIME = "prepare_time";
     public static final String SERVES = "serves";
-    public static final String RECIPE_TYPE = "recipe_type";
+        public static final String RECIPE_TYPE = "recipe_type";
     public static final String OBSERVATION = "observation";
 
     public static final String[] COLUNS = {ID, TITLE, IMAGE, PREPARE_MODE, PREPARE_TIME, SERVES, RECIPE_TYPE, OBSERVATION};

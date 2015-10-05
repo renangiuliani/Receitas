@@ -1,20 +1,15 @@
 package com.example.renan.testepls.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.renan.testepls.R;
-import com.example.renan.testepls.activities.ListRecipeActivity;
-import com.example.renan.testepls.activities.RecipeActivity;
 import com.example.renan.testepls.entities.Recipe;
 
 import java.util.List;
@@ -26,7 +21,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private Context context;
     private List<Recipe> itens;
-    private int mPosition;
+    public int mPosition;
 
     private final static int VIEW_TYPE_ITEM = 1, VIEW_TYPE_LAST = 2;
     private Recipe mRecipe;
@@ -105,41 +100,40 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyDataSetChanged();
     }
 
-    private class PopUpContextMenu implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-
-            final PopupMenu popup = new PopupMenu(context, v);
-
-            popup.inflate(R.menu.menu_list_recipe_item);
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    final Recipe selectedItem = ListRecipeAdapter.this.getSelectedItem();
-
-                    switch (item.getItemId()) {
-                        case R.id.action_edit:
-                            Toast.makeText(context, "Editar Receita", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(context, RecipeActivity.class);
-                            intent.putExtra("edit", selectedItem);
-                            context.startActivity(intent);
-                            return  false;
-                        case R.id.action_remove:
-                            selectedItem.delete(selectedItem.getId());
-                            ListRecipeActivity.updateItens();
-                            Toast.makeText(context, "Receita removida com sucesso!", Toast.LENGTH_SHORT).show();
-                            return  false;
-                        case R.id.action_change_photo:
-                            Toast.makeText(context, "Trocar Foto", Toast.LENGTH_SHORT).show();
-                            return  false;
-                    }
-                    return  false;
-                }
-            });
-
-            popup.show();
-        }
-    }
+//    private class PopUpContextMenu implements View.OnClickListener{
+//
+//        @Override
+//        public void onClick(View v) {
+//
+//            final PopupMenu popup = new PopupMenu(context, v);
+//
+//            popup.inflate(R.menu.menu_list_recipe_item);
+//            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                public boolean onMenuItemClick(MenuItem item) {
+//                    final Recipe selectedItem = ListRecipeAdapter.this.getSelectedItem();
+//
+//                    switch (item.getItemId()) {
+//                        case R.id.action_edit:
+//                            Intent intent = new Intent(context, RecipeActivity.class);
+//                            intent.putExtra("edit", selectedItem);
+//                            context.startActivity(intent);
+//                            return  false;
+//                        case R.id.action_remove:
+//                            selectedItem.delete(selectedItem.getId());
+//                            ListRecipeActivity.updateItens();
+//                            Toast.makeText(context, "Receita removida com sucesso!", Toast.LENGTH_SHORT).show();
+//                            return  false;
+//                        case R.id.action_change_photo:
+//                            Toast.makeText(context, "Trocar Foto", Toast.LENGTH_SHORT).show();
+//                            return  false;
+//                    }
+//                    return  false;
+//                }
+//            });
+//
+//            popup.show();
+//        }
+//    }
 
     public static class ListRecipeViewHolder extends RecyclerView.ViewHolder{
 

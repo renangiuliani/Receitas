@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.renan.testepls.Util.Util;
 import com.example.renan.testepls.entities.Recipe;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,23 @@ public class RecipeRepository {
 
     public List<Recipe> getAll(){
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
-        SQLiteDatabase db = helper.getWritableDatabase();
+        SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, null, null, null, null, RecipeDB.ID);
+        List<Recipe> recipe = RecipeDB.bindList(cursor);
+        db.close();
+        helper.close();
+        return recipe;
+    }
+
+    public List<Recipe> getByType(int codeType, int limit,HashMap<String,String> query){
+        //Adaptar método para hashmap vir com codeType
+        String queryString = "recipe_type = '" + codeType + "'";
+
+        queryString += (query.get("title") != null) ? " AND title = '" + query.get("title") + "'" : "";
+
+        DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, queryString, null, null, null, RecipeDB.ID, String.valueOf(limit) + ", 10");
         List<Recipe> recipe = RecipeDB.bindList(cursor);
         db.close();
         helper.close();

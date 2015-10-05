@@ -120,6 +120,10 @@ public class Recipe implements Parcelable {
         RecipeRepository.getInstance().delete(id);
     }
 
+    public static List<Recipe> getByType(int codeType, int limit){
+        return RecipeRepository.getInstance().getByType(codeType, limit);
+    }
+
 
     @Override
     public int describeContents() {

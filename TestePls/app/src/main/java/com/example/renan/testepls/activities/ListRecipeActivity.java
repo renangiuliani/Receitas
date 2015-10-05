@@ -11,9 +11,6 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.renan.testepls.R;
@@ -29,13 +26,11 @@ import java.util.List;
 public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
 
     private FloatingActionButton fbAddRecipe;
-    private TextView tvName;
-    private EditText etSearch;
     private static ListRecipeAdapter listRecipeAdapter;
     private RecyclerView recyclerView;
     private static List<Recipe> recipes;
-    private ImageView ivSearch, ivBack, ivImage;
-    private RecipeType recipeType;
+    private static RecipeType recipeType;
+    private Recipe recipe;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,8 +40,6 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Bundle extras = getIntent().getExtras();
-
-        //recipeType = getIntent().getStringExtra("recipeType");
 
         bindElements();
 
@@ -60,14 +53,20 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
     @Override
     protected void onResume() {
         super.onResume();
-        updateItens();
+        recipe = new Recipe();
+        recipes = recipe.getByType(recipeType.getEnumRecipeType().getCode(), 0);
+        listRecipeAdapter.setList(recipes);
         listRecipeAdapter.notifyDataSetChanged();
     }
 
-    public static void updateItens(){
-        Recipe recipe = new Recipe();
-        recipes  =  recipe.getAll();
-        listRecipeAdapter.setList(recipes);
+    public void updateItens(){
+        List<Recipe> listAdd = recipe.getByType(recipeType.getEnumRecipeType().getCode(), recipes.size());
+        recipes.addAll(listAdd);
+        listRecipeAdapter.notifyDataSetChanged();
+    }
+
+    public static void deleteItem(int position){
+        recipes.remove(position);
         listRecipeAdapter.notifyDataSetChanged();
     }
 
@@ -95,7 +94,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
                 return false;
             case R.id.action_remove:
                 selectedItem.delete(selectedItem.getId());
-                ListRecipeActivity.updateItens();
+                ListRecipeActivity.deleteItem(listRecipeAdapter.mPosition);
                 Toast.makeText(ListRecipeActivity.this, "Receita removida com sucesso!", Toast.LENGTH_SHORT).show();
                 return false;
             case R.id.action_change_photo:
@@ -139,16 +138,30 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
     private void bindElements() {
         fbAddRecipe = (FloatingActionButton) findViewById(R.id.fb_save_recipe);
 
-        ivBack = (ImageView) findViewById(R.id.iv_back);
-        ivImage = (ImageView) findViewById(R.id.iv_image);
-        tvName = (TextView) findViewById(R.id.tv_name);
-        etSearch = (EditText) findViewById(R.id.et_search);
-        ivSearch = (ImageView) findViewById(R.id.iv_search);
-
         listRecipeAdapter = new ListRecipeAdapter(this, recipes);
         recyclerView = (RecyclerView) findViewById(R.id.rv_list_ingredient);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(gridLayoutManager.findLastCompletelyVisibleItemPosition() == recipes.size()){
+                    updateItens();
+                }
+
+            }
+        });
+
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(listRecipeAdapter);
 
         bindEvents();
