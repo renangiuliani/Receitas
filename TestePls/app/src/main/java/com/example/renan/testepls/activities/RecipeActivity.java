@@ -42,14 +42,17 @@ public class RecipeActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private FloatingActionButton fbSave;
     private Recipe recipe;
-    private ArrayList<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
+    private Ingredient ingredientSave;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        ingredients = new ArrayList<Ingredient>();
+        ingredients = new ArrayList<>();
+
+        ingredientSave = new Ingredient();
 
         bindElements();
 
@@ -69,17 +72,12 @@ public class RecipeActivity extends AppCompatActivity{
                 prepareMode.setText(recipe.getPrepareMode());
                 observation.setText(recipe.getObservation());
 
-                //ingredients = new ArrayList<Ingredient>();
+                List<Ingredient> ingredients = ingredientSave.getByRecipe(recipe.getId());
+
+                ingredientAdapter.setList(ingredients);
             } else {
                 recipe = new Recipe();
                 recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
-
-//                ingredients = new ArrayList<Ingredient>();
-//                Ingredient coco = new Ingredient();
-//                coco.setNameIngredient("coco");
-//                coco.setRecipeId(1);
-//                coco.setId(2);
-//                ingredients.add(coco);
             }
         }
 
@@ -141,12 +139,17 @@ public class RecipeActivity extends AppCompatActivity{
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (ingredientName.getRight() - ingredientName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (!ingredientName.getText().toString().trim().equals("")) {
-                            Ingredient ingredient = new Ingredient();
-                            ingredient.setNameIngredient(ingredientName.getText().toString().trim());
-                            ingredientAdapter.addItem(ingredient);
+                            Ingredient ingredientAdd = new Ingredient();
+                            ingredientAdd.setNameIngredient(ingredientName.getText().toString().trim());
+                            if(ingredientAdapter.addItem(ingredientAdd)){
+                                ingredientName.setText("");
+                                ingredientName.setError(null);
+                            }else{
+                                ingredientName.setError(getString(R.string.existing_ingredient));
+                            }
+                        }else{
+                            ingredientName.setText("");
                         }
-                        ingredientName.setText("");
-                        ingredientName.setError(null);
                     }
                 }
                 return false;
@@ -157,12 +160,17 @@ public class RecipeActivity extends AppCompatActivity{
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        Ingredient ingredient = new Ingredient();
-                        ingredient.setNameIngredient(ingredientName.getText().toString().trim());
-                        ingredientAdapter.addItem(ingredient);
+                    if (event.getAction() == KeyEvent.ACTION_DOWN && !ingredientName.getText().toString().trim().equals("")) {
+                        Ingredient ingredientAdd = new Ingredient();
+                        ingredientAdd.setNameIngredient(ingredientName.getText().toString().trim());
+                        if(ingredientAdapter.addItem(ingredientAdd)){
+                            ingredientName.setText("");
+                            ingredientName.setError(null);
+                        }else{
+                            ingredientName.setError(getString(R.string.existing_ingredient));
+                        }
+                    }else if(ingredientName.getText().toString().trim().equals("")){
                         ingredientName.setText("");
-                        ingredientName.setError(null);
                     }
                     return true;
                 }
@@ -173,20 +181,20 @@ public class RecipeActivity extends AppCompatActivity{
         fbSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveServiceOrder();
+                saveRecipe();
             }
         });
 
     }
 
-    private void saveServiceOrder() {
-        final Calendar serviceOrderCalendar = Calendar.getInstance(Util.LOCALE_PT_BR);
+    private void saveRecipe() {
+        final Calendar recipeCalendar = Calendar.getInstance(Util.LOCALE_PT_BR);
 
         boolean isValid = this.verifyMandatoryFields(titleRecipe, prepareMode, prepareTime, serves);
 
         isValid = isValid & verifyListEmpty(recyclerView);
 
-        isValid = isValid & this.verifyPrepareTime(serviceOrderCalendar);
+        isValid = isValid & this.verifyPrepareTime(recipeCalendar);
 
         if (isValid) {
             recipe.setTitle(titleRecipe.getText().toString());
@@ -229,15 +237,25 @@ public class RecipeActivity extends AppCompatActivity{
             recipe.setServes(Integer.valueOf(serves.getText().toString()));
             recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
             recipe.setObservation(observation.getText().toString());
-            recipe.save();
-            Toast.makeText(RecipeActivity.this, R.string.save_successfull, Toast.LENGTH_SHORT).show();
+            recipe.setId((int) recipe.save());
+
+            saveIngredients();
+
+            Toast.makeText(RecipeActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
             this.finish();
         }else{
             Toast.makeText(this, R.string.save_error, Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void saveIngredients(){
+        ingredientSave.deleteByRecipe(recipe.getId());
 
+        for(Ingredient i : ingredientAdapter.itens){
+            i.setRecipeId(recipe.getId());
+            i.save();
+        }
+    }
 
     private boolean verifyMandatoryFields(EditText... fields) {
         boolean isValid = true;
@@ -264,17 +282,17 @@ public class RecipeActivity extends AppCompatActivity{
         return isValid;
     }
 
-    private boolean verifyPrepareTime(Calendar serviceOrderCalendar) {
+    private boolean verifyPrepareTime(Calendar recipeCalendar) {
         final String timeText = prepareTime.getText().toString().trim();
         if (!TextUtils.isEmpty(timeText)) {
             try {
                 final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Util.LOCALE_PT_BR);
                 timeFormat.setLenient(false);
                 timeFormat.parse(timeText);
-                if (serviceOrderCalendar != null) {
+                if (recipeCalendar != null) {
                     final String[] timeTextArray = timeText.split("[:]");
-                    serviceOrderCalendar.set(Calendar.HOUR, Integer.valueOf(timeTextArray[0]));
-                    serviceOrderCalendar.set(Calendar.MINUTE, Integer.valueOf(timeTextArray[1]));
+                    recipeCalendar.set(Calendar.HOUR, Integer.valueOf(timeTextArray[0]));
+                    recipeCalendar.set(Calendar.MINUTE, Integer.valueOf(timeTextArray[1]));
                 }
             } catch (ParseException parseException) {
                 prepareTime.setError(this.getString(R.string.msg_invalid_time));

@@ -31,18 +31,22 @@ public class RecipeRepository {
         return Singleton.INSTANCE;
     }
 
-    public void save(Recipe recipe) {
+    public long save(Recipe recipe) {
+        long idRecipe;
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
         SQLiteDatabase db = helper.getWritableDatabase();
         if (recipe.getId() == null) {
-            db.insert(RecipeDB.TABLE, null, RecipeDB.getContentValues(recipe));
+            idRecipe = db.insert(RecipeDB.TABLE, null, RecipeDB.getContentValues(recipe));
         }else{
             String where = RecipeDB.ID + " = ?";
             String[] args = {recipe.getId().toString()};
             db.update(RecipeDB.TABLE, RecipeDB.getContentValues(recipe), where, args);
+            idRecipe = recipe.getId();
         }
         db.close();
         helper.close();
+
+        return idRecipe;
     }
 
     public void delete(int id){
@@ -69,7 +73,7 @@ public class RecipeRepository {
         queryString += (query.get("title") != null) ? " AND UPPER(title) like '%" + query.get("title") + "%'" : "";
 
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
-        SQLiteDatabase db = helper.getReadableDatabase();
+        SQLiteDatabase db = helper.getWritableDatabase();
         Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, queryString, null, null, null, RecipeDB.ID, String.valueOf(limit) + ", 10");
         List<Recipe> recipe = RecipeDB.bindList(cursor);
         db.close();

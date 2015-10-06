@@ -27,7 +27,7 @@ public class IngredientsRecipeBD {
         sql.append(" ( ");
         sql.append(ID + " INTEGER PRIMARY KEY, ");
         sql.append(RECIPE_ID + " INTEGER, ");
-        sql.append(INGREDIENT + " TEXT, ");
+        sql.append(INGREDIENT + " TEXT ");
         sql.append(" ); ");
         return sql.toString();
     }

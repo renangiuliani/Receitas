@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String BANCO_DADOS = "SERVICE_ORDER_DB";
+    private static final String BANCO_DADOS = "RECIPE_DB";
     private static int VERSION = 1;
 
     public DatabaseHelper(Context context){

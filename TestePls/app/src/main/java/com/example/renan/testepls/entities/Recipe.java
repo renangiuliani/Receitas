@@ -103,8 +103,8 @@ public class Recipe implements Parcelable {
         return RecipeRepository.getInstance().getAll();
     }
 
-    public void save(){
-        RecipeRepository.getInstance().save(this);
+    public long save(){
+        return RecipeRepository.getInstance().save(this);
     }
 
     public void delete(int id){

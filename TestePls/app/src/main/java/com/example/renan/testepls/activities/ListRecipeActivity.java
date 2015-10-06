@@ -1,8 +1,10 @@
 package com.example.renan.testepls.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -24,7 +26,7 @@ import java.util.List;
 /**
  * Created by Renan on 21/09/2015.
  */
-public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private FloatingActionButton fbAddRecipe;
     private static ListRecipeAdapter listRecipeAdapter;
@@ -44,7 +46,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
 
         bindElements();
 
-        if(extras != null){
+        if (extras != null) {
             recipeType = extras.getParcelable("recipeType");
             setTitle(recipeType.getEnumRecipeType().getName());
         }
@@ -62,7 +64,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         listRecipeAdapter.notifyDataSetChanged();
     }
 
-    public void updateItens(){
+    public void updateItens() {
         HashMap<String, String> hashMapCodeType = new HashMap<String, String>();
         hashMapCodeType.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
         List<Recipe> listAdd = recipe.getByType(recipes.size(), hashMapCodeType);
@@ -70,7 +72,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         listRecipeAdapter.notifyDataSetChanged();
     }
 
-    public static void deleteItem(int position){
+    public static void deleteItem(int position) {
         recipes.remove(position);
         listRecipeAdapter.notifyDataSetChanged();
     }
@@ -91,16 +93,31 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         final Recipe selectedItem = listRecipeAdapter.getSelectedItem();
         switch (item.getItemId()) {
             case R.id.action_edit:
-                Toast.makeText(ListRecipeActivity.this, "Editar Receita", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ListRecipeActivity.this, RecipeActivity.class);
                 intent.putExtra("edit", selectedItem);
                 intent.putExtra("recipeType", recipeType);
                 ListRecipeActivity.this.startActivity(intent);
                 return false;
             case R.id.action_remove:
-                selectedItem.delete(selectedItem.getId());
-                ListRecipeActivity.deleteItem(listRecipeAdapter.mPosition);
-                Toast.makeText(ListRecipeActivity.this, "Receita removida com sucesso!", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(ListRecipeActivity.this)
+                        .setTitle(R.string.recipe_remove)
+                        .setMessage(R.string.question_recipe_remove)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                selectedItem.delete(selectedItem.getId());
+                                ListRecipeActivity.deleteItem(listRecipeAdapter.mPosition);
+
+                                Toast.makeText(ListRecipeActivity.this, R.string.remove_successful, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(R.drawable.ic_alert_warning)
+                        .show();
+
                 return false;
             case R.id.action_change_photo:
                 Toast.makeText(ListRecipeActivity.this, "Trocar Foto", Toast.LENGTH_SHORT).show();
@@ -124,7 +141,6 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             hashMapTitle.put("title", newText.toUpperCase());
             List<Recipe> listSearch = recipe.getByType(0, hashMapTitle);
             listRecipeAdapter.setList(listSearch);
-            listRecipeAdapter.notifyDataSetChanged();
 
             return false;
         }

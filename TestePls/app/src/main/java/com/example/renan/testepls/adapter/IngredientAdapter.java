@@ -5,14 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.entities.Ingredient;
 import com.example.renan.testepls.helper.ItemTouchHelperAdapter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,9 +20,9 @@ import java.util.List;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> implements ItemTouchHelperAdapter{
 
     private Context context;
-    private ArrayList<Ingredient> itens;
+    public List<Ingredient> itens;
 
-    public IngredientAdapter(Context context, ArrayList<Ingredient> itens){
+    public IngredientAdapter(Context context, List<Ingredient> itens){
         this.context = context;
         this.itens = itens;
     }
@@ -45,10 +43,19 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return itens.size();
     }
 
-    public void addItem(Ingredient item){
-        itens.add(item);
-        notifyItemInserted(itens.size() - 1);
+    public boolean addItem(Ingredient item){
+        boolean isValid = true;
+        for(Ingredient i : itens){
+            if(i.getNameIngredient().equals(item.getNameIngredient())){
+                isValid = false;
+            }
+        }
+        if(isValid) {
+            itens.add(item);
+            notifyItemInserted(itens.size() - 1);
+        }
 
+        return isValid;
     }
 
     public boolean onItemMove(int fromPosition, int toPosition) {
@@ -79,5 +86,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.tv_ingredient);
         }
+    }
+
+    public void setList(List<Ingredient> itens){
+        this.itens = itens;
+        notifyDataSetChanged();
     }
 }
