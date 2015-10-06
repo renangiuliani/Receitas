@@ -37,7 +37,7 @@ public class RecipeRepository {
         if (recipe.getId() == null) {
             db.insert(RecipeDB.TABLE, null, RecipeDB.getContentValues(recipe));
         }else{
-            String where = RecipeDB.ID + "= ?";
+            String where = RecipeDB.ID + " = ?";
             String[] args = {recipe.getId().toString()};
             db.update(RecipeDB.TABLE, RecipeDB.getContentValues(recipe), where, args);
         }
@@ -48,7 +48,7 @@ public class RecipeRepository {
     public void delete(int id){
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.delete(RecipeDB.TABLE, "_id=?", new String[]{String.valueOf(id)});
+        db.delete(RecipeDB.TABLE, "_id = ?", new String[]{String.valueOf(id)});
         db.close();
         helper.close();
     }
@@ -63,11 +63,10 @@ public class RecipeRepository {
         return recipe;
     }
 
-    public List<Recipe> getByType(int codeType, int limit,HashMap<String,String> query){
-        //Adaptar método para hashmap vir com codeType
-        String queryString = "recipe_type = '" + codeType + "'";
+    public List<Recipe> getByType(int limit, HashMap<String,String> query){
+        String queryString = "recipe_type = '" + query.get("codeType") + "'";
 
-        queryString += (query.get("title") != null) ? " AND title = '" + query.get("title") + "'" : "";
+        queryString += (query.get("title") != null) ? " AND UPPER(title) like '%" + query.get("title") + "%'" : "";
 
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
         SQLiteDatabase db = helper.getReadableDatabase();

@@ -18,6 +18,7 @@ import com.example.renan.testepls.adapter.ListRecipeAdapter;
 import com.example.renan.testepls.entities.Recipe;
 import com.example.renan.testepls.entities.RecipeType;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -54,13 +55,17 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
     protected void onResume() {
         super.onResume();
         recipe = new Recipe();
-        recipes = recipe.getByType(recipeType.getEnumRecipeType().getCode(), 0);
+        HashMap<String, String> hashMapCodeType = new HashMap<String, String>();
+        hashMapCodeType.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
+        recipes = recipe.getByType(0, hashMapCodeType);
         listRecipeAdapter.setList(recipes);
         listRecipeAdapter.notifyDataSetChanged();
     }
 
     public void updateItens(){
-        List<Recipe> listAdd = recipe.getByType(recipeType.getEnumRecipeType().getCode(), recipes.size());
+        HashMap<String, String> hashMapCodeType = new HashMap<String, String>();
+        hashMapCodeType.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
+        List<Recipe> listAdd = recipe.getByType(recipes.size(), hashMapCodeType);
         recipes.addAll(listAdd);
         listRecipeAdapter.notifyDataSetChanged();
     }
@@ -114,13 +119,13 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            /*ArrayList<Recipe> listAux = new ArrayList<Recipe>();
-            for (Recipe r : recipes) {
-                if (r.getTitle().toUpperCase().contains(newText.toUpperCase())) {
-                    listAux.add(r);
-                }
-            }
-            listRecipeAdapter.setList(listAux);*/
+            HashMap<String, String> hashMapTitle = new HashMap<String, String>();
+            hashMapTitle.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
+            hashMapTitle.put("title", newText.toUpperCase());
+            List<Recipe> listSearch = recipe.getByType(0, hashMapTitle);
+            listRecipeAdapter.setList(listSearch);
+            listRecipeAdapter.notifyDataSetChanged();
+
             return false;
         }
     }
@@ -154,7 +159,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(gridLayoutManager.findLastCompletelyVisibleItemPosition() == recipes.size()){
+                if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == recipes.size()) {
                     updateItens();
                 }
 

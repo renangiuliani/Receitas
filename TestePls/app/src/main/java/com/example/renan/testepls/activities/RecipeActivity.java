@@ -42,11 +42,14 @@ public class RecipeActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private FloatingActionButton fbSave;
     private Recipe recipe;
+    private ArrayList<Ingredient> ingredients;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
+        ingredients = new ArrayList<Ingredient>();
 
         bindElements();
 
@@ -65,25 +68,23 @@ public class RecipeActivity extends AppCompatActivity{
                 serves.setText(String.valueOf(recipe.getServes()));
                 prepareMode.setText(recipe.getPrepareMode());
                 observation.setText(recipe.getObservation());
+
+                //ingredients = new ArrayList<Ingredient>();
             } else {
                 recipe = new Recipe();
                 recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
+
+//                ingredients = new ArrayList<Ingredient>();
+//                Ingredient coco = new Ingredient();
+//                coco.setNameIngredient("coco");
+//                coco.setRecipeId(1);
+//                coco.setId(2);
+//                ingredients.add(coco);
             }
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    }
-
-    private List<Ingredient> createAndPopulateIngredientArray() {
-        List<Ingredient> ingredient = new ArrayList<Ingredient>();
-        ingredient.add(new Ingredient("1 ovo"));
-        ingredient.add(new Ingredient("2 galinhas picadinhas"));
-        ingredient.add(new Ingredient("1/2 litro água que tubarão não nada"));
-        ingredient.add(new Ingredient("1 litro de leite de macho"));
-        ingredient.add(new Ingredient("45 pentelhos"));
-
-        return ingredient;
     }
 
     @Override
@@ -115,7 +116,7 @@ public class RecipeActivity extends AppCompatActivity{
 
         fbSave = (FloatingActionButton) findViewById(R.id.fb_save_recipe);
 
-        ingredientAdapter = new IngredientAdapter(this, createAndPopulateIngredientArray());
+        ingredientAdapter = new IngredientAdapter(this, ingredients);
         recyclerView = (RecyclerView) findViewById(R.id.rv_list_ingredient);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new MyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -140,7 +141,8 @@ public class RecipeActivity extends AppCompatActivity{
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (ingredientName.getRight() - ingredientName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (!ingredientName.getText().toString().trim().equals("")) {
-                            Ingredient ingredient = new Ingredient(ingredientName.getText().toString().trim());
+                            Ingredient ingredient = new Ingredient();
+                            ingredient.setNameIngredient(ingredientName.getText().toString().trim());
                             ingredientAdapter.addItem(ingredient);
                         }
                         ingredientName.setText("");
@@ -156,7 +158,8 @@ public class RecipeActivity extends AppCompatActivity{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        Ingredient ingredient = new Ingredient(ingredientName.getText().toString().trim());
+                        Ingredient ingredient = new Ingredient();
+                        ingredient.setNameIngredient(ingredientName.getText().toString().trim());
                         ingredientAdapter.addItem(ingredient);
                         ingredientName.setText("");
                         ingredientName.setError(null);
@@ -227,10 +230,10 @@ public class RecipeActivity extends AppCompatActivity{
             recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
             recipe.setObservation(observation.getText().toString());
             recipe.save();
-            Toast.makeText(RecipeActivity.this, "Receita salva com sucesso!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RecipeActivity.this, R.string.save_successfull, Toast.LENGTH_SHORT).show();
             this.finish();
         }else{
-            Toast.makeText(this, "Algo errado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.save_error, Toast.LENGTH_SHORT).show();
         }
     }
 

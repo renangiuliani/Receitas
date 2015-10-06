@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.example.renan.testepls.persistence.RecipeRepository;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -98,16 +99,6 @@ public class Recipe implements Parcelable {
         this.observation = observation;
     }
 
-    public void setAll(String title, int imageRecipe, String prepareMode, String prepareTime, int serves, int recipeType, String observation){
-        this.title = title;
-        this.imageRecipe = imageRecipe;
-        this.prepareMode = prepareMode;
-        this.prepareTime = prepareTime;
-        this.serves = serves;
-        this.recipeType = recipeType;
-        this.observation = observation;
-    }
-
     public static List<Recipe> getAll(){
         return RecipeRepository.getInstance().getAll();
     }
@@ -120,8 +111,8 @@ public class Recipe implements Parcelable {
         RecipeRepository.getInstance().delete(id);
     }
 
-    public static List<Recipe> getByType(int codeType, int limit){
-        return RecipeRepository.getInstance().getByType(codeType, limit);
+    public static List<Recipe> getByType(int limit, HashMap<String,String> query){
+        return RecipeRepository.getInstance().getByType(limit, query);
     }
 
 

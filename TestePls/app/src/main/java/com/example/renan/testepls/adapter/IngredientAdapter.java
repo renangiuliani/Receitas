@@ -22,9 +22,9 @@ import java.util.List;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> implements ItemTouchHelperAdapter{
 
     private Context context;
-    private List<Ingredient> itens;
+    private ArrayList<Ingredient> itens;
 
-    public IngredientAdapter(Context context, List<Ingredient> itens){
+    public IngredientAdapter(Context context, ArrayList<Ingredient> itens){
         this.context = context;
         this.itens = itens;
     }
@@ -46,7 +46,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     public void addItem(Ingredient item){
-
         itens.add(item);
         notifyItemInserted(itens.size() - 1);
 

@@ -18,4 +18,6 @@
     <string name="msg_mandatory">Campo obrigatório.</string>
     <string name="ingredient_empty">Nenhum ingrediente adicionado.</string>
     <string name="msg_invalid_time">Hora inválida.</string>
+    <string name="save_successfull">Receita salva com sucesso!</string>
+    <string name="save_error">Algum campo não foi preenchido corretamente!</string>
 </resources>

@@ -19,6 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(RecipeDB.createTable());
+        db.execSQL(IngredientsRecipeBD.createTable());
         /*db.execSQL("INSERT INTO recipe (_id, title, image, prepare_mode, prepare_time, serves, recipe_type, observation) " +
                 "VALUES (1, 'Teste Receita 1', "+ R.drawable.soup +", 'Modo Preparo 1', '01:00', 1, 1, 'Observação 1')");
 
