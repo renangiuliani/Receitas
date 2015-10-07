@@ -1,5 +1,6 @@
 package com.example.renan.testepls.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -243,6 +244,11 @@ public class RecipeActivity extends AppCompatActivity{
 
             Toast.makeText(RecipeActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
             this.finish();
+            Intent intent = new Intent(RecipeActivity.this, ListRecipeActivity.class);
+
+            intent.putExtra("recipeType", recipeType);
+
+            startActivity(intent);
         }else{
             Toast.makeText(this, R.string.save_error, Toast.LENGTH_SHORT).show();
         }

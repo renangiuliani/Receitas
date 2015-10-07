@@ -100,41 +100,6 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyDataSetChanged();
     }
 
-//    private class PopUpContextMenu implements View.OnClickListener{
-//
-//        @Override
-//        public void onClick(View v) {
-//
-//            final PopupMenu popup = new PopupMenu(context, v);
-//
-//            popup.inflate(R.menu.menu_list_recipe_item);
-//            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                public boolean onMenuItemClick(MenuItem item) {
-//                    final Recipe selectedItem = ListRecipeAdapter.this.getSelectedItem();
-//
-//                    switch (item.getItemId()) {
-//                        case R.id.action_edit:
-//                            Intent intent = new Intent(context, RecipeActivity.class);
-//                            intent.putExtra("edit", selectedItem);
-//                            context.startActivity(intent);
-//                            return  false;
-//                        case R.id.action_remove:
-//                            selectedItem.delete(selectedItem.getId());
-//                            ListRecipeActivity.updateItens();
-//                            Toast.makeText(context, "Receita removida com sucesso!", Toast.LENGTH_SHORT).show();
-//                            return  false;
-//                        case R.id.action_change_photo:
-//                            Toast.makeText(context, "Trocar Foto", Toast.LENGTH_SHORT).show();
-//                            return  false;
-//                    }
-//                    return  false;
-//                }
-//            });
-//
-//            popup.show();
-//        }
-//    }
-
     public static class ListRecipeViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView ivRecipe, ivMenu;

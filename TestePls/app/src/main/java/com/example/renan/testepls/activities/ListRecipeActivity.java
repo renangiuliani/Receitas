@@ -34,6 +34,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
     private static List<Recipe> recipes;
     private static RecipeType recipeType;
     private Recipe recipe;
+    private String textSearch;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,23 +52,23 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             setTitle(recipeType.getEnumRecipeType().getName());
         }
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         recipe = new Recipe();
         HashMap<String, String> hashMapCodeType = new HashMap<String, String>();
         hashMapCodeType.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
         recipes = recipe.getByType(0, hashMapCodeType);
         listRecipeAdapter.setList(recipes);
         listRecipeAdapter.notifyDataSetChanged();
+
     }
+
 
     public void updateItens() {
         HashMap<String, String> hashMapCodeType = new HashMap<String, String>();
         hashMapCodeType.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
-        List<Recipe> listAdd = recipe.getByType(recipes.size(), hashMapCodeType);
+        if(textSearch != null){
+            hashMapCodeType.put("title", textSearch);
+        }
+        List<Recipe> listAdd = recipe.getByType(listRecipeAdapter.getItemCount()-1, hashMapCodeType);
         recipes.addAll(listAdd);
         listRecipeAdapter.notifyDataSetChanged();
     }
@@ -83,7 +84,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setOnQueryTextListener(new SearhFilter());
+        searchView.setOnQueryTextListener(new SearchFilter());
 
         return true;
     }
@@ -126,7 +127,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         return false;
     }
 
-    private class SearhFilter implements SearchView.OnQueryTextListener {
+    private class SearchFilter implements SearchView.OnQueryTextListener {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
@@ -136,11 +137,17 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
 
         @Override
         public boolean onQueryTextChange(String newText) {
+            if (newText.toString().equals("")){
+                textSearch = "";
+            }else{
+                textSearch = newText.toUpperCase();
+            }
+            //updateItens();
             HashMap<String, String> hashMapTitle = new HashMap<String, String>();
             hashMapTitle.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
             hashMapTitle.put("title", newText.toUpperCase());
-            List<Recipe> listSearch = recipe.getByType(0, hashMapTitle);
-            listRecipeAdapter.setList(listSearch);
+            recipes = recipe.getByType(0, hashMapTitle);
+            listRecipeAdapter.setList(recipes);
 
             return false;
         }
@@ -174,8 +181,8 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
-                if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == recipes.size()) {
+                if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == listRecipeAdapter.getItemCount()-1) {
+                    Toast.makeText(ListRecipeActivity.this, "ULTIMO!", Toast.LENGTH_SHORT).show();
                     updateItens();
                 }
 
