@@ -1,18 +1,25 @@
 package com.example.renan.testepls.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +32,19 @@ import com.example.renan.testepls.entities.Recipe;
 import com.example.renan.testepls.entities.RecipeType;
 import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Renan on 22/09/2015.
  */
-public class RecipeActivity extends AppCompatActivity{
+public class RecipeActivity extends AppCompatActivity {
 
     private RecipeType recipeType;
     private EditText ingredientName, prepareTime, serves, titleRecipe, prepareMode, observation;
@@ -45,6 +54,12 @@ public class RecipeActivity extends AppCompatActivity{
     private Recipe recipe;
     private List<Ingredient> ingredients;
     private Ingredient ingredientSave;
+    private ImageView photoRecipe;
+
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private File fileImage;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +74,7 @@ public class RecipeActivity extends AppCompatActivity{
 
         final Bundle extras = getIntent().getExtras();
 
-        if(extras != null) {
+        if (extras != null) {
 
             recipeType = extras.getParcelable("recipeType");
             setTitle("Registrar " + recipeType.getEnumRecipeType().getName());
@@ -84,6 +99,23 @@ public class RecipeActivity extends AppCompatActivity{
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Image captured and saved to fileUri specified in the Intent
+                Toast.makeText(this, "Image saved to:\n" +
+                        data.getData(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                // User cancelled the image capture
+            } else {
+                // Image capture failed, advise user
+            }
+        }
     }
 
     @Override
@@ -126,10 +158,10 @@ public class RecipeActivity extends AppCompatActivity{
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
 
+        photoRecipe = (ImageView) findViewById(R.id.iv_photo);
 
         bindEvents();
     }
-
 
     private void bindEvents() {
         ingredientName.setOnTouchListener(new View.OnTouchListener() {
@@ -142,13 +174,13 @@ public class RecipeActivity extends AppCompatActivity{
                         if (!ingredientName.getText().toString().trim().equals("")) {
                             Ingredient ingredientAdd = new Ingredient();
                             ingredientAdd.setNameIngredient(ingredientName.getText().toString().trim());
-                            if(ingredientAdapter.addItem(ingredientAdd)){
+                            if (ingredientAdapter.addItem(ingredientAdd)) {
                                 ingredientName.setText("");
                                 ingredientName.setError(null);
-                            }else{
+                            } else {
                                 ingredientName.setError(getString(R.string.existing_ingredient));
                             }
-                        }else{
+                        } else {
                             ingredientName.setText("");
                         }
                     }
@@ -164,13 +196,13 @@ public class RecipeActivity extends AppCompatActivity{
                     if (event.getAction() == KeyEvent.ACTION_DOWN && !ingredientName.getText().toString().trim().equals("")) {
                         Ingredient ingredientAdd = new Ingredient();
                         ingredientAdd.setNameIngredient(ingredientName.getText().toString().trim());
-                        if(ingredientAdapter.addItem(ingredientAdd)){
+                        if (ingredientAdapter.addItem(ingredientAdd)) {
                             ingredientName.setText("");
                             ingredientName.setError(null);
-                        }else{
+                        } else {
                             ingredientName.setError(getString(R.string.existing_ingredient));
                         }
-                    }else if(ingredientName.getText().toString().trim().equals("")){
+                    } else if (ingredientName.getText().toString().trim().equals("")) {
                         ingredientName.setText("");
                     }
                     return true;
@@ -186,6 +218,26 @@ public class RecipeActivity extends AppCompatActivity{
             }
         });
 
+        photoRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RecipeActivity.this, "Tirar Foto", Toast.LENGTH_SHORT).show();
+                // create Intent to take a picture and return control to the calling application
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                //fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+                final String filename = getResources().getString(R.string.app_name);
+
+                fileImage = new File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        filename + "_" + System.currentTimeMillis() + ".jpg");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileImage); // set the image file name
+
+                // start the image capture Intent
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
     }
 
     private void saveRecipe() {
@@ -198,8 +250,15 @@ public class RecipeActivity extends AppCompatActivity{
         isValid = isValid & this.verifyPrepareTime(recipeCalendar);
 
         if (isValid) {
-            recipe.setTitle(titleRecipe.getText().toString());
-            switch (recipeType.getEnumRecipeType().getCode()){
+
+            new AlertDialog.Builder(RecipeActivity.this)
+                    .setTitle(getString(R.string.question_save_recipe))
+                    .setMessage(R.string.question_recipe_remove)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            recipe.setTitle(titleRecipe.getText().toString());
+                            recipe.setImageRecipe(R.drawable.without_photo);
+            /*switch (recipeType.getEnumRecipeType().getCode()){
 
                 case 1:
                     recipe.setImageRecipe(R.drawable.meat);
@@ -231,33 +290,42 @@ public class RecipeActivity extends AppCompatActivity{
                 case 10:
                     recipe.setImageRecipe(R.drawable.sandwich);
                     break;
-            }
+            }*/
 
-            recipe.setPrepareMode(prepareMode.getText().toString());
-            recipe.setPrepareTime(prepareTime.getText().toString());
-            recipe.setServes(Integer.valueOf(serves.getText().toString()));
-            recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
-            recipe.setObservation(observation.getText().toString());
-            recipe.setId((int) recipe.save());
+                            recipe.setPrepareMode(prepareMode.getText().toString());
+                            recipe.setPrepareTime(prepareTime.getText().toString());
+                            recipe.setServes(Integer.valueOf(serves.getText().toString()));
+                            recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
+                            recipe.setObservation(observation.getText().toString());
+                            recipe.setId((int) recipe.save());
 
-            saveIngredients();
+                            saveIngredients();
 
-            Toast.makeText(RecipeActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
-            this.finish();
-            Intent intent = new Intent(RecipeActivity.this, ListRecipeActivity.class);
+                            Toast.makeText(RecipeActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
+                            RecipeActivity.this.finish();
+                            Intent intent = new Intent(RecipeActivity.this, ListRecipeActivity.class);
 
-            intent.putExtra("recipeType", recipeType);
+                            intent.putExtra("recipeType", recipeType);
 
-            startActivity(intent);
-        }else{
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(R.drawable.ic_dialog_save)
+                    .show();
+        } else {
             Toast.makeText(this, R.string.save_error, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void saveIngredients(){
+    private void saveIngredients() {
         ingredientSave.deleteByRecipe(recipe.getId());
 
-        for(Ingredient i : ingredientAdapter.itens){
+        for (Ingredient i : ingredientAdapter.itens) {
             i.setRecipeId(recipe.getId());
             i.save();
         }
@@ -305,12 +373,48 @@ public class RecipeActivity extends AppCompatActivity{
                 return false;
             }
 
-            if(!timeText.substring(2,3).equals(":") || timeText.length() != 5){
+            if (!timeText.substring(2, 3).equals(":") || timeText.length() != 5) {
                 prepareTime.setError(this.getString(R.string.msg_invalid_time));
                 return false;
             }
         }
         return true;
+    }
+
+    /** Create a file Uri for saving an image or video */
+    private static Uri getOutputMediaFileUri(int type){
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(int type){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE){
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_"+ timeStamp + ".jpg");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
     }
 
 }

@@ -52,7 +52,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         }
         if(isValid) {
             itens.add(item);
-            notifyItemInserted(itens.size() - 1);
+            notifyDataSetChanged();
         }
 
         return isValid;
@@ -74,7 +74,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     public void onItemDismiss(int position) {
         itens.remove(position);
-        notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
 

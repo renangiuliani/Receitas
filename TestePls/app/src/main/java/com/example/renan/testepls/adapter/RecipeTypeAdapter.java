@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.renan.testepls.activities.ListRecipeActivity;
 import com.example.renan.testepls.R;
+import com.example.renan.testepls.activities.ListRecipeActivity;
 import com.example.renan.testepls.entities.RecipeType;
 
 import java.util.ArrayList;

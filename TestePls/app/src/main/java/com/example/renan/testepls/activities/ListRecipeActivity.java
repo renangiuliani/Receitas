@@ -182,7 +182,6 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == listRecipeAdapter.getItemCount()-1) {
-                    Toast.makeText(ListRecipeActivity.this, "ULTIMO!", Toast.LENGTH_SHORT).show();
                     updateItens();
                 }
 
