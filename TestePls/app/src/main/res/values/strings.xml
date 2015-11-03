@@ -24,6 +24,7 @@
     <string name="recipe_remove">Remover receita</string>
     <string name="question_recipe_remove">Tem certeza que deseja remover esta receita?</string>
     <string name="remove_successful">Receita removida com sucesso!</string>
+    <string name="recipe_save">Salvar receita</string>
     <string name="question_save_recipe">Deseja salvar a receita?</string>
     <string name="print_photo">Tirar Foto</string>
 </resources>

@@ -199,6 +199,7 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ListRecipeActivity.this, RecipeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.putExtra("recipeType", recipeType);
                 startActivity(intent);
             }

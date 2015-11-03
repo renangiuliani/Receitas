@@ -252,13 +252,13 @@ public class RecipeActivity extends AppCompatActivity {
         if (isValid) {
 
             new AlertDialog.Builder(RecipeActivity.this)
-                    .setTitle(getString(R.string.question_save_recipe))
-                    .setMessage(R.string.question_recipe_remove)
+                    .setTitle(getString(R.string.recipe_save))
+                    .setMessage(R.string.question_save_recipe)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             recipe.setTitle(titleRecipe.getText().toString());
-                            recipe.setImageRecipe(R.drawable.without_photo);
-            /*switch (recipeType.getEnumRecipeType().getCode()){
+                            //recipe.setImageRecipe(R.drawable.without_photo);
+            switch (recipeType.getEnumRecipeType().getCode()){
 
                 case 1:
                     recipe.setImageRecipe(R.drawable.meat);
@@ -290,7 +290,7 @@ public class RecipeActivity extends AppCompatActivity {
                 case 10:
                     recipe.setImageRecipe(R.drawable.sandwich);
                     break;
-            }*/
+            }
 
                             recipe.setPrepareMode(prepareMode.getText().toString());
                             recipe.setPrepareTime(prepareTime.getText().toString());
