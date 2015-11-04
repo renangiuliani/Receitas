@@ -2,7 +2,6 @@ package com.example.renan.testepls.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.activities.VisualizeRecipeActivity;
 import com.example.renan.testepls.entities.Recipe;
+import com.example.renan.testepls.entities.RecipeType;
 
 import java.util.List;
 
@@ -23,14 +23,16 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private Context context;
     private List<Recipe> itens;
+    private RecipeType recipeType;
     public int mPosition;
 
     private final static int VIEW_TYPE_ITEM = 1, VIEW_TYPE_LAST = 2;
     private Recipe mRecipe;
 
-    public ListRecipeAdapter(Context context, List<Recipe> itens){
+    public ListRecipeAdapter(Context context, List<Recipe> itens, RecipeType recipeType){
         this.context = context;
         this.itens = itens;
+        this.recipeType = recipeType;
     }
 
 
@@ -59,32 +61,33 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             viewHolder.ivRecipe.setImageResource(itens.get(position).getImageRecipe());
 
-            if(itens.get(position).getTitle().length() > 30){
+            if(itens.get(position).getTitle().length() > 300){
                 viewHolder.tvTitle.setText(itens.get(position).getTitle().subSequence(0, 27) + "...");
             }else{
                 viewHolder.tvTitle.setText(itens.get(position).getTitle());
             }
 
-            viewHolder.tvPrepareTime.setText(String.valueOf(itens.get(position).getPrepareTime()));
-            viewHolder.tvServes.setText(String.valueOf(itens.get(position).getServes()));
+            //viewHolder.tvPrepareTime.setText(String.valueOf(itens.get(position).getPrepareTime()));
+            //viewHolder.tvServes.setText(String.valueOf(itens.get(position).getServes()));
 
-            viewHolder.ivMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mPosition = viewHolder.getLayoutPosition();
-                    final PopupMenu popup = new PopupMenu(context, v);
-                    popup.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) context);
-                    popup.inflate(R.menu.menu_list_recipe_item);
-
-                    popup.show();
-                }
-            });
+//            viewHolder.ivMenu.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mPosition = viewHolder.getLayoutPosition();
+//                    final PopupMenu popup = new PopupMenu(context, v);
+//                    popup.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) context);
+//                    popup.inflate(R.menu.menu_list_recipe_item);
+//
+//                    popup.show();
+//                }
+//            });
 
             viewHolder.ivRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, VisualizeRecipeActivity.class);
                     intent.putExtra("recipe", itens.get(position));
+                    intent.putExtra("recipeType", recipeType);
                     context.startActivity(intent);
 
                 }
@@ -120,9 +123,9 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             ivRecipe = (ImageView) itemView.findViewById(R.id.iv_recipe);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
-            tvPrepareTime = (TextView) itemView.findViewById(R.id.tv_prepare_time);
-            tvServes = (TextView) itemView.findViewById(R.id.tv_serves);
-            ivMenu = (ImageView) itemView.findViewById(R.id.iv_menu);
+            //tvPrepareTime = (TextView) itemView.findViewById(R.id.tv_prepare_time);
+            //tvServes = (TextView) itemView.findViewById(R.id.tv_serves);
+            //ivMenu = (ImageView) itemView.findViewById(R.id.iv_menu);
         }
     }
 

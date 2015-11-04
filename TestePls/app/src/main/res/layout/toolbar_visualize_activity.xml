@@ -17,21 +17,13 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/iv_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_margin="16dp"
-                    android:background="@color/primary_color"
-                    android:src="@drawable/ic_back" />
-
-                <ImageView
                     android:id="@+id/iv_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/sauce" />
+
 
                 <ImageView
                     android:id="@+id/iv_gradient"
@@ -40,11 +32,19 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerHorizontal="true"
                     android:alpha="0.5"
-                    android:src="@drawable/gradient_test" />
+                    android:src="@drawable/gradient_black_transparent" />
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_back" />
 
                 <TextView
                     android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:paddingBottom="8dp"
@@ -61,8 +61,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_toLeftOf="@+id/iv_edit"
                     android:src="@drawable/ic_share" />
+
+                <ImageView
+                    android:id="@+id/iv_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_edit" />
 
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
@@ -72,8 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_favorite_off"
-        app:backgroundTint="#FFFFFF"
+        android:src="@drawable/ic_favorite_off2"
+        app:backgroundTint="@color/accent_color"
         app:elevation="8dp"
         app:layout_anchor="@id/toolbar_visualize"
         app:layout_anchorGravity="bottom|right|end" />

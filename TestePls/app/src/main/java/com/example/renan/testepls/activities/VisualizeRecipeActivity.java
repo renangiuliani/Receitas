@@ -1,6 +1,7 @@
 package com.example.renan.testepls.activities;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.entities.Recipe;
+import com.example.renan.testepls.entities.RecipeType;
 
 /**
  * Created by c1284141 on 30/10/2015.
@@ -20,10 +22,11 @@ import com.example.renan.testepls.entities.Recipe;
 public class VisualizeRecipeActivity extends AppCompatActivity {
 
     private Recipe recipe;
-    private ImageView ivPhotoRecipe, ivShare, ivBack;
+    private ImageView ivPhotoRecipe, ivShare, ivBack, ivEdit;
     private FloatingActionButton ivFavorite;
     private TextView tvTitle, tvPrepareTime, tvServes;
     private boolean favorite = false;
+    private RecipeType recipeType;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -46,6 +49,8 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
             tvPrepareTime.setText(recipe.getPrepareTime());
             tvServes.setText(String.valueOf(recipe.getServes()));
             ivPhotoRecipe.setImageResource(recipe.getImageRecipe());
+
+            recipeType = extras.getParcelable("recipeType");
         }
 
     }
@@ -59,6 +64,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         ivFavorite = (FloatingActionButton) findViewById(R.id.iv_favorite);
         ivBack = (ImageView) findViewById(R.id.iv_back);
         ivPhotoRecipe = (ImageView) findViewById(R.id.iv_photo);
+        ivEdit = (ImageView) findViewById(R.id.iv_edit);
 
         bindEvents();
 
@@ -70,6 +76,16 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VisualizeRecipeActivity.this, RecipeActivity.class);
+                intent.putExtra("edit", recipe);
+                intent.putExtra("recipeType", recipeType);
+                VisualizeRecipeActivity.this.startActivity(intent);
             }
         });
 
@@ -85,7 +101,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (favorite) {
                     favorite = false;
-                    ivFavorite.setImageResource(R.drawable.ic_favorite_off);
+                    ivFavorite.setImageResource(R.drawable.ic_favorite_off2);
                 } else {
                     favorite = true;
                     ivFavorite.setImageResource(R.drawable.ic_favorite_on);

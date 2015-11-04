@@ -303,11 +303,11 @@ public class RecipeActivity extends AppCompatActivity {
 
                             Toast.makeText(RecipeActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
                             RecipeActivity.this.finish();
-                            Intent intent = new Intent(RecipeActivity.this, ListRecipeActivity.class);
+                            /*Intent intent = new Intent(RecipeActivity.this, ListRecipeActivity.class);
 
                             intent.putExtra("recipeType", recipeType);
 
-                            startActivity(intent);
+                            startActivity(intent);*/
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

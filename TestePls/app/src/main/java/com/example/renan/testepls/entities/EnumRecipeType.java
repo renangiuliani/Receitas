@@ -31,7 +31,7 @@ public enum EnumRecipeType {
         return this.code;
     }
 
-    public EnumRecipeType getEnumByCode(int value) {
+    public static EnumRecipeType getEnumByCode(int value) {
         for(EnumRecipeType e: EnumRecipeType.values()) {
             if(e.getCode() == value) {
                 return e;
