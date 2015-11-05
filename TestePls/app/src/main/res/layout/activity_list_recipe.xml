@@ -3,11 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@drawable/background_app">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/black"
+            android:layout_below="@+id/toolbar"
+            android:alpha="0.2"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list_ingredient"
@@ -15,7 +22,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fb_save_recipe"

@@ -35,7 +35,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_visualize_recipe);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_visualize);
-        toolbar.setContentInsetsAbsolute(0,0);
+        toolbar.setContentInsetsAbsolute(0, 0);
 
         setSupportActionBar(toolbar);
 
