@@ -7,17 +7,18 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.renan.testepls.R;
+import com.example.renan.testepls.Util.DrawerMenuUtil;
 import com.example.renan.testepls.adapter.ListRecipeAdapter;
 import com.example.renan.testepls.entities.Recipe;
 import com.example.renan.testepls.entities.RecipeType;
+import com.mikepenz.materialdrawer.Drawer;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,6 +39,9 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_recipe);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //final Bundle extras = getIntent().getExtras();
@@ -56,6 +60,12 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         recipes = recipe.getAll();
         listRecipeAdapter.setList(recipes);
         listRecipeAdapter.notifyDataSetChanged();
+
+
+        Drawer result = new DrawerMenuUtil(this, toolbar).create().build();
+
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
     }
 
@@ -137,23 +147,22 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
 
         @Override
         public boolean onQueryTextSubmit(String query) {
-            Toast.makeText(ListRecipeActivity.this, "Filtrar: " + query, Toast.LENGTH_SHORT).show();
             return false;
         }
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            if (newText.toString().equals("")){
-                textSearch = "";
-            }else{
-                textSearch = newText.toUpperCase();
-            }
-
-            HashMap<String, String> hashMapTitle = new HashMap<String, String>();
-            hashMapTitle.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
-            hashMapTitle.put("title", newText.toUpperCase());
-            recipes = recipe.getByType(0, hashMapTitle);
-            listRecipeAdapter.setList(recipes);
+//            if (newText.toString().equals("")){
+//                textSearch = "";
+//            }else{
+//                textSearch = newText.toUpperCase();
+//            }
+//
+//            HashMap<String, String> hashMapTitle = new HashMap<String, String>();
+//            hashMapTitle.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
+//            hashMapTitle.put("title", newText.toUpperCase());
+//            recipes = recipe.getByType(0, hashMapTitle);
+//            listRecipeAdapter.setList(recipes);
 
             return false;
         }
@@ -205,7 +214,6 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             @Override
             public void onClick(View v) {
 
-
 //                Intent intent = new Intent(ListRecipeActivity.this, RecipeActivity.class);
 //                intent.putExtra("recipeType", recipeType);
 //                startActivity(intent);
@@ -213,4 +221,5 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         });
 
     }
+
 }
