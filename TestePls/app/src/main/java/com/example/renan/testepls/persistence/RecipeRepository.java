@@ -68,9 +68,14 @@ public class RecipeRepository {
     }
 
     public List<Recipe> getByType(int limit, HashMap<String,String> query){
-        String queryString = "recipe_type = '" + query.get("codeType") + "'";
+
+        String queryString = "1 = 1";
+
+        queryString += (query.get("codeType") != null) ? " AND recipe_type = '" + query.get("codeType") + "'" : "";
 
         queryString += (query.get("title") != null) ? " AND UPPER(title) like '%" + query.get("title") + "%'" : "";
+
+        queryString += (query.get("favorite") != null) ? " AND favorite = '" + query.get("favorite") + "'" : "";
 
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -78,6 +83,20 @@ public class RecipeRepository {
         List<Recipe> recipe = RecipeDB.bindList(cursor);
         db.close();
         helper.close();
+        return recipe;
+    }
+
+    public Recipe getById(int idRecipe){
+
+        String queryString = "_id = '" + idRecipe + "'";
+
+        DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, queryString, null, null, null, null, null);
+        Recipe recipe = (Recipe) RecipeDB.bindRecipe(cursor);
+        db.close();
+        helper.close();
+
         return recipe;
     }
 

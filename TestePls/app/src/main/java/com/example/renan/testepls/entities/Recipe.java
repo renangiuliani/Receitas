@@ -22,6 +22,7 @@ public class Recipe implements Parcelable {
     private int serves;
     private int recipeType;
     private String observation;
+    private int favorite;
 
     public Recipe(){
         super();
@@ -99,6 +100,14 @@ public class Recipe implements Parcelable {
         this.observation = observation;
     }
 
+    public int getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(int favorite) {
+        this.favorite = favorite;
+    }
+
     public static List<Recipe> getAll(){
         return RecipeRepository.getInstance().getAll();
     }
@@ -113,6 +122,10 @@ public class Recipe implements Parcelable {
 
     public static List<Recipe> getByType(int limit, HashMap<String,String> query){
         return RecipeRepository.getInstance().getByType(limit, query);
+    }
+
+    public static Recipe getById(int idRecipe){
+        return RecipeRepository.getInstance().getById(idRecipe);
     }
 
 
@@ -132,6 +145,7 @@ public class Recipe implements Parcelable {
         dest.writeInt(this.serves);
         dest.writeInt(this.recipeType);
         dest.writeString(this.observation);
+        dest.writeInt(this.favorite);
     }
 
     protected Recipe(Parcel in) {
@@ -144,6 +158,7 @@ public class Recipe implements Parcelable {
         this.serves = in.readInt();
         this.recipeType = in.readInt();
         this.observation = in.readString();
+        this.favorite = in.readInt();
     }
 
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
@@ -155,4 +170,5 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
+
 }

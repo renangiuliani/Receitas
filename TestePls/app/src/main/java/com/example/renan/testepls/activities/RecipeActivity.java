@@ -147,7 +147,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         fbSave = (FloatingActionButton) findViewById(R.id.fb_save_recipe);
 
-        ingredientAdapter = new IngredientAdapter(this, ingredients);
+        ingredientAdapter = new IngredientAdapter(this, ingredients, false);
         recyclerView = (RecyclerView) findViewById(R.id.rv_list_ingredient);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new MyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -258,46 +258,45 @@ public class RecipeActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             recipe.setTitle(titleRecipe.getText().toString());
                             //recipe.setImageRecipe(R.drawable.without_photo);
-            switch (recipeType.getEnumRecipeType().getCode()){
-
-                case 1:
-                    recipe.setImageRecipe(R.drawable.meat);
-                    break;
-                case 2:
-                    recipe.setImageRecipe(R.drawable.bird);
-                    break;
-                case 3:
-                    recipe.setImageRecipe(R.drawable.fish);
-                    break;
-                case 4:
-                    recipe.setImageRecipe(R.drawable.salad);
-                    break;
-                case 5:
-                    recipe.setImageRecipe(R.drawable.sauce);
-                    break;
-                case 6:
-                    recipe.setImageRecipe(R.drawable.soup);
-                    break;
-                case 7:
-                    recipe.setImageRecipe(R.drawable.pasta);
-                    break;
-                case 8:
-                    recipe.setImageRecipe(R.drawable.drink);
-                    break;
-                case 9:
-                    recipe.setImageRecipe(R.drawable.candy);
-                    break;
-                case 10:
-                    recipe.setImageRecipe(R.drawable.sandwich);
-                    break;
-            }
+                            switch (recipeType.getEnumRecipeType().getCode()) {
+                                case 1:
+                                    recipe.setImageRecipe(R.drawable.meat);
+                                    break;
+                                case 2:
+                                    recipe.setImageRecipe(R.drawable.bird);
+                                    break;
+                                case 3:
+                                    recipe.setImageRecipe(R.drawable.fish);
+                                    break;
+                                case 4:
+                                    recipe.setImageRecipe(R.drawable.salad);
+                                    break;
+                                case 5:
+                                    recipe.setImageRecipe(R.drawable.sauce);
+                                    break;
+                                case 6:
+                                    recipe.setImageRecipe(R.drawable.soup);
+                                    break;
+                                case 7:
+                                    recipe.setImageRecipe(R.drawable.pasta);
+                                    break;
+                                case 8:
+                                    recipe.setImageRecipe(R.drawable.drink);
+                                    break;
+                                case 9:
+                                    recipe.setImageRecipe(R.drawable.candy);
+                                    break;
+                                case 10:
+                                    recipe.setImageRecipe(R.drawable.bread);
+                                    break;
+                            }
 
                             recipe.setPrepareMode(prepareMode.getText().toString());
                             recipe.setPrepareTime(prepareTime.getText().toString());
                             recipe.setServes(Integer.valueOf(serves.getText().toString()));
                             recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
                             recipe.setObservation(observation.getText().toString());
-                            recipe.setId((int) recipe.save());
+                            recipe.setId((int)recipe.save());
 
                             saveIngredients();
 
@@ -381,13 +380,17 @@ public class RecipeActivity extends AppCompatActivity {
         return true;
     }
 
-    /** Create a file Uri for saving an image or video */
-    private static Uri getOutputMediaFileUri(int type){
+    /**
+     * Create a file Uri for saving an image or video
+     */
+    private static Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
-    /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
+    /**
+     * Create a File for saving an image or video
+     */
+    private static File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
@@ -397,8 +400,8 @@ public class RecipeActivity extends AppCompatActivity {
         // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 Log.d("MyCameraApp", "failed to create directory");
                 return null;
             }
@@ -407,9 +410,9 @@ public class RecipeActivity extends AppCompatActivity {
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
+        if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    "IMG_" + timeStamp + ".jpg");
         } else {
             return null;
         }

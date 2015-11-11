@@ -1,8 +1,9 @@
-Colocar Drawer menu com os tipos e favoritos, colocar icones pequenos preto e branco
 Mostrar total de receitas por tipo
 Listar todas as receitas, fitlrar pelo drawer menu
-Quando clicar no FAB pra add receita, abrir dialog com as imagens dos tipos.
-
 Pilha de activity quando salva.
 Hint quando entra para editar.
-Colocar fundo como textura de madeira, fica top
+Remover a troca de lugar de ingrediente
+Ação click abrir redondo na toolbar visualizar
+Adicionar remover receita no visualizar
+Quando abrir teclado de procura receita, ajustar o textview de not found
+Clicar na imagem no visualizar e expandir igual whatsapp, sem o gradient

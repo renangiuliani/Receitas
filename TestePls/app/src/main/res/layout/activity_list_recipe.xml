@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_app"
-        android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_app2"
+    android:windowSoftInputMode="adjustResize">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar_list_recipe" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.2"
-            android:background="@drawable/black" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list_ingredient"
             android:layout_width="match_parent"
+            android:layout_marginTop="56dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar"
             android:scrollbars="vertical" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_no_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_result"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textColor="@color/text_icons"/>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fb_save_recipe"
@@ -37,4 +37,4 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_recipe" />
 
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

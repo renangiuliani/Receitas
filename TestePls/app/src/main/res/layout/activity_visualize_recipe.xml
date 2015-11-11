@@ -1,90 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_app">
+    android:background="@drawable/background_app2">
 
-    <View
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/black"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="-50dp"
-        android:alpha="0.2"/>
+        android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_visualize_activity" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="-30dp">
-
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_visualize_activity" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/ll_pt_s"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:orientation="vertical"
-            android:padding="4dp">
+            android:layout_below="@+id/toolbar"
+            android:layout_marginTop="-30dp"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/iv_prepare_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_timer_visualize_white" />
 
-            <TextView
-                android:id="@+id/tv_prepare_time"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="01:30"
-                android:textSize="20sp"
-                android:textColor="@color/text_icons"
-                android:textStyle="bold" />
+                android:layout_weight="5"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/iv_prepare_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_timer_visualize_white" />
+
+                <TextView
+                    android:id="@+id/tv_prepare_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="01:30"
+                    android:textColor="@color/text_icons"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/text_icons" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/iv_serves"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:src="@drawable/ic_serves_visualize_white" />
+
+                <TextView
+                    android:id="@+id/tv_serves"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="12"
+                    android:textColor="@color/text_icons"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/text_icons" />
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:orientation="vertical"
-            android:padding="4dp">
-
-            <ImageView
-                android:id="@+id/iv_serves"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:src="@drawable/ic_serves_visualize_white" />
+            android:layout_below="@+id/ll_pt_s"
+            android:layout_margin="8dp">
 
             <TextView
-                android:id="@+id/tv_serves"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_title_list_ingredients"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="12"
-                android:textSize="20sp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/list_ingredient"
                 android:textColor="@color/text_icons"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
-        </LinearLayout>
+            <View
+                android:id="@+id/ln_list_ingredient"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/tv_title_list_ingredients"
+                android:background="@color/text_icons" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_ingredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ln_list_ingredient"
+                android:layout_marginLeft="6dp"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_title_prepare_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rv_list_ingredient"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:text="@string/prepare_mode"
+                android:textColor="@color/text_icons"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-</RelativeLayout>
+            <View
+                android:id="@+id/ln_prepare_mode"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/tv_title_prepare_mode"
+                android:background="@color/text_icons" />
+
+            <TextView
+                android:id="@+id/tv_prepare_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ln_prepare_mode"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:text="Modo Preparo 1\nteste 1\nteste 2"
+                android:textColor="@color/text_icons" />
+
+            <TextView
+                android:id="@+id/tv_title_observation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_prepare_mode"
+                android:layout_centerHorizontal="true"
+                android:text="@string/observation"
+                android:textColor="@color/text_icons"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/ln_observation"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/tv_title_observation"
+                android:background="@color/text_icons" />
+
+            <TextView
+                android:id="@+id/tv_observation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ln_observation"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="4dp"
+                android:text="Observação 1\nTeste"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/text_icons" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

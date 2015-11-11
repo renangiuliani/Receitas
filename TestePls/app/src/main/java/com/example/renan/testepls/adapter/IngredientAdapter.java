@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.renan.testepls.R;
@@ -20,11 +21,13 @@ import java.util.List;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> implements ItemTouchHelperAdapter{
 
     private Context context;
+    private Boolean whiteItens;
     public List<Ingredient> itens;
 
-    public IngredientAdapter(Context context, List<Ingredient> itens){
+    public IngredientAdapter(Context context, List<Ingredient> itens, boolean whiteItens){
         this.context = context;
         this.itens = itens;
+        this.whiteItens = whiteItens;
     }
 
     @Override
@@ -36,6 +39,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onBindViewHolder(IngredientViewHolder viewHolder, int position) {
         viewHolder.tvName.setText(itens.get(position).getNameIngredient());
+
+        if(whiteItens){
+            viewHolder.tvName.setTextColor(context.getResources().getColor(R.color.text_icons));
+            viewHolder.ivMarker.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -81,10 +89,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     class IngredientViewHolder extends RecyclerView.ViewHolder{
 
         public TextView tvName;
+        public ImageView ivMarker;
 
         public IngredientViewHolder(View itemView) {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.tv_ingredient);
+            ivMarker = (ImageView) itemView.findViewById(R.id.iv_marker);
         }
     }
 

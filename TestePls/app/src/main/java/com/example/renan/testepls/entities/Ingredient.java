@@ -49,7 +49,7 @@ public class Ingredient {
         IngredientsRecipeRepository.getInstance().deleteByRecipe(recipeId);
     }
 
-    public List<Ingredient> getByRecipe(int recipeId){
+    public static List<Ingredient> getByRecipe(int recipeId){
         return IngredientsRecipeRepository.getInstance().getByRecipe(recipeId);
     }
 }

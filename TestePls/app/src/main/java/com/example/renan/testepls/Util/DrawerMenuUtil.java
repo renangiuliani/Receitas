@@ -3,8 +3,14 @@ package com.example.renan.testepls.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.renan.testepls.R;
+import com.example.renan.testepls.activities.ListRecipeActivity;
+import com.example.renan.testepls.entities.EnumRecipeType;
+import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
@@ -13,6 +19,8 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
+import static com.example.renan.testepls.entities.EnumRecipeType.getEnumByCode;
 
 /**
  * Created by c1284141 on 06/11/2015.
@@ -45,19 +53,19 @@ public class DrawerMenuUtil {
 
     public DrawerBuilder create() {
         IDrawerItem[] drawerItens = new IDrawerItem[]{
-                new PrimaryDrawerItem().withName("Todos").withIdentifier(1).withIcon(R.drawable.all_drawer2),
-                new PrimaryDrawerItem().withName("Favoritos").withIdentifier(2).withIcon(R.drawable.ic_favorite_on),
+                new PrimaryDrawerItem().withName("Todos").withIdentifier(11).withIcon(R.drawable.all_drawer2),
+                new PrimaryDrawerItem().withName("Favoritos").withIdentifier(12).withIcon(R.drawable.ic_favorite_on),
                 new DividerDrawerItem(),
-                new SecondaryDrawerItem().withName("Carnes").withIdentifier(3).withIcon(R.drawable.meat),
-                new SecondaryDrawerItem().withName("Aves").withIdentifier(4).withIcon(R.drawable.bird),
-                new SecondaryDrawerItem().withName("Peixes e Frutos do Mar").withIdentifier(5).withIcon(R.drawable.fish),
-                new SecondaryDrawerItem().withName("Massas").withIdentifier(6).withIcon(R.drawable.pasta),
-                new SecondaryDrawerItem().withName("Saladas").withIdentifier(7).withIcon(R.drawable.salad),
-                new SecondaryDrawerItem().withName("Sopas").withIdentifier(8).withIcon(R.drawable.soup),
-                new SecondaryDrawerItem().withName("Pães e Sanduíches").withIdentifier(9).withIcon(R.drawable.bread),
-                new SecondaryDrawerItem().withName("Doces e Sobremesas").withIdentifier(10).withIcon(R.drawable.candy),
-                new SecondaryDrawerItem().withName("Bebidas").withIdentifier(11).withIcon(R.drawable.drink),
-                new SecondaryDrawerItem().withName("Molhos e Acompanhamentos").withIdentifier(12).withIcon(R.drawable.sauce)
+                new SecondaryDrawerItem().withName(EnumRecipeType.MEAT.getName()).withIdentifier(EnumRecipeType.MEAT.getCode()).withIcon(EnumRecipeType.MEAT.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.BIRD.getName()).withIdentifier(EnumRecipeType.BIRD.getCode()).withIcon(EnumRecipeType.MEAT.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.FISH.getName()).withIdentifier(EnumRecipeType.FISH.getCode()).withIcon(EnumRecipeType.FISH.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.PASTA.getName()).withIdentifier(EnumRecipeType.PASTA.getCode()).withIcon(EnumRecipeType.PASTA.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.SALAD.getName()).withIdentifier(EnumRecipeType.SALAD.getCode()).withIcon(EnumRecipeType.SALAD.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.SOUP.getName()).withIdentifier(EnumRecipeType.SOUP.getCode()).withIcon(EnumRecipeType.SOUP.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.BREAD.getName()).withIdentifier(EnumRecipeType.BREAD.getCode()).withIcon(EnumRecipeType.BREAD.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.CANDY.getName()).withIdentifier(EnumRecipeType.CANDY.getCode()).withIcon(EnumRecipeType.CANDY.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.DRINK.getName()).withIdentifier(EnumRecipeType.DRINK.getCode()).withIcon(EnumRecipeType.DRINK.getImage()),
+                new SecondaryDrawerItem().withName(EnumRecipeType.SAUCE.getName()).withIdentifier(EnumRecipeType.SAUCE.getCode()).withIcon(EnumRecipeType.SAUCE.getImage())
         };
 
         return new DrawerBuilder()
@@ -68,7 +76,65 @@ public class DrawerMenuUtil {
                 .withTranslucentStatusBar(true)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(drawerItens)
-                .withActionBarDrawerToggleAnimated(true);
+                .withActionBarDrawerToggleAnimated(true)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
+                        if(drawerItem.getIdentifier() == 11){
+                            Toast.makeText(mContext, "Filtrar Todos", Toast.LENGTH_SHORT).show();
+                        }else if (drawerItem.getIdentifier() == 12) {
+                            Toast.makeText(mContext, "Filtrar Favoritos", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        ListRecipeActivity.filterRecipeType = drawerItem.getIdentifier();
+                        ListRecipeActivity.updateItens(0);
+//                        switch (drawerItem.getIdentifier()){
+//                            case 1:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                ListRecipeActivity.filterRecipeType = drawerItem.getIdentifier();
+//                                break;
+//                            case 2:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                ListRecipeActivity.filterRecipeType = drawerItem.getIdentifier();
+//                                break;
+//                            case 3:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                ListRecipeActivity.filterRecipeType = drawerItem.getIdentifier();
+//                                break;
+//                            case 4:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                ListRecipeActivity.filterRecipeType = drawerItem.getIdentifier();
+//                                break;
+//                            case 5:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 6:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 7:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 8:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 9:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 10:
+//                                Toast.makeText(mContext, "Filtrar " + getEnumByCode(drawerItem.getIdentifier()).getName(), Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 11:
+//                                Toast.makeText(mContext, "Filtrar Todos", Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 12:
+//                                Toast.makeText(mContext, "Filtrar Favoritos", Toast.LENGTH_SHORT).show();
+//                                break;
+//                        }
+                        return false;
+                    }
+                });
 
     }
 }

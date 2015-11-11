@@ -20,10 +20,11 @@ public class RecipeDB {
     public static final String PREPARE_MODE = "prepare_mode";
     public static final String PREPARE_TIME = "prepare_time";
     public static final String SERVES = "serves";
-        public static final String RECIPE_TYPE = "recipe_type";
+    public static final String RECIPE_TYPE = "recipe_type";
     public static final String OBSERVATION = "observation";
+    public static final String FAVORITE = "favorite";
 
-    public static final String[] COLUNS = {ID, TITLE, IMAGE, PREPARE_MODE, PREPARE_TIME, SERVES, RECIPE_TYPE, OBSERVATION};
+    public static final String[] COLUNS = {ID, TITLE, IMAGE, PREPARE_MODE, PREPARE_TIME, SERVES, RECIPE_TYPE, OBSERVATION, FAVORITE};
 
     public static String createTable() {
         final StringBuilder sql = new StringBuilder();
@@ -37,7 +38,8 @@ public class RecipeDB {
         sql.append(PREPARE_TIME + " TEXT, ");
         sql.append(SERVES + " INTEGER, ");
         sql.append(RECIPE_TYPE + " INTEGER, ");
-        sql.append(OBSERVATION + " TEXT ");
+        sql.append(OBSERVATION + " TEXT, ");
+        sql.append(FAVORITE + " INTEGER ");
         sql.append(" ); ");
         return sql.toString();
     }
@@ -52,6 +54,7 @@ public class RecipeDB {
         content.put(SERVES, recipe.getServes());
         content.put(RECIPE_TYPE, recipe.getRecipeType());
         content.put(OBSERVATION, recipe.getObservation());
+        content.put(FAVORITE, recipe.getFavorite());
         return content;
     }
 
@@ -66,6 +69,7 @@ public class RecipeDB {
             recipe.setServes(cursor.getInt(cursor.getColumnIndex(SERVES)));
             recipe.setRecipeType(cursor.getInt(cursor.getColumnIndex(RECIPE_TYPE)));
             recipe.setObservation(cursor.getString(cursor.getColumnIndex(OBSERVATION)));
+            recipe.setFavorite(cursor.getInt(cursor.getColumnIndex(FAVORITE)));
             return recipe;
         }
         return null;
@@ -73,9 +77,13 @@ public class RecipeDB {
 
     public static List<Recipe> bindList(Cursor cursor) {
         final List<Recipe> recipes = new ArrayList<Recipe>();
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             recipes.add(bind(cursor));
         }
         return recipes;
+    }
+
+    public static Recipe bindRecipe(Cursor cursor){
+        return bind(cursor);
     }
 }
