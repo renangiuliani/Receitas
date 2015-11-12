@@ -15,7 +15,7 @@ public class Recipe implements Parcelable {
 
     private Integer id;
     private String title;
-    private int imageRecipe;
+    private byte[] imageRecipe;
     private List<String> ingredients;
     private String prepareMode;
     private String prepareTime;
@@ -24,11 +24,11 @@ public class Recipe implements Parcelable {
     private String observation;
     private int favorite;
 
-    public Recipe(){
+    public Recipe() {
         super();
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return id;
     }
 
@@ -84,11 +84,11 @@ public class Recipe implements Parcelable {
         this.recipeType = recipeType;
     }
 
-    public int getImageRecipe() {
+    public byte[] getImageRecipe() {
         return imageRecipe;
     }
 
-    public void setImageRecipe(int imageRecipe) {
+    public void setImageRecipe(byte[] imageRecipe) {
         this.imageRecipe = imageRecipe;
     }
 
@@ -108,26 +108,25 @@ public class Recipe implements Parcelable {
         this.favorite = favorite;
     }
 
-    public static List<Recipe> getAll(){
+    public static List<Recipe> getAll() {
         return RecipeRepository.getInstance().getAll();
     }
 
-    public long save(){
+    public long save() {
         return RecipeRepository.getInstance().save(this);
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         RecipeRepository.getInstance().delete(id);
     }
 
-    public static List<Recipe> getByType(int limit, HashMap<String,String> query){
+    public static List<Recipe> getByType(int limit, HashMap<String, String> query) {
         return RecipeRepository.getInstance().getByType(limit, query);
     }
 
-    public static Recipe getById(int idRecipe){
+    public static Recipe getById(int idRecipe) {
         return RecipeRepository.getInstance().getById(idRecipe);
     }
-
 
     @Override
     public int describeContents() {
@@ -138,7 +137,7 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.title);
-        dest.writeInt(this.imageRecipe);
+        dest.writeByteArray(this.imageRecipe);
         dest.writeStringList(this.ingredients);
         dest.writeString(this.prepareMode);
         dest.writeString(this.prepareTime);
@@ -151,7 +150,7 @@ public class Recipe implements Parcelable {
     protected Recipe(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.title = in.readString();
-        this.imageRecipe = in.readInt();
+        this.imageRecipe = in.createByteArray();
         this.ingredients = in.createStringArrayList();
         this.prepareMode = in.readString();
         this.prepareTime = in.readString();
@@ -170,5 +169,4 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
-
 }

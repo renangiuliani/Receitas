@@ -2,10 +2,10 @@ package com.example.renan.testepls.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,13 +31,12 @@ import com.example.renan.testepls.entities.Recipe;
 import com.example.renan.testepls.entities.RecipeType;
 import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,14 +54,11 @@ public class RecipeActivity extends AppCompatActivity {
     private Ingredient ingredientSave;
     private ImageView photoRecipe;
 
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-    private File fileImage;
-    public static final int MEDIA_TYPE_IMAGE = 1;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_recipe);
 
         ingredients = new ArrayList<>();
@@ -81,6 +76,8 @@ public class RecipeActivity extends AppCompatActivity {
 
             if (extras.getParcelable("edit") != null) {
                 recipe = extras.getParcelable("edit");
+
+                photoRecipe.setImageBitmap(BitmapFactory.decodeByteArray(recipe.getImageRecipe(), 0, recipe.getImageRecipe().length));
 
                 titleRecipe.setText(recipe.getTitle());
                 prepareTime.setText(recipe.getPrepareTime());
@@ -101,20 +98,19 @@ public class RecipeActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // Image captured and saved to fileUri specified in the Intent
-                Toast.makeText(this, "Image saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
-            } else if (resultCode == RESULT_CANCELED) {
-                // User cancelled the image capture
-            } else {
-                // Image capture failed, advise user
+        if(data != null){
+            Bundle bundle = data.getExtras();
+            if(bundle != null){
+                Bitmap img = (Bitmap) bundle.get("data");
+                photoRecipe.setImageBitmap(img);
             }
+
         }
     }
 
@@ -211,6 +207,24 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
+        prepareTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ("00:00").equals(prepareTime.getText().toString())) {
+                    prepareTime.setText("");
+                }
+            }
+        });
+
+        serves.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ("0").equals(serves.getText().toString())) {
+                    serves.setText("");
+                }
+            }
+        });
+
         fbSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,20 +235,8 @@ public class RecipeActivity extends AppCompatActivity {
         photoRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RecipeActivity.this, "Tirar Foto", Toast.LENGTH_SHORT).show();
-                // create Intent to take a picture and return control to the calling application
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                //fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-                final String filename = getResources().getString(R.string.app_name);
-
-                fileImage = new File(
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                        filename + "_" + System.currentTimeMillis() + ".jpg");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileImage); // set the image file name
-
-                // start the image capture Intent
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                Intent intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivityForResult(intentCamera, 0);
             }
         });
 
@@ -243,11 +245,13 @@ public class RecipeActivity extends AppCompatActivity {
     private void saveRecipe() {
         final Calendar recipeCalendar = Calendar.getInstance(Util.LOCALE_PT_BR);
 
-        boolean isValid = this.verifyMandatoryFields(titleRecipe, prepareMode, prepareTime, serves);
+        boolean isValid;
 
-        isValid = isValid & verifyListEmpty(recyclerView);
+        isValid = verifyListEmpty(recyclerView);
 
         isValid = isValid & this.verifyPrepareTime(recipeCalendar);
+
+        isValid = isValid & this.verifyMandatoryFields(prepareMode, serves, prepareTime, titleRecipe);
 
         if (isValid) {
 
@@ -257,39 +261,43 @@ public class RecipeActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             recipe.setTitle(titleRecipe.getText().toString());
-                            //recipe.setImageRecipe(R.drawable.without_photo);
-                            switch (recipeType.getEnumRecipeType().getCode()) {
-                                case 1:
-                                    recipe.setImageRecipe(R.drawable.meat);
-                                    break;
-                                case 2:
-                                    recipe.setImageRecipe(R.drawable.bird);
-                                    break;
-                                case 3:
-                                    recipe.setImageRecipe(R.drawable.fish);
-                                    break;
-                                case 4:
-                                    recipe.setImageRecipe(R.drawable.salad);
-                                    break;
-                                case 5:
-                                    recipe.setImageRecipe(R.drawable.sauce);
-                                    break;
-                                case 6:
-                                    recipe.setImageRecipe(R.drawable.soup);
-                                    break;
-                                case 7:
-                                    recipe.setImageRecipe(R.drawable.pasta);
-                                    break;
-                                case 8:
-                                    recipe.setImageRecipe(R.drawable.drink);
-                                    break;
-                                case 9:
-                                    recipe.setImageRecipe(R.drawable.candy);
-                                    break;
-                                case 10:
-                                    recipe.setImageRecipe(R.drawable.bread);
-                                    break;
-                            }
+                            Bitmap photoSave = ((BitmapDrawable) photoRecipe.getDrawable()).getBitmap();
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            photoSave.compress(Bitmap.CompressFormat.PNG, 0, bos);
+
+                            recipe.setImageRecipe(bos.toByteArray());
+//                            switch (recipeType.getEnumRecipeType().getCode()) {
+//                                case 1:
+//                                    recipe.setImageRecipe(R.drawable.meat);
+//                                    break;
+//                                case 2:
+//                                    recipe.setImageRecipe(R.drawable.bird);
+//                                    break;
+//                                case 3:
+//                                    recipe.setImageRecipe(R.drawable.fish);
+//                                    break;
+//                                case 4:
+//                                    recipe.setImageRecipe(R.drawable.salad);
+//                                    break;
+//                                case 5:
+//                                    recipe.setImageRecipe(R.drawable.sauce);
+//                                    break;
+//                                case 6:
+//                                    recipe.setImageRecipe(R.drawable.soup);
+//                                    break;
+//                                case 7:
+//                                    recipe.setImageRecipe(R.drawable.pasta);
+//                                    break;
+//                                case 8:
+//                                    recipe.setImageRecipe(R.drawable.drink);
+//                                    break;
+//                                case 9:
+//                                    recipe.setImageRecipe(R.drawable.candy);
+//                                    break;
+//                                case 10:
+//                                    recipe.setImageRecipe(R.drawable.bread);
+//                                    break;
+//                            }
 
                             recipe.setPrepareMode(prepareMode.getText().toString());
                             recipe.setPrepareTime(prepareTime.getText().toString());
@@ -302,11 +310,6 @@ public class RecipeActivity extends AppCompatActivity {
 
                             Toast.makeText(RecipeActivity.this, R.string.save_successful, Toast.LENGTH_SHORT).show();
                             RecipeActivity.this.finish();
-                            /*Intent intent = new Intent(RecipeActivity.this, ListRecipeActivity.class);
-
-                            intent.putExtra("recipeType", recipeType);
-
-                            startActivity(intent);*/
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -333,9 +336,9 @@ public class RecipeActivity extends AppCompatActivity {
     private boolean verifyMandatoryFields(EditText... fields) {
         boolean isValid = true;
         for (EditText field : fields) {
-            field.setError(null);
             if (TextUtils.isEmpty(field.getText().toString().trim())) {
                 field.setError(getString(R.string.msg_mandatory));
+                field.requestFocus();
                 if (isValid) {
                     isValid = false;
                 }
@@ -349,6 +352,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         if (recyclerView.getChildCount() == 0) {
             ingredientName.setError(getString(R.string.ingredient_empty));
+            ingredientName.requestFocus();
             isValid = false;
         }
 
@@ -369,55 +373,16 @@ public class RecipeActivity extends AppCompatActivity {
                 }
             } catch (ParseException parseException) {
                 prepareTime.setError(this.getString(R.string.msg_invalid_time));
+                prepareTime.requestFocus();
                 return false;
             }
 
             if (!timeText.substring(2, 3).equals(":") || timeText.length() != 5) {
                 prepareTime.setError(this.getString(R.string.msg_invalid_time));
+                prepareTime.requestFocus();
                 return false;
             }
         }
         return true;
     }
-
-    /**
-     * Create a file Uri for saving an image or video
-     */
-    private static Uri getOutputMediaFileUri(int type) {
-        return Uri.fromFile(getOutputMediaFile(type));
-    }
-
-    /**
-     * Create a File for saving an image or video
-     */
-    private static File getOutputMediaFile(int type) {
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_" + timeStamp + ".jpg");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
-
 }

@@ -1,10 +1,13 @@
 package com.example.renan.testepls.activities;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +36,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 
     private Recipe recipe, recipeAux;
     private Integer idRecipe;
-    private ImageView ivPhotoRecipe, ivShare, ivBack, ivEdit, ivPrepareTime;
+    private ImageView ivPhotoRecipe, ivShare, ivBack, ivEdit, ivPrepareTime, ivDelete;
     private FloatingActionButton ivFavorite;
     private TextView tvTitle, tvPrepareTime, tvServes, tvPrepareMode, tvObservation, tvTitleObservation;
     private RecyclerView rvListIngredient;
@@ -43,8 +46,6 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
     private List<Ingredient> ingredients;
     private Ingredient ingredientAux;
     private RelativeLayout rlMain;
-
-    private int teste = 0;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -65,35 +66,15 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 
         if (extras != null) {
             idRecipe = extras.getInt("recipe");
-
-            recipe = recipeAux.getById(idRecipe);
-
-
-            tvTitle.setText(recipe.getTitle());
-            tvPrepareTime.setText(recipe.getPrepareTime());
-            tvServes.setText(String.valueOf(recipe.getServes()));
-            ivPhotoRecipe.setImageResource(recipe.getImageRecipe());
-            tvPrepareMode.setText(recipe.getPrepareMode());
-
-            tvObservation.setText(recipe.getObservation());
-            if (!("").equals(recipe.getObservation())) {
-            } else {
-                tvTitleObservation.setVisibility(View.GONE);
-                tvObservation.setVisibility(View.GONE);
-            }
-
-            if (recipe.getFavorite() == 1) {
-                ivFavorite.setImageResource(R.drawable.ic_favorite_on);
-            } else {
-                ivFavorite.setImageResource(R.drawable.ic_favorite_off2);
-            }
-
-            ingredients = ingredientAux.getByRecipe(idRecipe);
-            ingredientAdapter.setList(ingredients);
-
-            recipeType = new RecipeType(recipe.getImageRecipe(), EnumRecipeType.getEnumByCode(recipe.getRecipeType()));
+            fillElements();
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fillElements();
     }
 
     private void bindElements() {
@@ -118,6 +99,8 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 
         ivPrepareTime = (ImageView) findViewById(R.id.iv_prepare_time);
         rlMain = (RelativeLayout) findViewById(R.id.rl_main);
+
+        ivDelete = (ImageView) findViewById(R.id.iv_delete);
 
         bindEvents();
 
@@ -165,6 +148,29 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
             }
         });
 
+        ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(VisualizeRecipeActivity.this)
+                        .setTitle(R.string.recipe_remove)
+                        .setMessage(R.string.question_recipe_remove)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteRecipe(recipe.getId());
+                                Toast.makeText(VisualizeRecipeActivity.this, R.string.remove_successful, Toast.LENGTH_SHORT).show();
+                                VisualizeRecipeActivity.this.finish();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(R.drawable.ic_alert_warning)
+                        .show();
+            }
+        });
+
         ivPrepareTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,5 +198,38 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 //                }
             }
         });
+    }
+
+    public void fillElements(){
+        recipe = recipeAux.getById(idRecipe);
+
+        tvTitle.setText(recipe.getTitle());
+        tvPrepareTime.setText(recipe.getPrepareTime());
+        tvServes.setText(String.valueOf(recipe.getServes()));
+        ivPhotoRecipe.setImageBitmap(BitmapFactory.decodeByteArray(recipe.getImageRecipe(), 0, recipe.getImageRecipe().length));
+        tvPrepareMode.setText(recipe.getPrepareMode());
+
+        tvObservation.setText(recipe.getObservation());
+        if (!("").equals(recipe.getObservation())) {
+        } else {
+            tvTitleObservation.setVisibility(View.GONE);
+            tvObservation.setVisibility(View.GONE);
+        }
+
+        if (recipe.getFavorite() == 1) {
+            ivFavorite.setImageResource(R.drawable.ic_favorite_on);
+        } else {
+            ivFavorite.setImageResource(R.drawable.ic_favorite_off2);
+        }
+
+        ingredients = ingredientAux.getByRecipe(idRecipe);
+        ingredientAdapter.setList(ingredients);
+
+        recipeType = new RecipeType(0, EnumRecipeType.getEnumByCode(recipe.getRecipeType()));
+    }
+
+    public void deleteRecipe(int idRecipe) {
+        recipe.delete(idRecipe);
+        ingredientAux.deleteByRecipe(idRecipe);
     }
 }

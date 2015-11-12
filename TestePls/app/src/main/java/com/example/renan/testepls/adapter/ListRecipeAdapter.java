@@ -2,6 +2,7 @@ package com.example.renan.testepls.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mPosition = holder.getLayoutPosition();
             final ListRecipeViewHolder viewHolder = (ListRecipeViewHolder) holder;
 
-            viewHolder.ivRecipe.setImageResource(itens.get(position).getImageRecipe());
+            viewHolder.ivRecipe.setImageBitmap(BitmapFactory.decodeByteArray(itens.get(position).getImageRecipe(), 0, itens.get(position).getImageRecipe().length));
 
             viewHolder.tvTitle.setText(itens.get(position).getTitle());
 

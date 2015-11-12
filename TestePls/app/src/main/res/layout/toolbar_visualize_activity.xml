@@ -61,8 +61,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_toLeftOf="@+id/iv_edit"
+                    android:layout_toLeftOf="@+id/iv_delete"
                     android:src="@drawable/ic_share" />
+
+                <ImageView
+                    android:id="@+id/iv_delete"
+                    android:layout_toLeftOf="@+id/iv_edit"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete"/>
 
                 <ImageView
                     android:id="@+id/iv_edit"

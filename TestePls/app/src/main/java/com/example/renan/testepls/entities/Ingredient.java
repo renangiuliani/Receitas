@@ -45,7 +45,7 @@ public class Ingredient {
         IngredientsRecipeRepository.getInstance().save(this);
     }
 
-    public void deleteByRecipe(int recipeId){
+    public static void deleteByRecipe(int recipeId){
         IngredientsRecipeRepository.getInstance().deleteByRecipe(recipeId);
     }
 

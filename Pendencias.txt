@@ -1,5 +1,5 @@
+Adicionar atributos dificuldade e preço
 Mostrar total de receitas por tipo
-Listar todas as receitas, fitlrar pelo drawer menu
 Pilha de activity quando salva.
 Hint quando entra para editar.
 Remover a troca de lugar de ingrediente
@@ -7,3 +7,6 @@ Ação click abrir redondo na toolbar visualizar
 Adicionar remover receita no visualizar
 Quando abrir teclado de procura receita, ajustar o textview de not found
 Clicar na imagem no visualizar e expandir igual whatsapp, sem o gradient
+Pq quando entra na lista de receita ele executa a funcao getByType
+Avançar do tempo de preparo ir para serves
+Filtrar avançado por ingredientes, tempo preparo, serve, difuldade e preço

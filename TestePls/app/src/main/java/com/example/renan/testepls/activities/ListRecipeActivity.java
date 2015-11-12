@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -32,7 +31,7 @@ import java.util.List;
 /**
  * Created by Renan on 21/09/2015.
  */
-public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class ListRecipeActivity extends AppCompatActivity{
 
     private FloatingActionButton fbAddRecipe;
     private static ListRecipeAdapter listRecipeAdapter;
@@ -106,11 +105,6 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
 
     }
 
-//    public static void deleteItem(int position) {
-//        recipes.remove(position);
-//        listRecipeAdapter.notifyDataSetChanged();
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -120,44 +114,6 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
         searchView.setOnQueryTextListener(new SearchFilter());
 
         return true;
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-//        final Recipe selectedItem = listRecipeAdapter.getSelectedItem();
-//        switch (item.getItemId()) {
-//            case R.id.action_edit:
-//                Intent intent = new Intent(ListRecipeActivity.this, RecipeActivity.class);
-//                intent.putExtra("edit", selectedItem);
-//                intent.putExtra("recipeType", recipeType);
-//                ListRecipeActivity.this.startActivity(intent);
-//                return false;
-//            case R.id.action_remove:
-//                new AlertDialog.Builder(ListRecipeActivity.this)
-//                        .setTitle(R.string.recipe_remove)
-//                        .setMessage(R.string.question_recipe_remove)
-//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                selectedItem.delete(selectedItem.getId());
-//                                ListRecipeActivity.deleteItem(listRecipeAdapter.mPosition);
-//
-//                                Toast.makeText(ListRecipeActivity.this, R.string.remove_successful, Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                // do nothing
-//                            }
-//                        })
-//                        .setIcon(R.drawable.ic_alert_warning)
-//                        .show();
-//
-//                return false;
-//            case R.id.action_change_photo:
-//                Toast.makeText(ListRecipeActivity.this, "Trocar Foto", Toast.LENGTH_SHORT).show();
-//                return false;
-//        }
-        return false;
     }
 
     private class SearchFilter implements SearchView.OnQueryTextListener {
@@ -176,12 +132,6 @@ public class ListRecipeActivity extends AppCompatActivity implements PopupMenu.O
             }
 
             updateItens(0);
-
-//            HashMap<String, String> hashMapTitle = new HashMap<String, String>();
-//            hashMapTitle.put("codeType", String.valueOf(recipeType.getEnumRecipeType().getCode()));
-//            hashMapTitle.put("title", newText.toUpperCase());
-//            recipes = recipe.getByType(0, hashMapTitle);
-//            listRecipeAdapter.setList(recipes);
 
             return false;
         }

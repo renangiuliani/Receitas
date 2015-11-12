@@ -33,7 +33,7 @@ public class RecipeDB {
         sql.append(" ( ");
         sql.append(ID + " INTEGER PRIMARY KEY, ");
         sql.append(TITLE + " TEXT, ");
-        sql.append(IMAGE + " INTEGER, ");
+        sql.append(IMAGE + " BLOB, ");
         sql.append(PREPARE_MODE + " TEXT, ");
         sql.append(PREPARE_TIME + " TEXT, ");
         sql.append(SERVES + " INTEGER, ");
@@ -63,7 +63,7 @@ public class RecipeDB {
             Recipe recipe = new Recipe();
             recipe.setId((cursor.getInt(cursor.getColumnIndex(ID))));
             recipe.setTitle(cursor.getString(cursor.getColumnIndex(TITLE)));
-            recipe.setImageRecipe(cursor.getInt(cursor.getColumnIndex(IMAGE)));
+            recipe.setImageRecipe(cursor.getBlob(cursor.getColumnIndex(IMAGE)));
             recipe.setPrepareMode(cursor.getString(cursor.getColumnIndex(PREPARE_MODE)));
             recipe.setPrepareTime(cursor.getString(cursor.getColumnIndex(PREPARE_TIME)));
             recipe.setServes(cursor.getInt(cursor.getColumnIndex(SERVES)));
