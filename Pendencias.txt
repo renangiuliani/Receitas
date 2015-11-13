@@ -10,3 +10,5 @@ Clicar na imagem no visualizar e expandir igual whatsapp, sem o gradient
 Pq quando entra na lista de receita ele executa a funcao getByType
 Avançar do tempo de preparo ir para serves
 Filtrar avançado por ingredientes, tempo preparo, serve, difuldade e preço
+Fazer tela de login com opção de entrar automaticamente
+Colocar temporizador na tela de visualizar

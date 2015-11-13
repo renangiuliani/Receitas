@@ -12,13 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +36,14 @@ import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Renan on 22/09/2015.
@@ -45,14 +51,16 @@ import java.util.List;
 public class RecipeActivity extends AppCompatActivity {
 
     private RecipeType recipeType;
-    private EditText ingredientName, prepareTime, serves, titleRecipe, prepareMode, observation;
+    private EditText etIngredientName, etPrepareTime, etServes, etTitleRecipe, etPrepareMode, etObservation, etPrice;
     private IngredientAdapter ingredientAdapter;
-    private RecyclerView recyclerView;
+    private RecyclerView rvIngredients;
     private FloatingActionButton fbSave;
     private Recipe recipe;
     private List<Ingredient> ingredients;
     private Ingredient ingredientSave;
-    private ImageView photoRecipe;
+    private ImageView ivImageRecipe;
+    private RatingBar rbDifficulty;
+    private String numero;
 
 
     @Override
@@ -77,13 +85,13 @@ public class RecipeActivity extends AppCompatActivity {
             if (extras.getParcelable("edit") != null) {
                 recipe = extras.getParcelable("edit");
 
-                photoRecipe.setImageBitmap(BitmapFactory.decodeByteArray(recipe.getImageRecipe(), 0, recipe.getImageRecipe().length));
+                ivImageRecipe.setImageBitmap(BitmapFactory.decodeByteArray(recipe.getImageRecipe(), 0, recipe.getImageRecipe().length));
 
-                titleRecipe.setText(recipe.getTitle());
-                prepareTime.setText(recipe.getPrepareTime());
-                serves.setText(String.valueOf(recipe.getServes()));
-                prepareMode.setText(recipe.getPrepareMode());
-                observation.setText(recipe.getObservation());
+                etTitleRecipe.setText(recipe.getTitle());
+                etPrepareTime.setText(recipe.getPrepareTime());
+                etServes.setText(String.valueOf(recipe.getServes()));
+                etPrepareMode.setText(recipe.getPrepareMode());
+                etObservation.setText(recipe.getObservation());
 
                 List<Ingredient> ingredients = ingredientSave.getByRecipe(recipe.getId());
 
@@ -108,7 +116,7 @@ public class RecipeActivity extends AppCompatActivity {
             Bundle bundle = data.getExtras();
             if(bundle != null){
                 Bitmap img = (Bitmap) bundle.get("data");
-                photoRecipe.setImageBitmap(img);
+                ivImageRecipe.setImageBitmap(img);
             }
 
         }
@@ -127,57 +135,61 @@ public class RecipeActivity extends AppCompatActivity {
 
     private void bindElements() {
 
-        titleRecipe = (EditText) findViewById(R.id.et_title_recipe);
-        prepareMode = (EditText) findViewById(R.id.et_prepare_mode);
+        etTitleRecipe = (EditText) findViewById(R.id.et_title_recipe);
+        etPrepareMode = (EditText) findViewById(R.id.et_prepare_mode);
 
-        ingredientName = (EditText) findViewById(R.id.et_name_ingredient);
-        ingredientName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_add_ingredient), null);
+        etIngredientName = (EditText) findViewById(R.id.et_name_ingredient);
+        etIngredientName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_add_ingredient), null);
 
-        prepareTime = (EditText) findViewById(R.id.et_prepare_time);
-        prepareTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_prepare_time), null);
+        etPrepareTime = (EditText) findViewById(R.id.et_prepare_time);
+        etPrepareTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_prepare_time), null);
 
-        serves = (EditText) findViewById(R.id.et_serves);
-        serves.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_serves), null);
+        etServes = (EditText) findViewById(R.id.et_serves);
+        etServes.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_serves), null);
 
-        observation = (EditText) findViewById(R.id.et_observation);
+        etObservation = (EditText) findViewById(R.id.et_observation);
 
         fbSave = (FloatingActionButton) findViewById(R.id.fb_save_recipe);
 
         ingredientAdapter = new IngredientAdapter(this, ingredients, false);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_list_ingredient);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new MyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(ingredientAdapter);
+        rvIngredients = (RecyclerView) findViewById(R.id.rv_list_ingredient);
+        rvIngredients.setHasFixedSize(true);
+        rvIngredients.setLayoutManager(new MyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rvIngredients.setAdapter(ingredientAdapter);
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(ingredientAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
+        touchHelper.attachToRecyclerView(rvIngredients);
 
-        photoRecipe = (ImageView) findViewById(R.id.iv_photo);
+        ivImageRecipe = (ImageView) findViewById(R.id.iv_image_recipe);
+
+        rbDifficulty = (RatingBar) findViewById(R.id.rb_difficulty);
+
+        etPrice = (EditText) findViewById(R.id.et_price);
 
         bindEvents();
     }
 
     private void bindEvents() {
-        ingredientName.setOnTouchListener(new View.OnTouchListener() {
+        etIngredientName.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (ingredientName.getRight() - ingredientName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        if (!ingredientName.getText().toString().trim().equals("")) {
+                    if (event.getRawX() >= (etIngredientName.getRight() - etIngredientName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if (!etIngredientName.getText().toString().trim().equals("")) {
                             Ingredient ingredientAdd = new Ingredient();
-                            ingredientAdd.setNameIngredient(ingredientName.getText().toString().trim());
+                            ingredientAdd.setNameIngredient(etIngredientName.getText().toString().trim());
                             if (ingredientAdapter.addItem(ingredientAdd)) {
-                                ingredientName.setText("");
-                                ingredientName.setError(null);
+                                etIngredientName.setText("");
+                                etIngredientName.setError(null);
                             } else {
-                                ingredientName.setError(getString(R.string.existing_ingredient));
+                                etIngredientName.setError(getString(R.string.existing_ingredient));
                             }
                         } else {
-                            ingredientName.setText("");
+                            etIngredientName.setText("");
                         }
                     }
                 }
@@ -185,21 +197,21 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        ingredientName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        etIngredientName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN && !ingredientName.getText().toString().trim().equals("")) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN && !etIngredientName.getText().toString().trim().equals("")) {
                         Ingredient ingredientAdd = new Ingredient();
-                        ingredientAdd.setNameIngredient(ingredientName.getText().toString().trim());
+                        ingredientAdd.setNameIngredient(etIngredientName.getText().toString().trim());
                         if (ingredientAdapter.addItem(ingredientAdd)) {
-                            ingredientName.setText("");
-                            ingredientName.setError(null);
+                            etIngredientName.setText("");
+                            etIngredientName.setError(null);
                         } else {
-                            ingredientName.setError(getString(R.string.existing_ingredient));
+                            etIngredientName.setError(getString(R.string.existing_ingredient));
                         }
-                    } else if (ingredientName.getText().toString().trim().equals("")) {
-                        ingredientName.setText("");
+                    } else if (etIngredientName.getText().toString().trim().equals("")) {
+                        etIngredientName.setText("");
                     }
                     return true;
                 }
@@ -207,20 +219,20 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        prepareTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        etPrepareTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && ("00:00").equals(prepareTime.getText().toString())) {
-                    prepareTime.setText("");
+                if (!hasFocus && ("00:00").equals(etPrepareTime.getText().toString())) {
+                    etPrepareTime.setText("");
                 }
             }
         });
 
-        serves.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        etServes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && ("0").equals(serves.getText().toString())) {
-                    serves.setText("");
+                if (!hasFocus && ("0").equals(etServes.getText().toString())) {
+                    etServes.setText("");
                 }
             }
         });
@@ -232,7 +244,7 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        photoRecipe.setOnClickListener(new View.OnClickListener() {
+        ivImageRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -240,6 +252,40 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
+        rbDifficulty.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Toast.makeText(RecipeActivity.this, String.valueOf(rbDifficulty.getRating()), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        etPrice.addTextChangedListener(new TextWatcher() {
+
+            private boolean isUpdating = false;
+            // Pega a formatacao do sistema, se for brasil R$ se EUA US$
+            private NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,int after) {
+                s.toString();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                s.toString();
+                // Não utilizamos
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                DecimalFormat decimalFormat = (DecimalFormat) (NumberFormat.getNumberInstance(Locale.US));
+                decimalFormat.applyPattern("#.00");
+                numero = decimalFormat.format(!s.equals("") ? 0.00 : Float.valueOf(s.toString()));
+            }
+        });
+
+        etPrice.setText(numero);
     }
 
     private void saveRecipe() {
@@ -247,11 +293,11 @@ public class RecipeActivity extends AppCompatActivity {
 
         boolean isValid;
 
-        isValid = verifyListEmpty(recyclerView);
+        isValid = verifyListEmpty(rvIngredients);
 
         isValid = isValid & this.verifyPrepareTime(recipeCalendar);
 
-        isValid = isValid & this.verifyMandatoryFields(prepareMode, serves, prepareTime, titleRecipe);
+        isValid = isValid & this.verifyMandatoryFields(etPrepareMode, etServes, etPrepareTime, etTitleRecipe);
 
         if (isValid) {
 
@@ -260,10 +306,10 @@ public class RecipeActivity extends AppCompatActivity {
                     .setMessage(R.string.question_save_recipe)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            recipe.setTitle(titleRecipe.getText().toString());
-                            Bitmap photoSave = ((BitmapDrawable) photoRecipe.getDrawable()).getBitmap();
+                            recipe.setTitle(etTitleRecipe.getText().toString());
+                            Bitmap imageSave = ((BitmapDrawable) ivImageRecipe.getDrawable()).getBitmap();
                             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            photoSave.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                            imageSave.compress(Bitmap.CompressFormat.PNG, 0, bos);
 
                             recipe.setImageRecipe(bos.toByteArray());
 //                            switch (recipeType.getEnumRecipeType().getCode()) {
@@ -299,11 +345,11 @@ public class RecipeActivity extends AppCompatActivity {
 //                                    break;
 //                            }
 
-                            recipe.setPrepareMode(prepareMode.getText().toString());
-                            recipe.setPrepareTime(prepareTime.getText().toString());
-                            recipe.setServes(Integer.valueOf(serves.getText().toString()));
+                            recipe.setPrepareMode(etPrepareMode.getText().toString());
+                            recipe.setPrepareTime(etPrepareTime.getText().toString());
+                            recipe.setServes(Integer.valueOf(etServes.getText().toString()));
                             recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
-                            recipe.setObservation(observation.getText().toString());
+                            recipe.setObservation(etObservation.getText().toString());
                             recipe.setId((int)recipe.save());
 
                             saveIngredients();
@@ -351,8 +397,8 @@ public class RecipeActivity extends AppCompatActivity {
         boolean isValid = true;
 
         if (recyclerView.getChildCount() == 0) {
-            ingredientName.setError(getString(R.string.ingredient_empty));
-            ingredientName.requestFocus();
+            etIngredientName.setError(getString(R.string.ingredient_empty));
+            etIngredientName.requestFocus();
             isValid = false;
         }
 
@@ -360,7 +406,7 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     private boolean verifyPrepareTime(Calendar recipeCalendar) {
-        final String timeText = prepareTime.getText().toString().trim();
+        final String timeText = etPrepareTime.getText().toString().trim();
         if (!TextUtils.isEmpty(timeText)) {
             try {
                 final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Util.LOCALE_PT_BR);
@@ -372,14 +418,14 @@ public class RecipeActivity extends AppCompatActivity {
                     recipeCalendar.set(Calendar.MINUTE, Integer.valueOf(timeTextArray[1]));
                 }
             } catch (ParseException parseException) {
-                prepareTime.setError(this.getString(R.string.msg_invalid_time));
-                prepareTime.requestFocus();
+                etPrepareTime.setError(this.getString(R.string.msg_invalid_time));
+                etPrepareTime.requestFocus();
                 return false;
             }
 
             if (!timeText.substring(2, 3).equals(":") || timeText.length() != 5) {
-                prepareTime.setError(this.getString(R.string.msg_invalid_time));
-                prepareTime.requestFocus();
+                etPrepareTime.setError(this.getString(R.string.msg_invalid_time));
+                etPrepareTime.requestFocus();
                 return false;
             }
         }

@@ -28,4 +28,6 @@
     <string name="question_save_recipe">Deseja salvar a receita?</string>
     <string name="print_photo">Tirar Foto</string>
     <string name="no_result">Nenhuma receita encontrada.</string>
+    <string name="price">Preço Gasto</string>
+    <string name="difficulty">Dificuldade</string>
 </resources>

@@ -85,7 +85,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         ivShare = (ImageView) findViewById(R.id.iv_share);
         ivFavorite = (FloatingActionButton) findViewById(R.id.iv_favorite);
         ivBack = (ImageView) findViewById(R.id.iv_back);
-        ivPhotoRecipe = (ImageView) findViewById(R.id.iv_photo);
+        ivPhotoRecipe = (ImageView) findViewById(R.id.iv_image_recipe);
         ivEdit = (ImageView) findViewById(R.id.iv_edit);
         tvPrepareMode = (TextView) findViewById(R.id.tv_prepare_mode);
         tvObservation = (TextView) findViewById(R.id.tv_observation);
