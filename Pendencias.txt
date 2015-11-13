@@ -1,4 +1,4 @@
-Adicionar atributos dificuldade e preço
+Colocar troca de imagem na tela de visualizar
 Mostrar total de receitas por tipo
 Pilha de activity quando salva.
 Hint quando entra para editar.

@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
     private Integer idRecipe;
     private ImageView ivPhotoRecipe, ivShare, ivBack, ivEdit, ivPrepareTime, ivDelete;
     private FloatingActionButton ivFavorite;
-    private TextView tvTitle, tvPrepareTime, tvServes, tvPrepareMode, tvObservation, tvTitleObservation;
+    private TextView tvTitle, tvPrepareTime, tvServes, tvPrepareMode, tvObservation, tvTitleObservation, tvPrice;
     private RecyclerView rvListIngredient;
     private boolean favorite = false;
     private RecipeType recipeType;
@@ -46,6 +47,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
     private List<Ingredient> ingredients;
     private Ingredient ingredientAux;
     private RelativeLayout rlMain;
+    private RatingBar rbDifficulty;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -99,6 +101,9 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 
         ivPrepareTime = (ImageView) findViewById(R.id.iv_prepare_time);
         rlMain = (RelativeLayout) findViewById(R.id.rl_main);
+
+        tvPrice = (TextView) findViewById(R.id.tv_price);
+        rbDifficulty = (RatingBar) findViewById(R.id.rb_difficulty);
 
         ivDelete = (ImageView) findViewById(R.id.iv_delete);
 
@@ -221,6 +226,9 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         } else {
             ivFavorite.setImageResource(R.drawable.ic_favorite_off2);
         }
+
+        tvPrice.setText("R$ " + recipe.getPrice());
+        rbDifficulty.setRating(recipe.getDifficulty());
 
         ingredients = ingredientAux.getByRecipe(idRecipe);
         ingredientAdapter.setList(ingredients);

@@ -23,8 +23,10 @@ public class RecipeDB {
     public static final String RECIPE_TYPE = "recipe_type";
     public static final String OBSERVATION = "observation";
     public static final String FAVORITE = "favorite";
+    public static final String PRICE = "price";
+    public static final String DIFFICULTY = "difficulty";
 
-    public static final String[] COLUNS = {ID, TITLE, IMAGE, PREPARE_MODE, PREPARE_TIME, SERVES, RECIPE_TYPE, OBSERVATION, FAVORITE};
+    public static final String[] COLUNS = {ID, TITLE, IMAGE, PREPARE_MODE, PREPARE_TIME, SERVES, RECIPE_TYPE, OBSERVATION, FAVORITE, PRICE, DIFFICULTY};
 
     public static String createTable() {
         final StringBuilder sql = new StringBuilder();
@@ -39,7 +41,9 @@ public class RecipeDB {
         sql.append(SERVES + " INTEGER, ");
         sql.append(RECIPE_TYPE + " INTEGER, ");
         sql.append(OBSERVATION + " TEXT, ");
-        sql.append(FAVORITE + " INTEGER ");
+        sql.append(FAVORITE + " INTEGER, ");
+        sql.append(PRICE + " REAL, ");
+        sql.append(DIFFICULTY + " REAL ");
         sql.append(" ); ");
         return sql.toString();
     }
@@ -55,6 +59,8 @@ public class RecipeDB {
         content.put(RECIPE_TYPE, recipe.getRecipeType());
         content.put(OBSERVATION, recipe.getObservation());
         content.put(FAVORITE, recipe.getFavorite());
+        content.put(PRICE, recipe.getPrice());
+        content.put(DIFFICULTY, recipe.getDifficulty());
         return content;
     }
 
@@ -70,6 +76,8 @@ public class RecipeDB {
             recipe.setRecipeType(cursor.getInt(cursor.getColumnIndex(RECIPE_TYPE)));
             recipe.setObservation(cursor.getString(cursor.getColumnIndex(OBSERVATION)));
             recipe.setFavorite(cursor.getInt(cursor.getColumnIndex(FAVORITE)));
+            recipe.setPrice(cursor.getFloat(cursor.getColumnIndex(PRICE)));
+            recipe.setDifficulty(cursor.getFloat(cursor.getColumnIndex(DIFFICULTY)));
             return recipe;
         }
         return null;

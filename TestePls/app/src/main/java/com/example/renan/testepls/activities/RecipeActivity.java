@@ -36,14 +36,12 @@ import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Renan on 22/09/2015.
@@ -92,6 +90,8 @@ public class RecipeActivity extends AppCompatActivity {
                 etServes.setText(String.valueOf(recipe.getServes()));
                 etPrepareMode.setText(recipe.getPrepareMode());
                 etObservation.setText(recipe.getObservation());
+                rbDifficulty.setRating(recipe.getDifficulty());
+                etPrice.setText(String.valueOf(recipe.getPrice()));
 
                 List<Ingredient> ingredients = ingredientSave.getByRecipe(recipe.getId());
 
@@ -266,26 +266,22 @@ public class RecipeActivity extends AppCompatActivity {
             private NumberFormat nf = NumberFormat.getCurrencyInstance();
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,int after) {
-                s.toString();
+            public void onTextChanged(CharSequence s, int start, int before, int after) {
+
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                s.toString();
-                // Não utilizamos
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Antes
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                DecimalFormat decimalFormat = (DecimalFormat) (NumberFormat.getNumberInstance(Locale.US));
-                decimalFormat.applyPattern("#.00");
-                numero = decimalFormat.format(!s.equals("") ? 0.00 : Float.valueOf(s.toString()));
+                // Depois
             }
         });
 
-        etPrice.setText(numero);
+
     }
 
     private void saveRecipe() {
@@ -350,6 +346,8 @@ public class RecipeActivity extends AppCompatActivity {
                             recipe.setServes(Integer.valueOf(etServes.getText().toString()));
                             recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
                             recipe.setObservation(etObservation.getText().toString());
+                            recipe.setPrice(Float.valueOf(etPrice.getText().toString()));
+                            recipe.setDifficulty(rbDifficulty.getRating());
                             recipe.setId((int)recipe.save());
 
                             saveIngredients();

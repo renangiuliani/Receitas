@@ -92,11 +92,41 @@
             android:layout_below="@+id/ll_pt_s"
             android:layout_margin="8dp">
 
+            <LinearLayout
+                android:id="@+id/ll_price_difficulty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_icons"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginLeft="6dp"
+                android:textSize="25sp"
+                android:layout_marginRight="20dp"
+                android:text="R$ 12.99"/>
+
+            <RatingBar
+                android:id="@+id/rb_difficulty"
+                android:layout_width="250dp"
+                android:layout_toRightOf="@+id/et_price"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:numStars="5"
+                android:stepSize="1.0" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_title_list_ingredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_below="@+id/ll_price_difficulty"
                 android:text="@string/list_ingredient"
                 android:textColor="@color/text_icons"
                 android:textSize="20sp"
