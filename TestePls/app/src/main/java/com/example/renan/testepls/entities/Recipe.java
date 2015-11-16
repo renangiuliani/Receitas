@@ -16,7 +16,6 @@ public class Recipe implements Parcelable {
     private Integer id;
     private String title;
     private byte[] imageRecipe;
-    private List<String> ingredients;
     private String prepareMode;
     private String prepareTime;
     private int serves;
@@ -44,14 +43,6 @@ public class Recipe implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<String> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<String> ingredients) {
-        this.ingredients = ingredients;
     }
 
     public String getPrepareMode() {
@@ -126,8 +117,8 @@ public class Recipe implements Parcelable {
         this.difficulty = difficulty;
     }
 
-    public static List<Recipe> getAll() {
-        return RecipeRepository.getInstance().getAll();
+    public static List<Recipe> getAll(int limit) {
+        return RecipeRepository.getInstance().getAll(limit);
     }
 
     public long save() {
@@ -156,7 +147,6 @@ public class Recipe implements Parcelable {
         dest.writeValue(this.id);
         dest.writeString(this.title);
         dest.writeByteArray(this.imageRecipe);
-        dest.writeStringList(this.ingredients);
         dest.writeString(this.prepareMode);
         dest.writeString(this.prepareTime);
         dest.writeInt(this.serves);
@@ -171,7 +161,6 @@ public class Recipe implements Parcelable {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.title = in.readString();
         this.imageRecipe = in.createByteArray();
-        this.ingredients = in.createStringArrayList();
         this.prepareMode = in.readString();
         this.prepareTime = in.readString();
         this.serves = in.readInt();

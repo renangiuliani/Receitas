@@ -57,10 +57,17 @@ public class RecipeRepository {
         helper.close();
     }
 
-    public List<Recipe> getAll(){
+    public List<Recipe> getAll(int limit){
+
+        String limitString = "";
+
+        if(limit != -1) {
+            limitString = String.valueOf(limit) + ", 10";
+        }
+
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, null, null, null, null, RecipeDB.ID);
+        Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, null, null, null, null, RecipeDB.ID, limitString);
         List<Recipe> recipe = RecipeDB.bindList(cursor);
         db.close();
         helper.close();
@@ -68,6 +75,12 @@ public class RecipeRepository {
     }
 
     public List<Recipe> getByType(int limit, HashMap<String,String> query){
+
+        String limitString = "";
+
+        if(limit != -1) {
+            limitString = String.valueOf(limit) + ", 10";
+        }
 
         String queryString = "1 = 1";
 
@@ -79,7 +92,7 @@ public class RecipeRepository {
 
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, queryString, null, null, null, RecipeDB.ID, String.valueOf(limit) + ", 10");
+        Cursor cursor = db.query(RecipeDB.TABLE, RecipeDB.COLUNS, queryString, null, null, null, RecipeDB.ID, limitString);
         List<Recipe> recipe = RecipeDB.bindList(cursor);
         db.close();
         helper.close();

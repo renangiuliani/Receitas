@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +15,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,7 +52,6 @@ public class RecipeActivity extends AppCompatActivity {
     private EditText etIngredientName, etPrepareTime, etServes, etTitleRecipe, etPrepareMode, etObservation, etPrice;
     private IngredientAdapter ingredientAdapter;
     private RecyclerView rvIngredients;
-    private FloatingActionButton fbSave;
     private Recipe recipe;
     private List<Ingredient> ingredients;
     private Ingredient ingredientSave;
@@ -107,19 +106,29 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(data != null){
+        if (data != null) {
             Bundle bundle = data.getExtras();
-            if(bundle != null){
+            if (bundle != null) {
                 Bitmap img = (Bitmap) bundle.get("data");
                 ivImageRecipe.setImageBitmap(img);
             }
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuItem m1 = menu.add(0, 0, 0, "Salvar");
+        m1.setIcon(R.drawable.ic_save_recipe);
+        m1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        return true;
     }
 
     @Override
@@ -129,6 +138,9 @@ public class RecipeActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case 0:
+                saveRecipe();
+                return  true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -148,8 +160,6 @@ public class RecipeActivity extends AppCompatActivity {
         etServes.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_serves), null);
 
         etObservation = (EditText) findViewById(R.id.et_observation);
-
-        fbSave = (FloatingActionButton) findViewById(R.id.fb_save_recipe);
 
         ingredientAdapter = new IngredientAdapter(this, ingredients, false);
         rvIngredients = (RecyclerView) findViewById(R.id.rv_list_ingredient);
@@ -237,25 +247,12 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        fbSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveRecipe();
-            }
-        });
 
         ivImageRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
                 startActivityForResult(intentCamera, 0);
-            }
-        });
-
-        rbDifficulty.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(RecipeActivity.this, String.valueOf(rbDifficulty.getRating()), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -281,7 +278,6 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void saveRecipe() {
@@ -302,44 +298,13 @@ public class RecipeActivity extends AppCompatActivity {
                     .setMessage(R.string.question_save_recipe)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+
                             recipe.setTitle(etTitleRecipe.getText().toString());
                             Bitmap imageSave = ((BitmapDrawable) ivImageRecipe.getDrawable()).getBitmap();
                             ByteArrayOutputStream bos = new ByteArrayOutputStream();
                             imageSave.compress(Bitmap.CompressFormat.PNG, 0, bos);
 
                             recipe.setImageRecipe(bos.toByteArray());
-//                            switch (recipeType.getEnumRecipeType().getCode()) {
-//                                case 1:
-//                                    recipe.setImageRecipe(R.drawable.meat);
-//                                    break;
-//                                case 2:
-//                                    recipe.setImageRecipe(R.drawable.bird);
-//                                    break;
-//                                case 3:
-//                                    recipe.setImageRecipe(R.drawable.fish);
-//                                    break;
-//                                case 4:
-//                                    recipe.setImageRecipe(R.drawable.salad);
-//                                    break;
-//                                case 5:
-//                                    recipe.setImageRecipe(R.drawable.sauce);
-//                                    break;
-//                                case 6:
-//                                    recipe.setImageRecipe(R.drawable.soup);
-//                                    break;
-//                                case 7:
-//                                    recipe.setImageRecipe(R.drawable.pasta);
-//                                    break;
-//                                case 8:
-//                                    recipe.setImageRecipe(R.drawable.drink);
-//                                    break;
-//                                case 9:
-//                                    recipe.setImageRecipe(R.drawable.candy);
-//                                    break;
-//                                case 10:
-//                                    recipe.setImageRecipe(R.drawable.bread);
-//                                    break;
-//                            }
 
                             recipe.setPrepareMode(etPrepareMode.getText().toString());
                             recipe.setPrepareTime(etPrepareTime.getText().toString());
@@ -348,7 +313,7 @@ public class RecipeActivity extends AppCompatActivity {
                             recipe.setObservation(etObservation.getText().toString());
                             recipe.setPrice(Float.valueOf(etPrice.getText().toString()));
                             recipe.setDifficulty(rbDifficulty.getRating());
-                            recipe.setId((int)recipe.save());
+                            recipe.setId((int) recipe.save());
 
                             saveIngredients();
 

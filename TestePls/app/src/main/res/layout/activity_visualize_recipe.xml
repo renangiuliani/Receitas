@@ -90,7 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_pt_s"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:id="@+id/relativeLayout">
 
             <LinearLayout
                 android:id="@+id/ll_price_difficulty"
@@ -206,7 +207,6 @@
                 android:textColor="@color/text_icons" />
 
         </RelativeLayout>
-
     </RelativeLayout>
 
 </ScrollView>

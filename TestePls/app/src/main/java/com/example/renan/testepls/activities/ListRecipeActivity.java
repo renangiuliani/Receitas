@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Created by Renan on 21/09/2015.
  */
-public class ListRecipeActivity extends AppCompatActivity{
+public class ListRecipeActivity extends AppCompatActivity {
 
     private FloatingActionButton fbAddRecipe;
     private static ListRecipeAdapter listRecipeAdapter;
@@ -58,7 +58,7 @@ public class ListRecipeActivity extends AppCompatActivity{
 
         recipe = new Recipe();
 
-        recipes = recipe.getAll();
+        recipes = recipe.getAll(0);
         listRecipeAdapter.setList(recipes);
 
         Drawer result = new DrawerMenuUtil(this, toolbar).create().build();
@@ -68,37 +68,45 @@ public class ListRecipeActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         recipe = new Recipe();
-        recipes = recipe.getAll();
+        recipes = recipe.getAll(0);
         listRecipeAdapter.setList(recipes);
         listRecipeAdapter.notifyDataSetChanged();
+
+        if (recipes.size() == 0) {
+            rvListRecipe.setVisibility(View.GONE);
+            tvNoResult.setVisibility(View.VISIBLE);
+        } else {
+            tvNoResult.setVisibility(View.GONE);
+            rvListRecipe.setVisibility(View.VISIBLE);
+        }
     }
 
     public static void updateItens(int limit) {
         HashMap<String, String> hashMapCodeType = new HashMap<String, String>();
 
-        if(filterRecipeType == 12){
+        if (filterRecipeType == 12) {
             hashMapCodeType.put("favorite", "1");
-        }else if(filterRecipeType > 0 && filterRecipeType < 11){
+        } else if (filterRecipeType > 0 && filterRecipeType < 11) {
             hashMapCodeType.put("codeType", String.valueOf(filterRecipeType));
         }
 
-        if(!("").equals(textSearch)){
+        if (!("").equals(textSearch) || textSearch != null) {
             hashMapCodeType.put("title", textSearch);
         }
 
         listAdd = recipe.getByType(limit, hashMapCodeType);
 
-        if(limit == 0){
+        if (limit == 0) {
             recipes = listAdd;
-            listRecipeAdapter.setList(recipes);
-        }else {
+        } else {
             recipes.addAll(listAdd);
         }
+        listRecipeAdapter.setList(recipes);
 
-        if(recipes.size() == 0){
+        if (recipes.size() == 0) {
             rvListRecipe.setVisibility(View.GONE);
             tvNoResult.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvNoResult.setVisibility(View.GONE);
             rvListRecipe.setVisibility(View.VISIBLE);
         }
@@ -125,9 +133,9 @@ public class ListRecipeActivity extends AppCompatActivity{
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            if (newText.toString().equals("")){
+            if (newText.toString().equals("")) {
                 textSearch = "";
-            }else{
+            } else {
                 textSearch = newText.toUpperCase();
             }
 
@@ -160,6 +168,11 @@ public class ListRecipeActivity extends AppCompatActivity{
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if(newState == 0){
+                    fbAddRecipe.setVisibility(View.VISIBLE);
+                }else{
+                    fbAddRecipe.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -170,6 +183,7 @@ public class ListRecipeActivity extends AppCompatActivity{
                 }
 
             }
+
         });
 
         tvNoResult = (TextView) findViewById(R.id.tv_no_result);

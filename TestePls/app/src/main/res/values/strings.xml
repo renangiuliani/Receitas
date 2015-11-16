@@ -30,4 +30,5 @@
     <string name="no_result">Nenhuma receita encontrada.</string>
     <string name="price">Preço Gasto</string>
     <string name="difficulty">Dificuldade</string>
+    <string name="share">Compartilhar</string>
 </resources>

@@ -6,6 +6,5 @@
         android:id="@+id/menu_search"
         android:title="@string/search"
         appcompat:actionViewClass="android.support.v7.widget.SearchView"
-        appcompat:showAsAction="always"
-        android:icon="@drawable/ic_save_recipe"/>
+        appcompat:showAsAction="always"/>
 </menu>

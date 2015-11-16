@@ -3,7 +3,9 @@ package com.example.renan.testepls.activities;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,9 @@ import com.example.renan.testepls.entities.Ingredient;
 import com.example.renan.testepls.entities.Recipe;
 import com.example.renan.testepls.entities.RecipeType;
 
+import org.apache.http.protocol.HTTP;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,16 +41,14 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 
     private Recipe recipe, recipeAux;
     private Integer idRecipe;
-    private ImageView ivPhotoRecipe, ivShare, ivBack, ivEdit, ivPrepareTime, ivDelete;
+    private ImageView ivImageRecipe, ivShare, ivBack, ivEdit, ivGradient, ivDelete;
     private FloatingActionButton ivFavorite;
     private TextView tvTitle, tvPrepareTime, tvServes, tvPrepareMode, tvObservation, tvTitleObservation, tvPrice;
     private RecyclerView rvListIngredient;
-    private boolean favorite = false;
     private RecipeType recipeType;
     private IngredientAdapter ingredientAdapter;
     private List<Ingredient> ingredients;
     private Ingredient ingredientAux;
-    private RelativeLayout rlMain;
     private RatingBar rbDifficulty;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -79,6 +81,29 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         fillElements();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(data != null){
+            Bundle bundle = data.getExtras();
+            if(bundle != null){
+                Bitmap img = (Bitmap) bundle.get("data");
+                ivImageRecipe.setImageBitmap(img);
+
+                Bitmap imageSave = ((BitmapDrawable) ivImageRecipe.getDrawable()).getBitmap();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                imageSave.compress(Bitmap.CompressFormat.PNG, 0, bos);
+
+                recipe.setImageRecipe(bos.toByteArray());
+
+                recipe.save();
+                Toast.makeText(VisualizeRecipeActivity.this, "Imagem da receita atualizada!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
     private void bindElements() {
 
         tvTitle = (TextView) findViewById(R.id.tv_title);
@@ -87,7 +112,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         ivShare = (ImageView) findViewById(R.id.iv_share);
         ivFavorite = (FloatingActionButton) findViewById(R.id.iv_favorite);
         ivBack = (ImageView) findViewById(R.id.iv_back);
-        ivPhotoRecipe = (ImageView) findViewById(R.id.iv_image_recipe);
+        ivImageRecipe = (ImageView) findViewById(R.id.iv_image_recipe);
         ivEdit = (ImageView) findViewById(R.id.iv_edit);
         tvPrepareMode = (TextView) findViewById(R.id.tv_prepare_mode);
         tvObservation = (TextView) findViewById(R.id.tv_observation);
@@ -99,8 +124,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         rvListIngredient.setLayoutManager(new MyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvListIngredient.setAdapter(ingredientAdapter);
 
-        ivPrepareTime = (ImageView) findViewById(R.id.iv_prepare_time);
-        rlMain = (RelativeLayout) findViewById(R.id.rl_main);
+        ivGradient = (ImageView) findViewById(R.id.iv_gradient);
 
         tvPrice = (TextView) findViewById(R.id.tv_price);
         rbDifficulty = (RatingBar) findViewById(R.id.rb_difficulty);
@@ -133,7 +157,18 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         ivShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(VisualizeRecipeActivity.this, "Share", Toast.LENGTH_SHORT).show();
+                // Create the text message with a string
+                final Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, prepareTextShare(recipe));
+                sendIntent.setType(HTTP.PLAIN_TEXT_TYPE);
+
+                // Create intent to show the chooser dialog
+                final Intent chooser = Intent.createChooser(sendIntent, getString(R.string.share));
+
+                // Verify the original intent will resolve to at least one activity
+                if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(chooser);
+                }
             }
         });
 
@@ -176,33 +211,14 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
             }
         });
 
-        ivPrepareTime.setOnClickListener(new View.OnClickListener() {
+        ivGradient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (teste == 0) {
-//                    teste = 1;
-//                    rlMain.setBackground(getResources().getDrawable(R.drawable.background3));
-//                } else if (teste == 1) {
-//                    teste = 2;
-//                    rlMain.setBackground(getResources().getDrawable(R.drawable.background33));
-//                } else if (teste == 2) {
-//                    teste = 3;
-//                    rlMain.setBackground(getResources().getDrawable(R.drawable.background3));
-//                } else if (teste == 3) {
-//                    teste = 4;
-//                    rlMain.setBackground(getResources().getDrawable(R.drawable.background33));
-//                } else if (teste == 4) {
-//                    teste = 5;
-//                    rlMain.setBackground(getResources().getDrawable(R.drawable.background3));
-//                } else if (teste == 5) {
-//                    teste = 6;
-//                    rlMain.setBackground(getResources().getDrawable(R.drawable.background33));
-//                } else {
-//                    teste = 0;
-//                    rlMain.setBackground(getResources().getDrawable(R.drawable.background3));
-//                }
+                Intent intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivityForResult(intentCamera, 0);
             }
         });
+
     }
 
     public void fillElements(){
@@ -211,7 +227,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         tvTitle.setText(recipe.getTitle());
         tvPrepareTime.setText(recipe.getPrepareTime());
         tvServes.setText(String.valueOf(recipe.getServes()));
-        ivPhotoRecipe.setImageBitmap(BitmapFactory.decodeByteArray(recipe.getImageRecipe(), 0, recipe.getImageRecipe().length));
+        ivImageRecipe.setImageBitmap(BitmapFactory.decodeByteArray(recipe.getImageRecipe(), 0, recipe.getImageRecipe().length));
         tvPrepareMode.setText(recipe.getPrepareMode());
 
         tvObservation.setText(recipe.getObservation());
@@ -239,5 +255,29 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
     public void deleteRecipe(int idRecipe) {
         recipe.delete(idRecipe);
         ingredientAux.deleteByRecipe(idRecipe);
+    }
+
+    public String prepareTextShare(Recipe recipe){
+        String textShare = "";
+
+        textShare += getString(R.string.title) + ": " + recipe.getTitle();
+        textShare += "\n \n" + getString(R.string.prepration_time) + ": " + recipe.getPrepareTime();
+        textShare += "\n" + getString(R.string.serves) + ": " + recipe.getServes();
+        textShare += "\n" + getString(R.string.difficulty) + ": " + (int) recipe.getDifficulty();
+        textShare += "\n" + getString(R.string.price) + ": " + recipe.getPrice();
+
+        textShare += "\n \n" + getString(R.string.list_ingredient) + ": ";
+
+        for(Ingredient i : ingredients){
+            textShare += "\n" + i.getNameIngredient();
+        }
+
+        textShare += "\n \n" + getString(R.string.prepare_mode) + ": \n" + recipe.getPrepareMode();
+
+        if(!("").equals(recipe.getObservation())) {
+            textShare += "\n \n" + getString(R.string.observation) + ": \n" + recipe.getObservation();
+        }
+
+        return textShare;
     }
 }
