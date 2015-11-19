@@ -42,7 +42,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         if(whiteItens){
             viewHolder.tvName.setTextColor(context.getResources().getColor(R.color.text_icons));
-            viewHolder.ivMarker.setVisibility(View.GONE);
+            viewHolder.ivMarker.setImageResource(R.drawable.ic_marker_white);
         }
     }
 

@@ -23,7 +23,7 @@ public class Recipe implements Parcelable {
     private String observation;
     private int favorite;
     private float price;
-    private float difficulty;
+    private int difficulty;
 
     public Recipe() {
         super();
@@ -109,11 +109,11 @@ public class Recipe implements Parcelable {
         this.price = price;
     }
 
-    public float getDifficulty() {
+    public int getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(float difficulty) {
+    public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 
@@ -154,7 +154,7 @@ public class Recipe implements Parcelable {
         dest.writeString(this.observation);
         dest.writeInt(this.favorite);
         dest.writeFloat(this.price);
-        dest.writeFloat(this.difficulty);
+        dest.writeInt(this.difficulty);
     }
 
     protected Recipe(Parcel in) {
@@ -168,7 +168,7 @@ public class Recipe implements Parcelable {
         this.observation = in.readString();
         this.favorite = in.readInt();
         this.price = in.readFloat();
-        this.difficulty = in.readFloat();
+        this.difficulty = in.readInt();
     }
 
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {

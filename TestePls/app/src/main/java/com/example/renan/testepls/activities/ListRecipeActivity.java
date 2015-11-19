@@ -42,6 +42,7 @@ public class ListRecipeActivity extends AppCompatActivity {
     private static List<Recipe> listAdd;
     private static String textSearch;
     private static TextView tvNoResult;
+    private Drawer result;
     ArrayList<RecipeType> recipeTypes;
 
     @Override
@@ -61,7 +62,7 @@ public class ListRecipeActivity extends AppCompatActivity {
         recipes = recipe.getAll(0);
         listRecipeAdapter.setList(recipes);
 
-        Drawer result = new DrawerMenuUtil(this, toolbar).create().build();
+        result = new DrawerMenuUtil(this, toolbar).create().build();
     }
 
     @Override
@@ -79,6 +80,12 @@ public class ListRecipeActivity extends AppCompatActivity {
             tvNoResult.setVisibility(View.GONE);
             rvListRecipe.setVisibility(View.VISIBLE);
         }
+
+        updateTotalRecipes(result);
+    }
+
+    private void updateTotalRecipes(Drawer result) {
+
     }
 
     public static void updateItens(int limit) {

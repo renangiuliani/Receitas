@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_app2">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rl_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -83,51 +82,83 @@
 
             </LinearLayout>
 
-
         </LinearLayout>
 
+
         <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_pt_s"
-            android:layout_margin="8dp"
-            android:id="@+id/relativeLayout">
-
-            <LinearLayout
-                android:id="@+id/ll_price_difficulty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            android:layout_margin="8dp">
 
             <TextView
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_icons"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_marginLeft="6dp"
-                android:textSize="25sp"
                 android:layout_marginRight="20dp"
-                android:text="R$ 12.99"/>
+                android:text="R$ 1.234,99"
+                android:textColor="@color/text_icons"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-            <RatingBar
-                android:id="@+id/rb_difficulty"
-                android:layout_width="250dp"
-                android:layout_toRightOf="@+id/et_price"
+            <LinearLayout
+                android:id="@+id/ll_stars"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:numStars="5"
-                android:stepSize="1.0" />
+                android:layout_alignParentEnd="true">
 
+                <ImageView
+                    android:id="@+id/iv_star_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
             </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_title_list_ingredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_price"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/ll_price_difficulty"
+                android:layout_marginTop="4dp"
                 android:text="@string/list_ingredient"
                 android:textColor="@color/text_icons"
                 android:textSize="20sp"
@@ -145,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ln_list_ingredient"
-                android:layout_marginLeft="6dp"/>
+                android:layout_marginLeft="6dp" />
 
             <TextView
                 android:id="@+id/tv_title_prepare_mode"
@@ -171,9 +202,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ln_prepare_mode"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="6dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
                 android:text="Modo Preparo 1\nteste 1\nteste 2"
                 android:textColor="@color/text_icons" />
 
@@ -200,10 +231,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ln_observation"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="6dp"
                 android:layout_marginTop="4dp"
                 android:text="Observação 1\nTeste"
-                android:layout_marginBottom="8dp"
                 android:textColor="@color/text_icons" />
 
         </RelativeLayout>

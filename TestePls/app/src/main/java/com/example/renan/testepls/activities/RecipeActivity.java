@@ -11,9 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.renan.testepls.R;
 import com.example.renan.testepls.Util.MyLinearLayoutManager;
+import com.example.renan.testepls.Util.NumericUtil;
 import com.example.renan.testepls.Util.Util;
 import com.example.renan.testepls.adapter.IngredientAdapter;
 import com.example.renan.testepls.entities.Ingredient;
@@ -36,7 +34,6 @@ import com.example.renan.testepls.helper.SimpleItemTouchHelperCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,9 +53,8 @@ public class RecipeActivity extends AppCompatActivity {
     private List<Ingredient> ingredients;
     private Ingredient ingredientSave;
     private ImageView ivImageRecipe;
-    private RatingBar rbDifficulty;
-    private String numero;
-
+    private ArrayList<ImageView> listStar;
+    private int difficulty = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +63,7 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
 
         ingredients = new ArrayList<>();
-
+        listStar = new ArrayList<>();
         ingredientSave = new Ingredient();
 
         bindElements();
@@ -89,8 +85,10 @@ public class RecipeActivity extends AppCompatActivity {
                 etServes.setText(String.valueOf(recipe.getServes()));
                 etPrepareMode.setText(recipe.getPrepareMode());
                 etObservation.setText(recipe.getObservation());
-                rbDifficulty.setRating(recipe.getDifficulty());
+
                 etPrice.setText(String.valueOf(recipe.getPrice()));
+
+                fillStars(recipe.getDifficulty());
 
                 List<Ingredient> ingredients = ingredientSave.getByRecipe(recipe.getId());
 
@@ -140,7 +138,7 @@ public class RecipeActivity extends AppCompatActivity {
                 return true;
             case 0:
                 saveRecipe();
-                return  true;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -174,9 +172,13 @@ public class RecipeActivity extends AppCompatActivity {
 
         ivImageRecipe = (ImageView) findViewById(R.id.iv_image_recipe);
 
-        rbDifficulty = (RatingBar) findViewById(R.id.rb_difficulty);
-
         etPrice = (EditText) findViewById(R.id.et_price);
+
+        listStar.add((ImageView) findViewById(R.id.iv_star_1));
+        listStar.add((ImageView) findViewById(R.id.iv_star_2));
+        listStar.add((ImageView) findViewById(R.id.iv_star_3));
+        listStar.add((ImageView) findViewById(R.id.iv_star_4));
+        listStar.add((ImageView) findViewById(R.id.iv_star_5));
 
         bindEvents();
     }
@@ -256,28 +258,17 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        etPrice.addTextChangedListener(new TextWatcher() {
+        etPrice.addTextChangedListener(new NumericUtil.MonetaryMask(etPrice));
 
-            private boolean isUpdating = false;
-            // Pega a formatacao do sistema, se for brasil R$ se EUA US$
-            private NumberFormat nf = NumberFormat.getCurrencyInstance();
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int after) {
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Antes
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // Depois
-            }
-        });
-
+        for(int x = 0; x < listStar.size(); x++){
+            final int finalX = x;
+            listStar.get(x).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fillStars((finalX + 1));
+                }
+            });
+        }
     }
 
     private void saveRecipe() {
@@ -311,8 +302,9 @@ public class RecipeActivity extends AppCompatActivity {
                             recipe.setServes(Integer.valueOf(etServes.getText().toString()));
                             recipe.setRecipeType(recipeType.getEnumRecipeType().getCode());
                             recipe.setObservation(etObservation.getText().toString());
-                            recipe.setPrice(Float.valueOf(etPrice.getText().toString()));
-                            recipe.setDifficulty(rbDifficulty.getRating());
+                            String stPrice = etPrice.getText().toString().replaceAll("[R$.]", "").replaceAll("[,]", ".");
+                            recipe.setPrice(("").equals(stPrice) ? 0 : Float.valueOf(stPrice));
+                            recipe.setDifficulty(difficulty);
                             recipe.setId((int) recipe.save());
 
                             saveIngredients();
@@ -336,9 +328,12 @@ public class RecipeActivity extends AppCompatActivity {
     private void saveIngredients() {
         ingredientSave.deleteByRecipe(recipe.getId());
 
-        for (Ingredient i : ingredientAdapter.itens) {
-            i.setRecipeId(recipe.getId());
-            i.save();
+        for (int i = 0; i < ingredientAdapter.itens.size(); i++) {
+            Ingredient ingredientAux = new Ingredient();
+            ingredientAux.setOrder(i);
+            ingredientAux.setRecipeId(recipe.getId());
+            ingredientAux.setNameIngredient(ingredientAdapter.itens.get(i).getNameIngredient());
+            ingredientAux.save();
         }
     }
 
@@ -393,5 +388,20 @@ public class RecipeActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    public void fillStars(int number){
+
+        difficulty = number;
+
+        for(int x = 0; x < listStar.size(); x++){
+            if(x < number) {
+                listStar.get(x).setImageDrawable(getResources().getDrawable(R.drawable.ic_star_on));
+                listStar.get(x).setAlpha((float) 1);
+            }else{
+                listStar.get(x).setImageDrawable(getResources().getDrawable(R.drawable.ic_star_off));
+                listStar.get(x).setAlpha((float) 0.5);
+            }
+        }
     }
 }

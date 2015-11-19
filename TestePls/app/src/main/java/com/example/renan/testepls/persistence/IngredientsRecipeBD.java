@@ -15,10 +15,11 @@ public class IngredientsRecipeBD {
 
     public static final String TABLE = "ingredients_recipe";
     public static final String ID = "_id";
+    public static final String ORDER = "orderRecipe";
     public static final String RECIPE_ID = "recipe_id";
     public static final String INGREDIENT = "ingredient";
 
-    public static final String[] COLUNS = {ID, RECIPE_ID, INGREDIENT};
+    public static final String[] COLUNS = {ID, ORDER, RECIPE_ID, INGREDIENT};
 
     public static String createTable() {
         final StringBuilder sql = new StringBuilder();
@@ -26,15 +27,17 @@ public class IngredientsRecipeBD {
         sql.append(TABLE);
         sql.append(" ( ");
         sql.append(ID + " INTEGER PRIMARY KEY, ");
+        sql.append(ORDER + " INTEGER, ");
         sql.append(RECIPE_ID + " INTEGER, ");
         sql.append(INGREDIENT + " TEXT ");
-        sql.append(" ); ");
+        sql.append("); ");
         return sql.toString();
     }
 
     public static ContentValues getContentValues(Ingredient ingredient) {
         ContentValues content = new ContentValues();
         content.put(ID, ingredient.getId());
+        content.put(ORDER, ingredient.getOrder());
         content.put(RECIPE_ID, ingredient.getRecipeId());
         content.put(INGREDIENT, ingredient.getNameIngredient());
         return content;
@@ -43,9 +46,10 @@ public class IngredientsRecipeBD {
     public static Ingredient bind(Cursor cursor) {
         if (!cursor.isBeforeFirst() || cursor.moveToNext()) {
             Ingredient ingredient = new Ingredient();
-            ingredient.setId((cursor.getInt(cursor.getColumnIndex(ID))));
-            ingredient.setRecipeId(cursor.getInt(cursor.getColumnIndex(RECIPE_ID)));
+            ingredient.setId(cursor.getInt(cursor.getColumnIndex(ID)));
+            ingredient.setOrder(cursor.getInt(cursor.getColumnIndex(ORDER)));
             ingredient.setNameIngredient(cursor.getString(cursor.getColumnIndex(INGREDIENT)));
+            ingredient.setRecipeId(cursor.getInt(cursor.getColumnIndex(RECIPE_ID)));
             return ingredient;
         }
         return null;

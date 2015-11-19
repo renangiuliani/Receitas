@@ -53,7 +53,7 @@ public class IngredientsRecipeRepository {
 
         String queryString = "recipe_id = " + String.valueOf(recipeId);
 
-        Cursor cursor = db.query(IngredientsRecipeBD.TABLE, IngredientsRecipeBD.COLUNS, queryString, null, null, null, IngredientsRecipeBD.ID, null);
+        Cursor cursor = db.query(IngredientsRecipeBD.TABLE, IngredientsRecipeBD.COLUNS, queryString, null, null, null, IngredientsRecipeBD.ORDER, null);
         List<Ingredient> ingredients = IngredientsRecipeBD.bindList(cursor);
 
         db.close();

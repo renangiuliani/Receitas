@@ -1,12 +1,13 @@
 Pilha de activity quando salva.
 Hint quando entra para editar.
-Remover a troca de lugar de ingrediente
 Ação click abrir redondo na toolbar visualizar
 Quando abrir teclado de procura receita, ajustar o textview de not found
 Filtrar avançado por ingredientes, tempo preparo, serve, difuldade e preço
 Fazer tela de login com opção de entrar automaticamente
 Colocar temporizador na tela de visualizar
 Colocar video
+Quando entrar na tela, atualziar o drawer menu com o total
+Colocar o rating bar para a imagem do tipo da receita
 
 Animações
 Quando botão de add receita sumir, animar para descer

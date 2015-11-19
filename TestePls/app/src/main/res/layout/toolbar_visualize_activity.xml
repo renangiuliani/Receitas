@@ -34,7 +34,7 @@
                     android:alpha="0.5"
                     android:src="@drawable/gradient_black_transparent" />
 
-                <ImageView
+                    <ImageView
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -15,8 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +49,8 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
     private IngredientAdapter ingredientAdapter;
     private List<Ingredient> ingredients;
     private Ingredient ingredientAux;
-    private RatingBar rbDifficulty;
+    private View lnObservation;
+    private ArrayList<ImageView> listStar;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -63,6 +64,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ingredients = new ArrayList<>();
+        listStar = new ArrayList<>();
 
         bindElements();
 
@@ -85,9 +87,9 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(data != null){
+        if (data != null) {
             Bundle bundle = data.getExtras();
-            if(bundle != null){
+            if (bundle != null) {
                 Bitmap img = (Bitmap) bundle.get("data");
                 ivImageRecipe.setImageBitmap(img);
 
@@ -127,9 +129,16 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         ivGradient = (ImageView) findViewById(R.id.iv_gradient);
 
         tvPrice = (TextView) findViewById(R.id.tv_price);
-        rbDifficulty = (RatingBar) findViewById(R.id.rb_difficulty);
+
+        listStar.add((ImageView) findViewById(R.id.iv_star_1));
+        listStar.add((ImageView) findViewById(R.id.iv_star_2));
+        listStar.add((ImageView) findViewById(R.id.iv_star_3));
+        listStar.add((ImageView) findViewById(R.id.iv_star_4));
+        listStar.add((ImageView) findViewById(R.id.iv_star_5));
 
         ivDelete = (ImageView) findViewById(R.id.iv_delete);
+
+        lnObservation = (View) findViewById(R.id.ln_observation);
 
         bindEvents();
 
@@ -140,6 +149,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(AnimationUtils.loadAnimation(VisualizeRecipeActivity.this, R.anim.image_click));
                 onBackPressed();
             }
         });
@@ -221,7 +231,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 
     }
 
-    public void fillElements(){
+    public void fillElements() {
         recipe = recipeAux.getById(idRecipe);
 
         tvTitle.setText(recipe.getTitle());
@@ -235,6 +245,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         } else {
             tvTitleObservation.setVisibility(View.GONE);
             tvObservation.setVisibility(View.GONE);
+            lnObservation.setVisibility(View.GONE);
         }
 
         if (recipe.getFavorite() == 1) {
@@ -243,11 +254,17 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
             ivFavorite.setImageResource(R.drawable.ic_favorite_off2);
         }
 
-        tvPrice.setText("R$ " + recipe.getPrice());
-        rbDifficulty.setRating(recipe.getDifficulty());
+        String stPrice = String.valueOf(recipe.getPrice()).replaceAll("[.]", ",");
+        if (recipe.getPrice() > 999.99) {
+            stPrice = stPrice.substring(0,1) + "." + stPrice.substring(1,7);
+        }
+
+        tvPrice.setText("R$ " + (recipe.getPrice() == 0 ? "-" : stPrice));
 
         ingredients = ingredientAux.getByRecipe(idRecipe);
         ingredientAdapter.setList(ingredients);
+
+        fillStars(recipe.getDifficulty());
 
         recipeType = new RecipeType(0, EnumRecipeType.getEnumByCode(recipe.getRecipeType()));
     }
@@ -257,7 +274,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         ingredientAux.deleteByRecipe(idRecipe);
     }
 
-    public String prepareTextShare(Recipe recipe){
+    public String prepareTextShare(Recipe recipe) {
         String textShare = "";
 
         textShare += getString(R.string.title) + ": " + recipe.getTitle();
@@ -268,16 +285,26 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
 
         textShare += "\n \n" + getString(R.string.list_ingredient) + ": ";
 
-        for(Ingredient i : ingredients){
+        for (Ingredient i : ingredients) {
             textShare += "\n" + i.getNameIngredient();
         }
 
         textShare += "\n \n" + getString(R.string.prepare_mode) + ": \n" + recipe.getPrepareMode();
 
-        if(!("").equals(recipe.getObservation())) {
+        if (!("").equals(recipe.getObservation())) {
             textShare += "\n \n" + getString(R.string.observation) + ": \n" + recipe.getObservation();
         }
 
         return textShare;
+    }
+
+    public void fillStars(int number){
+
+        for(int x = 0; x < listStar.size(); x++){
+            if(x < number) {
+                listStar.get(x).setImageDrawable(getResources().getDrawable(R.drawable.ic_star_on));
+                listStar.get(x).setAlpha((float) 1);
+            }
+        }
     }
 }

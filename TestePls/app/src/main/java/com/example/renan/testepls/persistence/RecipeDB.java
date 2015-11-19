@@ -43,8 +43,8 @@ public class RecipeDB {
         sql.append(OBSERVATION + " TEXT, ");
         sql.append(FAVORITE + " INTEGER, ");
         sql.append(PRICE + " REAL, ");
-        sql.append(DIFFICULTY + " REAL ");
-        sql.append(" ); ");
+        sql.append(DIFFICULTY + " INTEGER ");
+        sql.append("); ");
         return sql.toString();
     }
 
@@ -77,7 +77,7 @@ public class RecipeDB {
             recipe.setObservation(cursor.getString(cursor.getColumnIndex(OBSERVATION)));
             recipe.setFavorite(cursor.getInt(cursor.getColumnIndex(FAVORITE)));
             recipe.setPrice(cursor.getFloat(cursor.getColumnIndex(PRICE)));
-            recipe.setDifficulty(cursor.getFloat(cursor.getColumnIndex(DIFFICULTY)));
+            recipe.setDifficulty(cursor.getInt(cursor.getColumnIndex(DIFFICULTY)));
             return recipe;
         }
         return null;

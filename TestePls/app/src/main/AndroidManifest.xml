@@ -23,7 +23,6 @@
         <!--<activity android:name=".activities.ListRecipeActivity" />-->
         <activity
             android:name=".activities.RecipeActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity

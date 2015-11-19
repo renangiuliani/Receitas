@@ -8,9 +8,15 @@
         android:title="Compartilhar" />
 
     <item
-        android:id="@+id/favorite"
-        android:icon="@drawable/ic_favorite_off"
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_delete"
         android:showAsAction="always"
-        android:title="Favoritar" />
+        android:title="Remover" />
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_edit"
+        android:showAsAction="always"
+        android:title="Editar" />
 
 </menu>

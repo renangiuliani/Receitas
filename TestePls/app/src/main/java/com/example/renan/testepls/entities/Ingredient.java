@@ -12,6 +12,7 @@ public class Ingredient {
     private Integer id;
     private String nameIngredient;
     private int recipeId;
+    private int order;
 
     public Ingredient() {
         super();
@@ -41,15 +42,23 @@ public class Ingredient {
         this.recipeId = recipeId;
     }
 
-    public  void save(){
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public void save() {
         IngredientsRecipeRepository.getInstance().save(this);
     }
 
-    public static void deleteByRecipe(int recipeId){
+    public static void deleteByRecipe(int recipeId) {
         IngredientsRecipeRepository.getInstance().deleteByRecipe(recipeId);
     }
 
-    public static List<Ingredient> getByRecipe(int recipeId){
+    public static List<Ingredient> getByRecipe(int recipeId) {
         return IngredientsRecipeRepository.getInstance().getByRecipe(recipeId);
     }
 }
