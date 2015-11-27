@@ -11,9 +11,12 @@ import com.example.renan.testepls.adapter.IngredientAdapter;
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final IngredientAdapter mAdapter;
+    private final Boolean mDragDrop, mDismiss;
 
-    public SimpleItemTouchHelperCallback(IngredientAdapter adapter) {
+    public SimpleItemTouchHelperCallback(IngredientAdapter adapter, Boolean dragDrop, Boolean dismiss) {
         mAdapter = adapter;
+        mDragDrop = dragDrop;
+        mDismiss = dismiss;
     }
 
     @Override
@@ -28,8 +31,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+        int dragFlags = mDragDrop ? ItemTouchHelper.UP | ItemTouchHelper.DOWN : 0;
+        int swipeFlags = mDismiss ? ItemTouchHelper.START | ItemTouchHelper.END : 0;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 

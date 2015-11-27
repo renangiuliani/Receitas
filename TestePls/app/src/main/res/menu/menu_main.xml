@@ -7,4 +7,10 @@
         android:title="@string/search"
         appcompat:actionViewClass="android.support.v7.widget.SearchView"
         appcompat:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_advanced_filter"
+        android:title="Filtro Avançado"
+        android:icon="@drawable/ic_advanced_filter2"
+        appcompat:showAsAction="always"/>
 </menu>

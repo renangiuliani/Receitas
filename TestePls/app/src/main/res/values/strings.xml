@@ -6,7 +6,7 @@
     <string name="title">Título</string>
     <string name="ingredient">Ingrediente</string>
     <string name="prepare_mode">Modo de Preparo</string>
-    <string name="prepration_time">Tempo de Preparo</string>
+    <string name="prepare_time">Tempo de Preparo</string>
     <string name="serves">Serve</string>
     <string name="save">Salvar</string>
     <string name="list_ingredient">Lista de Ingredientes</string>
@@ -31,4 +31,5 @@
     <string name="price">Preço Gasto</string>
     <string name="difficulty">Dificuldade</string>
     <string name="share">Compartilhar</string>
+    <string name="advanced_filter">Filtro Avançado</string>
 </resources>

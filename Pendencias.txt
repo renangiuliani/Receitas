@@ -6,8 +6,10 @@ Filtrar avançado por ingredientes, tempo preparo, serve, difuldade e preço
 Fazer tela de login com opção de entrar automaticamente
 Colocar temporizador na tela de visualizar
 Colocar video
-Quando entrar na tela, atualziar o drawer menu com o total
 Colocar o rating bar para a imagem do tipo da receita
+Alterar cor searchview e drawer menu para branco na tela inicial
+Adicionar longclick na lista para mostrar um balão com as informações: tempo preparo, preço e serves
+
 
 Animações
 Quando botão de add receita sumir, animar para descer

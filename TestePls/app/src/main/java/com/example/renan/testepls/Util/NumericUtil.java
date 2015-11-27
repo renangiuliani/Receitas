@@ -21,12 +21,14 @@ public class NumericUtil {
     public static class MonetaryMask implements TextWatcher {
 
         private EditText mEditText;
+        private Boolean mPrefix;
 
         private NumberFormat mNumberFormat = NumberFormat.getCurrencyInstance(Util.LOCALE_PT_BR);
 
-        public MonetaryMask(EditText editText) {
+        public MonetaryMask(EditText editText, Boolean prefix) {
             super();
             mEditText = editText;
+            mPrefix = prefix;
         }
 
         @Override
@@ -40,8 +42,12 @@ public class NumericUtil {
 
             try {
                 double value = valueWithoutMask(cs.toString());
-                str = mNumberFormat.format(value);
+                str = ("").equals(cs.toString()) ? "" : mNumberFormat.format(value);
                 mEditText.removeTextChangedListener(this);
+                if (!mPrefix) {
+                    str = str.replaceAll("[R$]", "");
+                }
+
                 mEditText.setText(str);
                 mEditText.addTextChangedListener(this);
                 mEditText.setSelection(str.length());

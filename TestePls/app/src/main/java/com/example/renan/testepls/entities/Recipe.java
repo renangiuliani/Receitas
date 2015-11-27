@@ -129,8 +129,8 @@ public class Recipe implements Parcelable {
         RecipeRepository.getInstance().delete(id);
     }
 
-    public static List<Recipe> getByType(int limit, HashMap<String, String> query) {
-        return RecipeRepository.getInstance().getByType(limit, query);
+    public static List<Recipe> getByAll(int limit, HashMap<String, String> query) {
+        return RecipeRepository.getInstance().getByAll(limit, query);
     }
 
     public static Recipe getById(int idRecipe) {

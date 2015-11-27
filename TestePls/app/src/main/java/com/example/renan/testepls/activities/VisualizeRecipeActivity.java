@@ -50,7 +50,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
     private List<Ingredient> ingredients;
     private Ingredient ingredientAux;
     private View lnObservation;
-    private ArrayList<ImageView> listStar;
+    private List<ImageView> listStar;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -278,7 +278,7 @@ public class VisualizeRecipeActivity extends AppCompatActivity {
         String textShare = "";
 
         textShare += getString(R.string.title) + ": " + recipe.getTitle();
-        textShare += "\n \n" + getString(R.string.prepration_time) + ": " + recipe.getPrepareTime();
+        textShare += "\n \n" + getString(R.string.prepare_time) + ": " + recipe.getPrepareTime();
         textShare += "\n" + getString(R.string.serves) + ": " + recipe.getServes();
         textShare += "\n" + getString(R.string.difficulty) + ": " + (int) recipe.getDifficulty();
         textShare += "\n" + getString(R.string.price) + ": " + recipe.getPrice();

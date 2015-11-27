@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/advanced_filter"
+        android:textColor="@color/primary_text"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_navigation_close" />
+
+
+    <RelativeLayout
+        android:id="@+id/ll_time_serves"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_d_prepare_time"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_prepare_time" />
+
+        <EditText
+            android:id="@+id/et_d_prepare_time"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_d_prepare_time"
+            android:gravity="center"
+            android:inputType="time"
+            android:maxLength="5"
+            android:nextFocusDown="@+id/et_d_serves"
+            android:singleLine="true" />
+
+        <ImageView
+            android:id="@+id/iv_d_serves"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+            android:layout_toRightOf="@id/et_d_prepare_time"
+            android:src="@drawable/ic_serves" />
+
+        <EditText
+            android:id="@+id/et_d_serves"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_d_serves"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="3"
+            android:nextFocusDown="@+id/et_d_price" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_price_difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ll_time_serves"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/iv_d_price"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_price" />
+
+        <EditText
+            android:id="@+id/et_d_price"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_d_price"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="8"
+            android:nextFocusDown="@+id/et_d_name_ingredient" />
+
+        <LinearLayout
+            android:id="@+id/ll_dificculty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/difficulty" />
+
+            <LinearLayout
+                android:id="@+id/ll_stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_star_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+
+                <ImageView
+                    android:id="@+id/iv_star_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_star_off" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_title_list_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_price_difficulty"
+        android:layout_marginTop="16dp"
+        android:text="@string/list_ingredient"
+        android:textSize="15dp" />
+
+    <EditText
+        android:id="@+id/et_d_name_ingredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title_list_ingredients" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_d_list_ingredient"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@+id/et_d_name_ingredient" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignTop="@+id/v_horizontal"
+        android:background="@color/divider_color" />
+
+    <View
+        android:id="@+id/v_horizontal"
+        android:layout_width="2dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/divider_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/tv_d_filter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:text="FILTRAR"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_d_clean"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="LIMPAR"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

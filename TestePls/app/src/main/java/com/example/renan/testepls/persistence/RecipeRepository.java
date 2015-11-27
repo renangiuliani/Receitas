@@ -74,7 +74,7 @@ public class RecipeRepository {
         return recipe;
     }
 
-    public List<Recipe> getByType(int limit, HashMap<String,String> query){
+    public List<Recipe> getByAll(int limit, HashMap<String, String> query){
 
         String limitString = "";
 
@@ -89,6 +89,14 @@ public class RecipeRepository {
         queryString += (query.get("title") != null) ? " AND UPPER(title) like '%" + query.get("title") + "%'" : "";
 
         queryString += (query.get("favorite") != null) ? " AND favorite = '" + query.get("favorite") + "'" : "";
+
+        queryString += (query.get("difficulty") != null) ? " AND difficulty = '" + query.get("difficulty") + "'" : "";
+
+        queryString += (query.get("prepareTime") != null) ? " AND prepare_time = '" + query.get("prepareTime") + "'" : "";
+
+        queryString += (query.get("serves") != null) ? " AND serves = '" + query.get("serves") + "'" : "";
+
+        queryString += (query.get("price") != null) ? " AND price = '" + Float.valueOf(query.get("price")) + "'" : "";
 
         DatabaseHelper helper = new DatabaseHelper(Util.CONTEXT);
         SQLiteDatabase db = helper.getWritableDatabase();

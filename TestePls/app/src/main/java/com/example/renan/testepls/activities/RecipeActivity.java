@@ -53,7 +53,7 @@ public class RecipeActivity extends AppCompatActivity {
     private List<Ingredient> ingredients;
     private Ingredient ingredientSave;
     private ImageView ivImageRecipe;
-    private ArrayList<ImageView> listStar;
+    private List<ImageView> listStar;
     private int difficulty = 1;
 
     @Override
@@ -86,7 +86,7 @@ public class RecipeActivity extends AppCompatActivity {
                 etPrepareMode.setText(recipe.getPrepareMode());
                 etObservation.setText(recipe.getObservation());
 
-                etPrice.setText(String.valueOf(recipe.getPrice()));
+                etPrice.setText(("0.0").equals(String.valueOf(recipe.getPrice())) ? "" : String.valueOf(recipe.getPrice()));
 
                 fillStars(recipe.getDifficulty());
 
@@ -166,7 +166,7 @@ public class RecipeActivity extends AppCompatActivity {
         rvIngredients.setAdapter(ingredientAdapter);
 
         ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(ingredientAdapter);
+                new SimpleItemTouchHelperCallback(ingredientAdapter, true, true);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvIngredients);
 
@@ -258,7 +258,7 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-        etPrice.addTextChangedListener(new NumericUtil.MonetaryMask(etPrice));
+        etPrice.addTextChangedListener(new NumericUtil.MonetaryMask(etPrice, true));
 
         for(int x = 0; x < listStar.size(); x++){
             final int finalX = x;
