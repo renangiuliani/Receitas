@@ -169,6 +169,7 @@
         android:id="@+id/et_d_name_ingredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:layout_below="@id/tv_title_list_ingredients" />
 
     <android.support.v7.widget.RecyclerView

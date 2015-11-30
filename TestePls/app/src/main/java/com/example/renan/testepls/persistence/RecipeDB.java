@@ -26,7 +26,7 @@ public class RecipeDB {
     public static final String PRICE = "price";
     public static final String DIFFICULTY = "difficulty";
 
-    public static final String[] COLUNS = {ID, TITLE, IMAGE, PREPARE_MODE, PREPARE_TIME, SERVES, RECIPE_TYPE, OBSERVATION, FAVORITE, PRICE, DIFFICULTY};
+    public static final String[] COLUNS = {TABLE +"."+ID, TITLE, IMAGE, PREPARE_MODE, PREPARE_TIME, SERVES, RECIPE_TYPE, OBSERVATION, FAVORITE, PRICE, DIFFICULTY};
 
     public static String createTable() {
         final StringBuilder sql = new StringBuilder();

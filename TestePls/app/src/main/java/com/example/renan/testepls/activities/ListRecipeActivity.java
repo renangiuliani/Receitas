@@ -11,6 +11,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -50,7 +51,7 @@ public class ListRecipeActivity extends AppCompatActivity {
     public static int filterRecipeType, difficulty = 0;
     private static Recipe recipe;
     private static List<Recipe> listAdd;
-    private static List<Ingredient> ingredients;
+    private static List<Ingredient> ingredients, ingredientsBk;
     private static String textSearch;
     private static TextView tvNoResult;
     private Drawer result;
@@ -74,6 +75,7 @@ public class ListRecipeActivity extends AppCompatActivity {
         recipe = new Recipe();
         listStar = new ArrayList<>();
         ingredients = new ArrayList<>();
+        ingredientsBk = new ArrayList<>();
 
         recipes = recipe.getAll(0);
         listRecipeAdapter.setList(recipes);
@@ -124,7 +126,7 @@ public class ListRecipeActivity extends AppCompatActivity {
             hashMapQuery.put("codeType", String.valueOf(filterRecipeType));
         }
 
-        if (!("").equals(textSearch) || textSearch != null) {
+        if (!("").equals(textSearch) && textSearch != null) {
             hashMapQuery.put("title", textSearch);
         }
 
@@ -132,11 +134,11 @@ public class ListRecipeActivity extends AppCompatActivity {
             hashMapQuery.put("difficulty", String.valueOf(difficulty));
         }
 
-        if (!("").equals(stPrepareTime)) {
+        if (!("").equals(stPrepareTime) && stPrepareTime != null) {
             hashMapQuery.put("prepareTime", stPrepareTime);
         }
 
-        if (!("").equals(stServes)) {
+        if (!("").equals(stServes) && stServes != null) {
             hashMapQuery.put("serves", stServes);
         }
 
@@ -145,15 +147,14 @@ public class ListRecipeActivity extends AppCompatActivity {
         }
 
         if (ingredients.size() != 0) {
-            String stIngredients = "(";
+            String stIngredients = "";
             for (int x = 0; x < ingredients.size(); x++) {
                 if ((x + 1) == ingredients.size()) {
-                    stIngredients += "%" + ingredients.get(x).getNameIngredient() + "%";
+                    stIngredients += ingredients.get(x).getNameIngredient();
                 } else {
-                    stIngredients += "%" + ingredients.get(x).getNameIngredient() + "%, ";
+                    stIngredients += ingredients.get(x).getNameIngredient() + ",";
                 }
             }
-            stIngredients += ")";
             hashMapQuery.put("ingredients", stIngredients);
         }
 
@@ -216,6 +217,11 @@ public class ListRecipeActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_advanced_filter:
 
+                ingredientsBk.clear();
+                for(Ingredient i : ingredients){
+                    ingredientsBk.add(i);
+                }
+
                 final Dialog dialog = new Dialog(ListRecipeActivity.this);
                 dialog.getWindow();
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -247,6 +253,11 @@ public class ListRecipeActivity extends AppCompatActivity {
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ingredients.clear();
+                for(Ingredient i : ingredientsBk){
+                    ingredients.add(i);
+                }
+
                 dialog.dismiss();
             }
         });
@@ -284,6 +295,28 @@ public class ListRecipeActivity extends AppCompatActivity {
                             etIngredientName.setText("");
                         }
                     }
+                }
+                return false;
+            }
+        });
+
+        etIngredientName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN && !etIngredientName.getText().toString().trim().equals("")) {
+                        Ingredient ingredientAdd = new Ingredient();
+                        ingredientAdd.setNameIngredient(etIngredientName.getText().toString().trim());
+                        if (ingredientAdapter.addItem(ingredientAdd)) {
+                            etIngredientName.setText("");
+                            etIngredientName.setError(null);
+                        } else {
+                            etIngredientName.setError(getString(R.string.existing_ingredient));
+                        }
+                    } else if (etIngredientName.getText().toString().trim().equals("")) {
+                        etIngredientName.setText("");
+                    }
+                    return true;
                 }
                 return false;
             }

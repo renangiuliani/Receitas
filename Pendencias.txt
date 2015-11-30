@@ -9,6 +9,8 @@ Colocar video
 Colocar o rating bar para a imagem do tipo da receita
 Alterar cor searchview e drawer menu para branco na tela inicial
 Adicionar longclick na lista para mostrar um balão com as informações: tempo preparo, preço e serves
+Fazer um util para adicionar ingrediente na lista
+fazer consulta certa com muito ingredientes AND (i1 AND i2)
 
 
 Animações
