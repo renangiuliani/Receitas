@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.android.support\design\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1821601ddbec5ff125653097812823388700af74">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\classes-0c645311375b232f69e46658555b0e72bb363677.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1-6038d8293bf89a8271ca4a654fcd271086b7f849.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.mikepenz\materialdrawer\3.1.2\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c9b5ab5d31472e2edec0b741355aa2fc18d16a0c">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\classes-2cdb7e2795295c41995df68a03ed50d1f247cf89.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\classes-945f4888afbd996087adfc358f7de9d6c3dea232.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-52239c611f185764041a4b22e85946f586840c19.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="11842de6a309c447b3a3d60d73ad637a87c58994">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\classes-ff9eaface6c5b17fbf6dc45b557845c5322c5e56.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\classes-6f14062a6e3ecd9b2e47eedb58a832c636c5905c.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\classes-6f6eac70d7227400f9f25f3f0fece98dd1621b3a.jar" />
+    </item>
+    <item
+        jar="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\exploded-aar\com.mikepenz\iconics\1.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="720dcbcd8744b145da58d835d7e4dbc546886df7">
+        <dex dex="C:\Users\c1284141\Documents\git\Receitas\RecipeApplication\app\build\intermediates\pre-dexed\debug\classes-cc5c6b96799e3c64a297117cf9c5b1f978e35b5b.jar" />
+    </item>
+
+</items>

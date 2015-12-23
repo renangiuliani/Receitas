@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Receitas</string>
+
+    <string name="choice_recipe_type">Escolha um tipo de receita:</string>
+    <string name="action_settings">Settings</string>
+    <string name="title">Título</string>
+    <string name="ingredient">Ingrediente</string>
+    <string name="prepare_mode">Modo de Preparo</string>
+    <string name="prepare_time">Tempo de Preparo</string>
+    <string name="serves">Serve</string>
+    <string name="save">Salvar</string>
+    <string name="list_ingredient">Lista de Ingredientes</string>
+    <string name="edit">Editar</string>
+    <string name="remove">Remover</string>
+    <string name="change_photo">Alterar Foto</string>
+    <string name="observation">Observação</string>
+    <string name="search">Buscar...</string>
+    <string name="msg_mandatory">Campo obrigatório.</string>
+    <string name="ingredient_empty">Nenhum ingrediente adicionado.</string>
+    <string name="msg_invalid_time">Hora inválida.</string>
+    <string name="save_successful">Receita salva com sucesso!</string>
+    <string name="save_error">Algum campo não foi preenchido corretamente!</string>
+    <string name="existing_ingredient">Ingrediente já inserido!</string>
+    <string name="recipe_remove">Remover receita</string>
+    <string name="question_recipe_remove">Tem certeza que deseja remover esta receita?</string>
+    <string name="remove_successful">Receita removida com sucesso!</string>
+    <string name="recipe_save">Salvar receita</string>
+    <string name="question_save_recipe">Deseja salvar a receita?</string>
+    <string name="print_photo">Tirar Foto</string>
+    <string name="no_result">Nenhuma receita encontrada.</string>
+    <string name="price">Preço Gasto</string>
+    <string name="difficulty">Dificuldade</string>
+    <string name="share">Compartilhar</string>
+    <string name="advanced_filter">Filtro Avançado</string>
+</resources>
