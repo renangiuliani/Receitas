@@ -8,10 +8,6 @@ Imagem informações na lista de receita
 fazer consulta certa com muito ingredientes AND (i1 AND i2)
 
 
-Animações
-Quando botão de add receita sumir, animar para descer
-
-
 O role não é cobrar por compartilhamento e sim por visualização/recebimento, pois o foco é ajudar
 as pessoas para ter mais receita para fazer.
 
