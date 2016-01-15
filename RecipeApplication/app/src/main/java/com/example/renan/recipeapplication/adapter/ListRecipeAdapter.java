@@ -27,13 +27,11 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int mPosition;
 
     private final static int VIEW_TYPE_ITEM = 1, VIEW_TYPE_LAST = 2;
-    private Recipe mRecipe;
 
     public ListRecipeAdapter(Context context, List<Recipe> itens) {
         this.context = context;
         this.itens = itens;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,37 +56,33 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mPosition = holder.getLayoutPosition();
             final ListRecipeViewHolder viewHolder = (ListRecipeViewHolder) holder;
 
-            if(itens.get(position).getImageRecipe() != null) {
-                viewHolder.ivRecipe.setImageBitmap(BitmapFactory.decodeByteArray(itens.get(position).getImageRecipe(), 0, itens.get(position).getImageRecipe().length));
+            if(getSelectedItem().getImageRecipe() != null) {
+                viewHolder.ivRecipe.setImageBitmap(BitmapFactory.decodeByteArray(getSelectedItem().getImageRecipe(), 0, getSelectedItem().getImageRecipe().length));
             }else{
                 viewHolder.ivRecipe.setImageResource(R.drawable.without_photo);
             }
 
-            viewHolder.tvTitle.setText(itens.get(position).getTitle());
+            viewHolder.tvTitle.setText(getSelectedItem().getTitle());
 
             viewHolder.ivRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, VisualizeRecipeActivity.class);
-                    intent.putExtra("recipe", itens.get(position).getId());
+                    intent.putExtra("recipe", getSelectedItem().getId());
                     context.startActivity(intent);
                 }
             });
 
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            viewHolder.ivInfo.setContentDescription(itens.get(position).getTitle());
+            viewHolder.ivInfo.setContentDescription(getSelectedItem().getTitle());
             viewHolder.ivInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    context.startActivity(RecipeInfoActivity.createIntent(context, v, itens.get(position)));
+                    context.startActivity(RecipeInfoActivity.createIntent(context, v, getSelectedItem()));
                 }
             });
         }
-    }
-
-    private Recipe getRecipe(int position) {
-        return itens.get(position);
     }
 
     @Override
@@ -112,7 +106,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public static class ListRecipeViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivRecipe;
-        public TextView tvTitle, tvPrepareTime, tvServes;
+        public TextView tvTitle;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageView ivInfo = (ImageView)inflater.inflate(R.layout.test_info, null, false);
 

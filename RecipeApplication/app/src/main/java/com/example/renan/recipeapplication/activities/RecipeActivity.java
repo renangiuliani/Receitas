@@ -91,8 +91,6 @@ public class RecipeActivity extends AppCompatActivity {
 
                 etPrice.setText((recipe.getPrice() == 0 ? "" : stPrice));
 
-                //etPrice.setText(("0.0").equals(String.valueOf(recipe.getPrice())) ? "" : String.valueOf(recipe.getPrice()));
-
                 fillStars(recipe.getDifficulty());
 
                 List<Ingredient> ingredients = ingredientSave.getByRecipe(recipe.getId());

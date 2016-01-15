@@ -1,5 +1,6 @@
 package com.example.renan.recipeapplication.Util;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,7 +22,28 @@ public class Util {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-//    public static String formatTime(Date date) {
-//        return format(date, Util.PATTERN_TIME);
-//    }
+    public static void animationClickAcionBar(final View view) {
+        view.animate().setDuration(150).scaleX(70).scaleY(70).alpha((float) 0.1).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                view.setScaleX(1);
+                view.setScaleY(1);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                view.setAlpha(0);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).start();
+    }
 }

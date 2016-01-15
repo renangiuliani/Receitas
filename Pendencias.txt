@@ -5,7 +5,7 @@ Fazer tela de login com opção de entrar automaticamente
 Colocar temporizador na tela de visualizar
 Colocar video
 Imagem informações na lista de receita
-fazer consulta certa com muito ingredientes AND (i1 AND i2)
+Fazer consulta certa com muito ingredientes AND (i1 AND i2)
 
 
 O role não é cobrar por compartilhamento e sim por visualização/recebimento, pois o foco é ajudar

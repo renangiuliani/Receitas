@@ -146,12 +146,38 @@
                     android:src="@drawable/ic_star_off" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_title_timers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_price"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:text="Alarmes"
+                android:textColor="@color/text_icons"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/ln_timers"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/tv_title_timers"
+                android:background="@color/text_icons" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/ln_timers"
+                android:layout_marginLeft="6dp" />
 
             <TextView
                 android:id="@+id/tv_title_list_ingredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_price"
+                android:layout_below="@+id/rv_list_timer"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="4dp"
                 android:text="@string/list_ingredient"
@@ -231,6 +257,15 @@
                 android:layout_marginTop="4dp"
                 android:text="Observação 1\nTeste"
                 android:textColor="@color/text_icons" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_observation">
+                <include
+                    android:id="@+id/teste"
+                    layout="@layout/item_additional_timer" />
+            </LinearLayout>
 
         </RelativeLayout>
     </RelativeLayout>

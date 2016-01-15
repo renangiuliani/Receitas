@@ -21,7 +21,6 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name=".activities.ListRecipeActivity" />-->
         <activity
             android:name=".activities.RecipeActivity"
             android:windowSoftInputMode="stateHidden" />
